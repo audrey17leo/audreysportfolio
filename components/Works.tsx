@@ -21,20 +21,7 @@ const baseProjects = realProjects
     comingSoon: false,
   }))
 
-const driftCard = {
-  id: 'drift-ai',
-  slug: '',
-  title: 'drift.ai',
-  description: 'An agentic AI built to autonomously surface marketing insights from hard-to-crawl web sources.',
-  tags: ['AI', 'MARKETING TECH'],
-  image: '/driftai.jpg' as string | null,
-  aspectRatio: '4/3' as const,
-  video: undefined as string | undefined,
-  videoHover: undefined as string | undefined,
-  comingSoon: true,
-}
-
-const displayProjects = [...baseProjects, driftCard]
+const displayProjects = baseProjects
 
 type DisplayProject = typeof displayProjects[number]
 
