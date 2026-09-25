@@ -16,7 +16,8 @@ export default function Navbar() {
 
   const linkStyle = (active: boolean): React.CSSProperties => ({
     fontFamily: FONT_BODY,
-    fontSize: '0.98rem',
+    fontSize: 14,
+    lineHeight: '20px',
     fontWeight: 400,
     color: active ? FG : MUTED_LIGHT,
     textDecoration: 'none',

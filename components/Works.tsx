@@ -5,13 +5,14 @@ import Link from 'next/link'
 import { projects as realProjects } from '@/lib/projects'
 import { useIsMobile } from '@/lib/useIsMobile'
 import { reveal, staggerContainer, once, stellaEase } from '@/lib/stellaMotion'
-import { FG, MUTED, MUTED_LIGHT, HAIRLINE, CARD, TAG_GOLD, FONT_BODY } from '@/lib/theme'
+import { FG, MUTED, MUTED_LIGHT, HAIRLINE, CARD, BG, FONT_BODY } from '@/lib/theme'
 
 const displayProjects = realProjects
   .filter(p => p.slug !== 'batik')
   .map(p => ({
     slug: p.slug,
     title: p.title,
+    description: p.subtitle,
     tags: p.tags,
     year: p.year,
     bg: p.bg || CARD,
@@ -41,9 +42,10 @@ function ProjectCard({ project }: { project: DisplayProject }) {
   }, [])
 
   const isPng = !!project.image && project.image.endsWith('.png')
+  const baseScale = isPng ? 0.82 : 1
 
   return (
-    <motion.div variants={reveal} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+    <motion.div variants={reveal} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <Link
         href={`/works/${project.slug}`}
         data-cursor="explore"
@@ -55,13 +57,14 @@ function ProjectCard({ project }: { project: DisplayProject }) {
           style={{
             position: 'relative',
             width: '100%',
-            aspectRatio: '4 / 3',
+            aspectRatio: '16 / 10',
             background: project.bg,
-            borderRadius: 12,
+            borderRadius: 4,
             overflow: 'hidden',
             border: `1px solid ${HAIRLINE}`,
           }}
         >
+          {/* media */}
           {hasVideo ? (
             <>
               <video ref={vid1} src={project.video} autoPlay loop muted playsInline preload="auto"
@@ -74,42 +77,69 @@ function ProjectCard({ project }: { project: DisplayProject }) {
               style={{
                 position: 'absolute', inset: 0, width: '100%', height: '100%',
                 objectFit: isPng ? 'contain' : 'cover',
-                transform: (isPng ? 'scale(0.82)' : 'scale(1)') + (hovered ? ' scale(1.03)' : ''),
-                transition: 'transform 0.6s cubic-bezier(0.22,1,0.36,1)',
+                transform: `scale(${hovered ? baseScale * 1.02 : baseScale})`,
+                transition: 'transform 0.5s cubic-bezier(0.22,1,0.36,1)',
               }} />
           ) : null}
 
-          {/* see project — top-left, fades in on hover */}
+          {/* hover overlay — backdrop blur wash */}
           <div
             style={{
-              position: 'absolute', top: 16, left: 16,
-              background: CARD, color: FG,
-              fontFamily: FONT_BODY, fontSize: '0.8rem', fontWeight: 500,
-              padding: '8px 14px', borderRadius: 999,
-              display: 'inline-flex', alignItems: 'center', gap: 6,
+              position: 'absolute', inset: 0,
+              background: `${BG}59`,
+              backdropFilter: hovered ? 'blur(6px)' : 'blur(0px)',
+              WebkitBackdropFilter: hovered ? 'blur(6px)' : 'blur(0px)',
               opacity: hovered ? 1 : 0,
-              transform: hovered ? 'translateY(0)' : 'translateY(-6px)',
-              transition: 'opacity 0.3s, transform 0.3s',
-              boxShadow: '0 2px 10px rgba(0,0,0,0.06)',
+              transition: 'opacity 0.4s, backdrop-filter 0.4s',
+              pointerEvents: 'none',
+            }}
+          />
+
+          {/* hover content — see project (top) + description (center), fade in */}
+          <div
+            style={{
+              position: 'absolute', inset: 0,
+              padding: 'clamp(16px, 2vw, 24px)',
+              display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+              opacity: hovered ? 1 : 0,
+              transform: hovered ? 'translateY(0)' : 'translateY(6px)',
+              transition: 'opacity 0.35s, transform 0.35s',
+              pointerEvents: 'none',
             }}
           >
-            see project <span aria-hidden>↗</span>
+            <span
+              style={{
+                alignSelf: 'flex-start',
+                fontFamily: FONT_BODY, fontSize: 14, fontWeight: 500, color: FG,
+                background: CARD, padding: '7px 13px', borderRadius: 999,
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                border: `1px solid ${HAIRLINE}`,
+              }}
+            >
+              see project <span aria-hidden>↗</span>
+            </span>
+            <p
+              style={{
+                fontFamily: FONT_BODY, fontSize: 'clamp(0.9rem, 1vw, 1rem)', lineHeight: 1.5,
+                color: FG, margin: 0, maxWidth: '42ch', fontWeight: 400,
+              }}
+            >
+              {project.description}
+            </p>
           </div>
 
-          {/* tag pills — bottom-left */}
-          <div style={{ position: 'absolute', left: 16, bottom: 16, display: 'flex', flexWrap: 'wrap', gap: 8, maxWidth: 'calc(100% - 32px)' }}>
-            {project.tags.slice(0, 3).map((t, i) => (
+          {/* tags — bottom-left, always visible */}
+          <div style={{ position: 'absolute', left: 'clamp(12px,1.5vw,16px)', bottom: 'clamp(12px,1.5vw,16px)', display: 'flex', flexWrap: 'wrap', gap: 8, maxWidth: 'calc(100% - 32px)', opacity: hovered ? 0 : 1, transition: 'opacity 0.3s' }}>
+            {project.tags.slice(0, 3).map((t) => (
               <span
                 key={t}
                 style={{
-                  fontFamily: FONT_BODY, fontSize: '0.72rem', fontWeight: 500,
-                  letterSpacing: '0.01em',
-                  color: i === 0 ? TAG_GOLD : FG,
+                  fontFamily: FONT_BODY, fontSize: 14, fontWeight: 500, color: FG,
                   background: 'rgba(255,255,255,0.9)',
                   backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
                   border: `1px solid ${HAIRLINE}`,
-                  padding: '5px 11px', borderRadius: 999,
-                  textTransform: 'lowercase',
+                  padding: '4px 12px', borderRadius: 999,
+                  textTransform: 'lowercase', lineHeight: '20px',
                 }}
               >
                 {t.toLowerCase()}
@@ -121,8 +151,8 @@ function ProjectCard({ project }: { project: DisplayProject }) {
 
       {/* caption row */}
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, padding: '0 2px' }}>
-        <span style={{ fontFamily: FONT_BODY, fontSize: '0.98rem', fontWeight: 600, color: FG, letterSpacing: '-0.01em' }}>{project.title}</span>
-        {project.year && <span style={{ fontFamily: FONT_BODY, fontSize: '0.82rem', color: MUTED_LIGHT }}>{project.year}</span>}
+        <span style={{ fontFamily: FONT_BODY, fontSize: 16, fontWeight: 500, color: FG, letterSpacing: '-0.01em' }}>{project.title}</span>
+        {project.year && <span style={{ fontFamily: FONT_BODY, fontSize: 14, color: MUTED_LIGHT }}>{project.year}</span>}
       </div>
     </motion.div>
   )
@@ -139,7 +169,7 @@ export default function Works() {
           whileInView={{ opacity: 1 }}
           viewport={once}
           transition={{ duration: 0.5, ease: stellaEase }}
-          style={{ fontFamily: FONT_BODY, fontSize: '0.9rem', color: MUTED, margin: '0 0 clamp(20px, 3vh, 32px)' }}
+          style={{ fontFamily: FONT_BODY, fontSize: 14, color: MUTED, margin: '0 0 clamp(16px, 2.5vh, 28px)' }}
         >
           selected work
         </motion.p>
@@ -149,7 +179,7 @@ export default function Works() {
           initial="hidden"
           whileInView="show"
           viewport={once}
-          style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 32 : 'clamp(20px, 2vw, 28px)' }}
+          style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 28 : 12 }}
         >
           {displayProjects.map((p) => (
             <ProjectCard key={p.slug} project={p} />

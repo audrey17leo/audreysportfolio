@@ -1,8 +1,25 @@
 'use client'
 import { motion } from 'framer-motion'
 import { reveal, staggerContainer, stellaEase } from '@/lib/stellaMotion'
-import { FG, MUTED, HAIRLINE, FONT_DISPLAY, FONT_BODY } from '@/lib/theme'
+import { MUTED, HAIRLINE, ACCENT, FONT_DISPLAY, FONT_BODY } from '@/lib/theme'
 import { useIsMobile } from '@/lib/useIsMobile'
+
+// Exact link hover from ruocanpeng: muted → #FF0050
+function HoverLink({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-cursor="explore"
+      style={{ color: 'inherit', textDecoration: 'none', transition: 'color 0.3s' }}
+      onMouseEnter={(e) => (e.currentTarget.style.color = ACCENT)}
+      onMouseLeave={(e) => (e.currentTarget.style.color = 'inherit')}
+    >
+      {children}
+    </a>
+  )
+}
 
 export default function Hero() {
   const isMobile = useIsMobile()
@@ -10,7 +27,7 @@ export default function Hero() {
   return (
     <section
       style={{
-        padding: isMobile ? '128px 24px 24px' : 'clamp(150px, 20vh, 220px) clamp(32px, 6vw, 88px) clamp(40px, 6vh, 72px)',
+        padding: isMobile ? '132px 24px 24px' : 'clamp(150px, 20vh, 210px) clamp(32px, 6vw, 88px) clamp(40px, 6vh, 72px)',
       }}
     >
       <motion.div
@@ -23,44 +40,43 @@ export default function Hero() {
           display: 'flex',
           flexDirection: isMobile ? 'column' : 'row',
           alignItems: 'flex-start',
-          gap: isMobile ? 24 : 'clamp(28px, 3.5vw, 52px)',
+          gap: isMobile ? 22 : 44,
         }}
       >
-        {/* B&W portrait */}
+        {/* Portrait — 120×120 square, B&W */}
         <motion.img
           variants={reveal}
           src="/AUDREYPHOTO.jpg"
           alt="Audrey Leo"
           style={{
             flexShrink: 0,
-            width: isMobile ? 130 : 'clamp(130px, 13vw, 176px)',
-            height: isMobile ? 165 : 'clamp(165px, 16vw, 220px)',
+            width: 120,
+            height: 120,
             objectFit: 'cover',
             objectPosition: 'center',
             filter: 'grayscale(1) contrast(1.02)',
-            borderRadius: 2,
-            border: `1px solid ${HAIRLINE}`,
+            borderRadius: 0,
             display: 'block',
+            border: `1px solid ${HAIRLINE}`,
           }}
         />
 
         {/* Intro text */}
-        <div style={{ maxWidth: 640, paddingTop: isMobile ? 4 : 2 }}>
+        <div style={{ maxWidth: 620 }}>
           <motion.h1
             variants={reveal}
             transition={{ duration: 0.7, ease: stellaEase }}
             style={{
               fontFamily: FONT_DISPLAY,
-              fontWeight: 400,
-              fontSize: 'clamp(1.7rem, 3vw, 2.7rem)',
-              lineHeight: 1.16,
-              letterSpacing: '-0.005em',
-              color: FG,
+              fontWeight: 600,
+              fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', // → 32px desktop
+              lineHeight: 1.2,
+              letterSpacing: '-0.055em',
+              color: 'rgba(43,43,43,0.92)',
               margin: 0,
             }}
           >
-            Audrey Leo builds thoughtful things across product,
-            design &amp; the craft in&nbsp;between.
+            Audrey Leo builds thoughtful things across product, design &amp; the craft in&nbsp;between.
           </motion.h1>
 
           <motion.p
@@ -68,14 +84,15 @@ export default function Hero() {
             transition={{ duration: 0.6, ease: stellaEase, delay: 0.1 }}
             style={{
               fontFamily: FONT_BODY,
-              fontSize: 'clamp(0.95rem, 1.1vw, 1.05rem)',
-              lineHeight: 1.6,
+              fontSize: 16,
+              lineHeight: '24px',
               color: MUTED,
-              margin: '18px 0 0',
+              margin: '16px 0 0',
               fontWeight: 400,
             }}
           >
-            Currently in Product R&amp;D @tldraw and studying Art &amp; Technology @UCL.
+            Currently in Product R&amp;D <HoverLink href="https://www.tldraw.com">@tldraw</HoverLink> and studying
+            Art &amp; Technology <HoverLink href="https://www.ucl.ac.uk">@UCL</HoverLink>.
           </motion.p>
         </div>
       </motion.div>
