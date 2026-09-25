@@ -1,7 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import { reveal, staggerContainer, flipUp, once, stellaEase } from '@/lib/stellaMotion'
-import { BG, FG, ACCENT, MUTED, MUTED_LIGHT, HAIRLINE, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
+import { FG, GREEN, HIGHLIGHT, MUTED, MUTED_LIGHT, HAIRLINE, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
 import { useIsMobile } from '@/lib/useIsMobile'
 import { useMagnetic } from '@/lib/useMagnetic'
 
@@ -21,7 +21,7 @@ export default function Contact() {
     <section
       id="contact"
       style={{
-        background: BG,
+        background: 'transparent',
         borderTop: `1px solid ${HAIRLINE}`,
         padding: isMobile ? '80px 24px 40px' : 'clamp(100px, 15vh, 180px) clamp(48px, 6vw, 96px) 48px',
         position: 'relative',
@@ -36,8 +36,8 @@ export default function Contact() {
       >
         {/* Label */}
         <motion.div variants={reveal} style={{ fontFamily: FONT_MONO, fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED_LIGHT, marginBottom: 28, display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />
-          Get in touch
+          <span style={{ width: 7, height: 7, borderRadius: '50%', background: GREEN, display: 'inline-block' }} />
+          Available for work
         </motion.div>
 
         {/* Big statement */}
@@ -47,7 +47,7 @@ export default function Contact() {
           </span>
           <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.08em' }}>
             <motion.span variants={flipUp} transition={{ duration: 0.75, ease: stellaEase, delay: 0.08 }} style={{ display: 'block', transformOrigin: 'bottom' }}>
-              people <span style={{ color: ACCENT }}>love.</span>
+              people <span style={{ background: HIGHLIGHT, borderRadius: 8, padding: '0 12px', boxDecorationBreak: 'clone', WebkitBoxDecorationBreak: 'clone' }}>love.</span>
             </motion.span>
           </span>
         </h2>
@@ -75,7 +75,7 @@ export default function Contact() {
             }}
           >
             {EMAIL}
-            <span aria-hidden style={{ color: ACCENT }}>↗</span>
+            <span aria-hidden style={{ color: FG }}>↗</span>
           </a>
         </motion.div>
 

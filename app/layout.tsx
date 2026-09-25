@@ -1,21 +1,14 @@
 import type { Metadata } from 'next'
-import { Figtree, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
+import { Schibsted_Grotesk, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import ClientProviders from '@/components/ClientProviders'
 
-// Aditya Muralidhar design language:
-// Figtree (body) · Space Grotesk (display, stands in for Stack Sans) · JetBrains Mono (labels)
-const figtree = Figtree({
+// Flim design language:
+// Swizzy → Schibsted Grotesk (display) · PP Neue Montreal Mono → JetBrains Mono · Arial (body)
+const schibsted = Schibsted_Grotesk({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-body',
-  display: 'swap',
-})
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '700', '900'],
   variable: '--font-display',
   display: 'swap',
 })
@@ -49,14 +42,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${figtree.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={`${schibsted.variable} ${jetbrainsMono.variable}`}>
       <body
         className="antialiased"
         style={{
           cursor: 'none',
-          fontFamily: 'var(--font-body), Figtree, system-ui, sans-serif',
-          background: '#fafafa',
-          color: '#262626',
+          fontFamily: 'Arial, system-ui, sans-serif',
+          color: '#141414',
+          // Sketchpad grid on warm canvas — the Flim surface
+          background: '#f5f5f5',
+          backgroundImage:
+            'linear-gradient(#d9d9d9 1px, transparent 1px), linear-gradient(90deg, #d9d9d9 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
         }}
       >
         <ClientProviders>{children}</ClientProviders>

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { projects as realProjects } from '@/lib/projects'
 import { useIsMobile } from '@/lib/useIsMobile'
 import { reveal, staggerContainer, flipUp, imageReveal, cardHover, cardHoverTransition, once } from '@/lib/stellaMotion'
-import { BG, FG, ACCENT, MUTED, MUTED_LIGHT, HAIRLINE, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
+import { FG, GREEN, MUTED, MUTED_LIGHT, HAIRLINE, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
 
 const displayProjects = realProjects
   .filter(p => p.slug !== 'batik')
@@ -113,7 +113,7 @@ function ProjectCard({ project }: { project: DisplayProject }) {
       {/* Title */}
       <h3 style={{ fontFamily: FONT_DISPLAY, margin: '8px 0 8px', fontWeight: 600, fontSize: '1.4rem', letterSpacing: '-0.02em', color: FG, lineHeight: 1.15, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
         {project.title}
-        <span aria-hidden style={{ color: ACCENT, opacity: hovered ? 1 : 0, transform: hovered ? 'translateX(0)' : 'translateX(-6px)', transition: 'all 0.35s cubic-bezier(0.22,1,0.36,1)', fontSize: '1rem' }}>→</span>
+        <span aria-hidden style={{ color: FG, opacity: hovered ? 1 : 0, transform: hovered ? 'translateX(0)' : 'translateX(-6px)', transition: 'all 0.35s cubic-bezier(0.22,1,0.36,1)', fontSize: '1rem' }}>→</span>
       </h3>
 
       {/* Description */}
@@ -130,7 +130,7 @@ export default function Works() {
   const isMobile = useIsMobile()
 
   return (
-    <section id="works" style={{ background: BG, padding: 'clamp(80px, 12vh, 150px) 0' }}>
+    <section id="works" style={{ background: 'transparent', padding: 'clamp(80px, 12vh, 150px) 0' }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', padding: isMobile ? '0 24px' : '0 clamp(48px, 6vw, 96px)' }}>
 
         {/* Section header */}
@@ -143,7 +143,7 @@ export default function Works() {
         >
           <div style={{ perspective: 800 }}>
             <motion.div variants={reveal} style={{ fontFamily: FONT_MONO, fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED_LIGHT, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: GREEN, display: 'inline-block' }} />
               Selected work
             </motion.div>
             <span style={{ display: 'block', overflow: 'hidden' }}>

@@ -1,186 +1,165 @@
 'use client'
 import { motion } from 'framer-motion'
 import dynamic from 'next/dynamic'
-import { reveal, staggerContainer, flipUp, stellaEase } from '@/lib/stellaMotion'
-import { BG, FG, ACCENT, MUTED, MUTED_LIGHT, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
+import { reveal, staggerContainer } from '@/lib/stellaMotion'
+import { FG, MUTED, MUTED_LIGHT, HAIRLINE, CARD, HIGHLIGHT, GREEN, FONT_DISPLAY, FONT_MONO, FONT_BODY, R_CARD } from '@/lib/theme'
 import { useIsMobile } from '@/lib/useIsMobile'
-import { useMagnetic } from '@/lib/useMagnetic'
 
 const SleepingModel = dynamic(() => import('./SleepingModel'), { ssr: false })
 
-// Headline rendered as flip-up lines (Stella composition + Aditya display type).
-const HEADLINE: { text: string; accent?: boolean }[] = [
-  { text: 'Audrey Leo builds' },
-  { text: 'bold, human-centered' },
-  { text: 'products.', accent: true },
-]
-
-function FlipLine({ text, accent, delay }: { text: string; accent?: boolean; delay: number }) {
+// Yellow marker-pen highlight behind a word (Flim signature)
+function Mark({ children }: { children: React.ReactNode }) {
   return (
-    <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.08em' }}>
-      <motion.span
-        variants={flipUp}
-        transition={{ duration: 0.75, ease: stellaEase, delay }}
-        style={{ display: 'block', transformOrigin: 'bottom', color: accent ? ACCENT : FG }}
-      >
-        {text}
-      </motion.span>
+    <span style={{ background: HIGHLIGHT, borderRadius: 6, padding: '0 8px', boxDecorationBreak: 'clone', WebkitBoxDecorationBreak: 'clone' }}>
+      {children}
     </span>
   )
 }
 
 export default function Hero() {
   const isMobile = useIsMobile()
-  const magnet = useMagnetic<HTMLAnchorElement>(0.4)
 
   return (
     <section
       style={{
-        background: BG,
+        background: 'transparent',
         minHeight: '100svh',
         display: 'flex',
         alignItems: 'center',
-        padding: 'clamp(120px, 16vh, 200px) clamp(24px, 6vw, 96px) clamp(60px, 9vh, 110px)',
+        padding: 'clamp(130px, 18vh, 210px) clamp(24px, 6vw, 96px) clamp(60px, 9vh, 110px)',
       }}
     >
-      <div
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={staggerContainer}
         style={{
           maxWidth: 1320,
           margin: '0 auto',
           width: '100%',
-          display: 'flex',
-          flexDirection: isMobile ? 'column-reverse' : 'row',
-          alignItems: 'center',
-          gap: isMobile ? 24 : 'clamp(32px, 5vw, 80px)',
+          display: 'grid',
+          gridTemplateColumns: isMobile ? '1fr' : '1.05fr 0.95fr',
+          gap: isMobile ? 48 : 'clamp(40px, 6vw, 96px)',
+          alignItems: 'start',
         }}
       >
-        {/* LEFT: 3D figure */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9, delay: 0.2, ease: stellaEase }}
-          style={{
-            flex: isMobile ? 'none' : '0 0 40%',
-            width: isMobile ? '100%' : undefined,
-            height: isMobile ? 260 : 460,
-            pointerEvents: 'none',
-          }}
-        >
-          <SleepingModel />
-        </motion.div>
+        {/* LEFT — identity */}
+        <div>
+          <motion.h1
+            variants={reveal}
+            style={{
+              fontFamily: FONT_DISPLAY,
+              fontWeight: 500,
+              fontSize: 'clamp(2.8rem, 6vw, 5rem)',
+              lineHeight: 0.95,
+              letterSpacing: '-0.03em',
+              color: FG,
+              margin: 0,
+            }}
+          >
+            Audrey Leo
+          </motion.h1>
 
-        {/* RIGHT: typography */}
-        <motion.div initial="hidden" animate="show" style={{ flex: 1, width: isMobile ? '100%' : undefined }}>
-          {/* kicker */}
-          <motion.div
+          <motion.p
             variants={reveal}
             style={{
               fontFamily: FONT_MONO,
-              fontSize: '0.7rem',
+              fontSize: '0.72rem',
               letterSpacing: '0.14em',
               textTransform: 'uppercase',
-              color: MUTED_LIGHT,
-              marginBottom: 'clamp(20px, 3vh, 36px)',
+              color: MUTED,
+              margin: '18px 0 0',
               display: 'flex',
               alignItems: 'center',
               gap: 10,
             }}
           >
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />
-            Product designer &amp; creative technologist
-          </motion.div>
-
-          {/* flip-up headline */}
-          <h1
-            style={{
-              fontFamily: FONT_DISPLAY,
-              fontWeight: 600,
-              fontSize: 'clamp(2.1rem, 4.6vw, 4.1rem)',
-              lineHeight: 1.03,
-              letterSpacing: '-0.045em',
-              margin: 0,
-              perspective: 800,
-            }}
-          >
-            {HEADLINE.map((l, i) => (
-              <FlipLine key={l.text} text={l.text} accent={l.accent} delay={0.25 + i * 0.09} />
-            ))}
-          </h1>
-
-          {/* supporting line */}
-          <motion.p
-            variants={reveal}
-            transition={{ duration: 0.6, ease: stellaEase, delay: 0.6 }}
-            style={{
-              marginTop: 'clamp(20px, 3vh, 34px)',
-              maxWidth: 520,
-              fontSize: 'clamp(0.98rem, 1.2vw, 1.1rem)',
-              lineHeight: 1.6,
-              color: MUTED,
-              fontWeight: 400,
-            }}
-          >
-            I shape products end-to-end — design, research &amp; creative strategy — turning
-            ambiguous ideas into things people actually want to use.
+            <span style={{ width: 7, height: 7, borderRadius: '50%', background: GREEN, display: 'inline-block' }} />
+            Product designer — creative technologist
           </motion.p>
 
-          {/* meta */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="show"
-            style={{
-              marginTop: 'clamp(28px, 4vh, 48px)',
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              gap: '12px 24px',
-            }}
-          >
-            {['Product R&D @ tldraw', 'Art & Technology @ UCL', 'Student Ambassador @ Canva'].map((m) => (
-              <motion.span
-                key={m}
-                variants={reveal}
-                style={{ fontFamily: FONT_MONO, fontSize: '0.68rem', letterSpacing: '0.04em', textTransform: 'uppercase', color: MUTED }}
-              >
-                {m}
-              </motion.span>
-            ))}
-          </motion.div>
-
-          {/* magnetic cta */}
+          {/* Small 3D figure, framed like a pinned polaroid, to the side */}
           <motion.div
             variants={reveal}
-            initial="hidden"
-            animate="show"
-            transition={{ duration: 0.6, ease: stellaEase, delay: 0.85 }}
-            style={{ marginTop: 'clamp(32px, 5vh, 56px)', display: 'inline-block' }}
+            style={{
+              marginTop: 'clamp(32px, 5vh, 56px)',
+              width: isMobile ? 200 : 240,
+              height: isMobile ? 200 : 240,
+              background: CARD,
+              border: `1px solid ${HAIRLINE}`,
+              borderRadius: R_CARD,
+              overflow: 'hidden',
+              position: 'relative',
+            }}
           >
-            <a
-              ref={magnet.ref}
-              {...magnet.handlers}
-              href="#works"
-              data-cursor="explore"
-              style={{
-                ...magnet.style,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 12,
-                padding: '14px 26px',
-                borderRadius: 999,
-                background: FG,
-                color: BG,
-                fontSize: '0.9rem',
-                fontWeight: 500,
-                textDecoration: 'none',
-              }}
-            >
-              Selected work
-              <span aria-hidden style={{ color: ACCENT }}>↓</span>
-            </a>
+            <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+              <SleepingModel />
+            </div>
           </motion.div>
-        </motion.div>
-      </div>
+
+          <motion.p
+            variants={reveal}
+            style={{ fontFamily: FONT_MONO, fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED_LIGHT, margin: '18px 0 0' }}
+          >
+            Based in London
+          </motion.p>
+        </div>
+
+        {/* RIGHT — statement */}
+        <div style={{ paddingTop: isMobile ? 0 : 6 }}>
+          <motion.p
+            variants={reveal}
+            style={{
+              fontFamily: FONT_BODY,
+              fontSize: 'clamp(1.4rem, 2.4vw, 2.1rem)',
+              fontWeight: 400,
+              lineHeight: 1.32,
+              letterSpacing: '-0.01em',
+              color: FG,
+              margin: 0,
+              maxWidth: 560,
+            }}
+          >
+            I design what people <Mark>feel</Mark>, not just what they notice —
+            accessible, clear &amp; intentional.
+          </motion.p>
+
+          <motion.div variants={reveal} style={{ marginTop: 'clamp(32px, 5vh, 52px)', display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <span style={{ fontFamily: FONT_MONO, fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: MUTED }}>
+              Currently —{' '}
+              <a href="https://www.tldraw.com" target="_blank" rel="noopener noreferrer" data-cursor="explore" style={{ color: FG, textDecoration: 'none', borderBottom: `1px solid ${FG}`, paddingBottom: 2 }}>
+                Product R&amp;D @ tldraw ↗
+              </a>
+            </span>
+            <span style={{ fontFamily: FONT_MONO, fontSize: '0.72rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: MUTED_LIGHT }}>
+              Previously — London Fashion Week · Lawson · IDN
+            </span>
+          </motion.div>
+
+          <motion.a
+            variants={reveal}
+            href="#works"
+            data-cursor="explore"
+            style={{
+              marginTop: 'clamp(36px, 6vh, 64px)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
+              fontFamily: FONT_MONO,
+              fontSize: '0.72rem',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: FG,
+              textDecoration: 'none',
+              borderBottom: `1px solid ${FG}`,
+              paddingBottom: 4,
+              width: 'fit-content',
+            }}
+          >
+            Selected work ↓
+          </motion.a>
+        </div>
+      </motion.div>
     </section>
   )
 }

@@ -5,7 +5,7 @@ import AutoPlayVideo from '@/components/AutoPlayVideo'
 import Reveal from '@/components/Reveal'
 import { projects, getProject } from '@/lib/projects'
 import { sfPro } from '@/lib/fonts'
-import { BG, FG, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, CARD, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
+import { FG, GREEN, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, CARD, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
 
 export function generateStaticParams() {
   return projects.map(p => ({ slug: p.slug }))
@@ -37,7 +37,7 @@ function Label({ text }: { text: string }) {
       alignItems: 'center',
       gap: 10,
     }}>
-      <span style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />
+      <span style={{ width: 6, height: 6, borderRadius: '50%', background: GREEN, display: 'inline-block' }} />
       {text}
     </p>
   )
@@ -74,7 +74,7 @@ export default function CaseStudyPage({ params }: Props) {
   return (
     <>
       <Navbar />
-      <main style={{ background: BG, minHeight: '100vh' }}>
+      <main style={{ background: 'transparent', minHeight: '100vh' }}>
 
         {/* ── HERO ── */}
         <div className="cs-hero-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: '170px 48px 64px' }}>
