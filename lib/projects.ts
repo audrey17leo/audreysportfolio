@@ -150,24 +150,24 @@ export const projects: Project[] = [
     role: 'Case competition. Product design, system framing, and prototype.',
     showcaseImages: ['/projects/gofresh-app.jpg'],
 
-    problemSpaceHeading: 'The surplus isn’t created by the shopper. It’s created at the till.',
-    problemSpace: 'Most food-rescue apps put the whole burden on the consumer: go find the deal, go to the store, feel virtuous. But the surplus is *created* upstream, by staff, under time pressure, at the moment a perfectly good croissant crosses an invisible expiry line and gets binned. Design only the consumer side and you solve half the loop. **So I designed both sides of the same system.**',
+    problemSpaceHeading: 'The waste isn’t made by the shopper. It’s made at the till.',
+    problemSpace: 'A third of the food we grow is never eaten.\nMost of it doesn’t rot in a field. It gets binned at a shop, on a normal Tuesday, by someone with a job to do.\n\nSo I looked at where the waste is actually *made*, and it wasn’t the shopper.\nIt was the till. The exact moment a perfectly good croissant crosses an invisible expiry line and stops being sellable.\n\nEvery food-rescue app I found designed the shopper: go find the deal, go to the store, feel good.\nThat solves half a loop. **So I designed both halves of it.**',
 
-    conceptHeading: 'Two surfaces, one goal, one currency.',
-    concept: 'gofresh is a consumer app *and* a retail till that share a single metric, CO₂ avoided, so the impact is legible to a shopper and a store manager at once. The app creates demand for rescued food; the till creates the supply and measures it. Saving money and saving carbon become the same tap.',
+    conceptHeading: 'Two surfaces, one number.',
+    concept: 'gofresh is two products that share one currency.\n\nA consumer app that makes rescued food *desirable*.\nA retail till that makes rescued food *effortless to create*.\nBoth speak in CO₂ avoided.\n\nThe app builds demand. The till builds supply, and counts it. And because saving money and saving carbon are the same tap, nobody has to choose between the cheap thing and the good thing.',
 
     processSections: [
       {
-        title: 'gofresh, the consumer side',
-        body: 'Near-expiry groceries surface as offers, not afterthoughts: 80% off the Mediterranean pasta, 40% off the garden salad, each with “find nearest store” and a countdown framed as *rescue this*, not *hurry up*. An **Impact tab** makes the abstract personal: “12.4 kg of CO₂e saved,” a monthly goal, and rewards that turn a good habit into a streak worth keeping.',
+        title: 'gofresh: the consumer side',
+        body: 'The question here was tone.\n**How do you sell something that’s about to expire without it feeling like a bin?**\n\nSo near-expiry stock arrives as an offer, not an apology. 80% off the pasta, 40% off the salad, each with a store nearby and a countdown that reads as *rescue this*, not *hurry up*.\n\nThen an **Impact tab** makes the abstract personal. “12.4 kg of CO₂e saved.” A monthly goal. A streak worth keeping. Guilt gets you one purchase. A number you’re proud of gets you a habit.',
         image: '/projects/gofresh-app.jpg',
-        imageCaption: 'The market and impact tracker, discounts framed as rescue, savings framed as carbon.',
+        imageCaption: 'The market and impact tracker: discounts framed as rescue, savings framed as carbon.',
       },
       {
-        title: 'SmartTill, the retail side',
-        body: 'Every scan saves something. The till auto-flags stock as **REDUCED · 2 days**, drops the price, and shows the CO₂ avoided right on the basket line. Staff get an Expiry Manager, a Learn module, and Analytics, so “waste” stops being a loss written off at close and becomes a number they can watch fall in real time (“7 items reduced today”).',
+        title: 'SmartTill: the retail side',
+        body: 'The consumer app is nothing without supply, and supply is born at the counter.\n\nSo the till does the work no shopper can see. It auto-flags stock as **reduced, 2 days left**, drops the price itself, and prints the CO₂ avoided right on the basket line. Staff get an expiry manager, a short Learn module, and analytics.\n\nWaste stops being a loss written off at close. It becomes a number they watch fall in real time: “7 items reduced today.” What you can measure, you can beat.',
         image: '/projects/gofresh-till.jpg',
-        imageCaption: 'SmartTill, point of sale, expiry management, and a live food-waste-savings readout.',
+        imageCaption: 'SmartTill: point of sale, expiry management, and a live food-waste-savings readout.',
       },
     ],
 
@@ -181,11 +181,11 @@ export const projects: Project[] = [
     reflection: [
       {
         title: 'Design the incentive, not the guilt',
-        body: 'Sustainability features fail when they ask people to be virtuous. This one worked because the sustainable choice and the cheap choice were the same choice, on both sides of the counter.',
+        body: 'Sustainability features fail when they ask people to be good.\n\nThis one worked because the sustainable choice and the cheap choice were the same choice, on both sides of the counter. Make the right thing the easy thing and you don’t need a lecture.',
       },
       {
-        title: 'A metric only matters if both ends can read it',
-        body: 'Putting CO₂e on the shopper’s Impact tab *and* the manager’s analytics made a single number do the persuading, no lecture required.',
+        title: 'One number, read from both ends',
+        body: 'CO₂e on the shopper’s Impact tab. CO₂e on the manager’s dashboard.\n\nOne metric, legible to a student buying dinner and a store lead closing up, did the persuading that a paragraph never could.',
       },
     ],
     sectionLabels: {
@@ -214,21 +214,21 @@ export const projects: Project[] = [
     showcaseImages: ['/projects/folio-web.jpg'],
 
     problemSpaceHeading: 'The gap isn’t talent. It’s the first ten minutes.',
-    problemSpace: 'Portfolio builders hand you infinite freedom and zero momentum. Templates feel generic; from-scratch feels endless; both leave you staring at an empty page. For a hackathon audience of students and creatives, the win was never going to be *more features*, it was getting someone to a **first draft** they’d want to keep. **So folio optimises for momentum, not options.**',
+    problemSpace: '“Just make a portfolio,” everyone says. Then they hand you a blank canvas and walk away.\n\nWhat stops people isn’t talent, and it isn’t time. It’s the first ten minutes. The empty page that asks you to be your own art director before you’ve made a single decision.\n\nTemplates feel generic. From-scratch feels endless. Both leave you staring.\nFor a room full of students at a hackathon, the win was never *more features*. It was getting someone to a **first draft they’d keep.**',
 
-    conceptHeading: 'Speed is a feeling, and it’s designable.',
-    concept: 'A single, confident entry point, “Build now”, and a guided flow that assembles your work into a laid-out site instead of a blank canvas. The signature gradient orb isn’t decoration; it’s the “generating” moment made calm and alive, so the one unavoidable wait feels like magic instead of loading.',
+    conceptHeading: 'Speed is a feeling, and a feeling can be designed.',
+    concept: 'So folio has one confident door, “Build now,” and a guided flow that hands back a laid-out site instead of an empty one.\n\nEven the gradient orb earns its place. It’s the “generating” moment made calm and alive, so the one unavoidable wait reads as magic, not loading. Momentum isn’t a detail here. It’s the whole product.',
 
     processSections: [
       {
         title: 'A card-first way to arrange work',
-        body: 'Work becomes modular blocks you can rearrange, rather than sections you have to format. The card concept made the very first interaction *productive*, drop your pieces in, and the layout already looks intentional.',
+        body: 'The blank page is intimidating because it asks for layout before content.\nSo folio flips the order: your work goes in as modular cards, and the arrangement is already handled.\n\nDrop your pieces in and the page looks intentional before you’ve touched a single setting. The first interaction produces something you’d actually keep, which is the only thing that gets a nervous first-timer to a second click.',
         video: '/projects/folio-concept.mp4',
-        imageCaption: 'Card concept, arranging work as modular, rearrangeable blocks.',
+        imageCaption: 'Card concept: arranging work as modular, rearrangeable blocks.',
       },
       {
         title: 'One system, two views',
-        body: 'The same content reflows between a website and an app layout, so a portfolio built once reads well everywhere. Designing the responsive system up front is what let the flow stay simple: you make decisions about *work*, not about breakpoints.',
+        body: 'A portfolio isn’t one artifact anymore. It’s a website and a phone.\n\nSo the same content reflows between a site layout and an app layout, decided up front so the flow could stay simple. You make choices about *your work*, never about breakpoints. Build it once, and it reads well everywhere it lands.',
         image: '/projects/folio-mobile.jpg',
         imageCaption: 'The responsive layout reflows the same content between website and app.',
       },
@@ -244,7 +244,7 @@ export const projects: Project[] = [
     reflection: [
       {
         title: 'Momentum is a feature',
-        body: 'The most valuable thing folio gives isn’t a template, it’s permission to start. Designing the first ten minutes did more for the experience than any amount of customisation would have.',
+        body: 'The most valuable thing folio gives you isn’t a template.\nIt’s permission to start.\n\nDesigning the first ten minutes did more for the experience than any amount of customisation would have.',
       },
     ],
     sectionLabels: {
