@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BG, FG, ACCENT } from '@/lib/theme'
+import { BG, FG, FONT_DISPLAY } from '@/lib/theme'
 
 // Minimal loading animation: a percent counter runs up, then the panel
 // wipes away to reveal the page.
@@ -53,14 +53,14 @@ export default function Loader() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             style={{
-              fontFamily: 'var(--font-manrope), Manrope, sans-serif',
-              fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+              fontFamily: FONT_DISPLAY,
+              fontSize: 'clamp(1.1rem, 2vw, 1.5rem)',
               fontWeight: 500,
-              letterSpacing: '-0.02em',
+              letterSpacing: '-0.01em',
               color: FG,
             }}
           >
-            Audrey Leo<span style={{ color: ACCENT }}>.</span>
+            Audrey Leo
           </motion.span>
 
           <span

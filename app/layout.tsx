@@ -1,13 +1,22 @@
 import type { Metadata } from 'next'
-import { Manrope } from 'next/font/google'
+import { Manrope, Fraunces } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import ClientProviders from '@/components/ClientProviders'
 
 const manrope = Manrope({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
+  weight: ['300', '400', '500', '600', '700'],
   variable: '--font-manrope',
+  display: 'swap',
+})
+
+// Editorial serif display (stands in for Exposure / New Spirit)
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
   display: 'swap',
 })
 
@@ -33,14 +42,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={manrope.variable}>
+    <html lang="en" className={`${manrope.variable} ${fraunces.variable}`}>
       <body
         className="antialiased"
         style={{
           cursor: 'none',
           fontFamily: 'var(--font-manrope), Manrope, system-ui, sans-serif',
-          background: '#fafafa',
-          color: '#2b2b2b',
+          background: '#f6f5f2',
+          color: '#1c1c1c',
         }}
       >
         <ClientProviders>{children}</ClientProviders>

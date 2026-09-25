@@ -2,18 +2,27 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useIsMobile } from '@/lib/useIsMobile'
-import { ACCENT, FONT_DISPLAY } from '@/lib/theme'
+import { FG, MUTED_LIGHT, FONT_DISPLAY, FONT_BODY } from '@/lib/theme'
 
 const links = [
-  { label: 'Work', href: '/#works' },
-  { label: 'About', href: '/about' },
-  { label: 'Garden', href: '/garden' },
-  { label: 'LinkedIn', href: 'https://linkedin.com/in/audrey17leo', external: true },
+  { label: 'work', href: '/#works' },
+  { label: 'about', href: '/about' },
+  { label: 'garden', href: '/garden' },
 ]
 
 export default function Navbar() {
   const pathname = usePathname()
   const isMobile = useIsMobile()
+
+  const linkStyle = (active: boolean): React.CSSProperties => ({
+    fontFamily: FONT_BODY,
+    fontSize: '0.98rem',
+    fontWeight: 400,
+    color: active ? FG : MUTED_LIGHT,
+    textDecoration: 'none',
+    whiteSpace: 'nowrap',
+    transition: 'color 0.2s',
+  })
 
   return (
     <div
@@ -24,46 +33,35 @@ export default function Navbar() {
         right: 0,
         zIndex: 100,
         display: 'flex',
-        alignItems: 'center',
+        alignItems: 'baseline',
         justifyContent: 'space-between',
-        padding: isMobile ? '18px 24px' : '26px clamp(32px, 6vw, 96px)',
-        mixBlendMode: 'difference',
+        padding: isMobile ? '20px 24px' : '28px clamp(32px, 6vw, 88px)',
+        background: 'linear-gradient(#f6f5f2 55%, rgba(246,245,242,0))',
       }}
     >
-      {/* Left — wordmark */}
-      <Link href="/" data-cursor="explore" style={{ textDecoration: 'none' }}>
-        <span style={{ fontFamily: FONT_DISPLAY, fontSize: '1.05rem', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em' }}>
-          Audrey Leo<span style={{ color: ACCENT }}>.</span>
+      {/* Left — serif wordmark */}
+      <Link href="/" data-cursor="explore" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+        <span aria-hidden style={{ fontFamily: FONT_BODY, fontSize: '0.9rem', color: FG }}>✳</span>
+        <span style={{ fontFamily: FONT_DISPLAY, fontSize: '1.15rem', fontWeight: 500, color: FG, letterSpacing: '-0.01em' }}>
+          Audrey
         </span>
       </Link>
 
-      {/* Right — text links */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 16 : 28 }}>
+      {/* Right — lowercase links */}
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: isMobile ? 16 : 28 }}>
         {links.map((l) => {
           const active =
             (l.href === '/#works' && pathname.startsWith('/works')) ||
-            (!l.external && l.href !== '/#works' && pathname === l.href)
+            (l.href !== '/#works' && pathname === l.href)
           return (
-            <Link
-              key={l.label}
-              href={l.href}
-              target={l.external ? '_blank' : undefined}
-              rel={l.external ? 'noopener noreferrer' : undefined}
-              data-cursor="explore"
-              style={{
-                fontSize: '0.82rem',
-                fontWeight: active ? 700 : 500,
-                letterSpacing: '-0.01em',
-                color: '#fff',
-                opacity: active ? 1 : 0.7,
-                textDecoration: 'none',
-                whiteSpace: 'nowrap',
-              }}
-            >
+            <Link key={l.label} href={l.href} data-cursor="explore" style={linkStyle(active)}>
               {l.label}
             </Link>
           )
         })}
+        <span style={{ color: MUTED_LIGHT }}>·</span>
+        <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" data-cursor="explore" style={linkStyle(false)}>resume</a>
+        <a href="https://linkedin.com/in/audrey17leo" target="_blank" rel="noopener noreferrer" data-cursor="explore" style={linkStyle(false)}>linkedin</a>
       </div>
     </div>
   )

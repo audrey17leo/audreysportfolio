@@ -1,31 +1,32 @@
-// Design system — Manrope, minimal neutral base with a hot-pink accent
-// (the design language of ruocanpeng.com, applied to Audrey's own content).
+// Design language of ruocanpeng.com, applied to Audrey's own content:
+// editorial SERIF headline (Exposure/New Spirit → Fraunces stand-in) + Manrope UI,
+// warm neutral palette, restrained accents. Project imagery carries the colour.
 
-export const BG = '#fafafa'            // page background
-export const FG = '#2b2b2b'            // primary text
+export const BG = '#f6f5f2'            // warm off-white page
+export const FG = '#1c1c1c'            // near-black text
 export const CARD = '#ffffff'          // card surfaces
-export const MIST = '#f0f0f0'          // secondary fills
-export const HAIRLINE = 'hsl(0 0% 88%)'// borders / dividers
-export const MUTED = 'hsl(0 0% 45%)'   // secondary text
-export const MUTED_LIGHT = 'hsl(0 0% 62%)' // tertiary / labels
+export const MIST = '#eeece7'          // secondary fills / pills
+export const HAIRLINE = '#e6e3dd'      // borders / dividers
+export const MUTED = '#8b8b86'         // secondary text (sublines)
+export const MUTED_LIGHT = '#b4b2ac'   // tertiary / inactive nav
 
-// Accent — hot pink is the single functional accent.
-export const ACCENT = '#FF0050'
-export const ACCENT_SOFT = '#ffe3ee'
+// Restrained accents — mostly monochrome; one warm tag colour like hers.
+export const ACCENT = '#1c1c1c'        // links, active nav (monochrome)
+export const TAG_GOLD = '#a9762f'      // occasional warm tag ("Circle Status")
 
-// Legacy token aliases (kept so components that imported these still cascade
-// to the current palette without per-file edits).
-export const GREEN = ACCENT            // status dots → accent
-export const HIGHLIGHT = ACCENT_SOFT   // marker highlight → soft pink
-export const FOREST = ACCENT
-export const EMBER = ACCENT
+// Legacy aliases so older component imports keep cascading cleanly.
+export const GREEN = MUTED
+export const HIGHLIGHT = MIST
+export const FOREST = MUTED
+export const EMBER = TAG_GOLD
+export const ACCENT_SOFT = MIST
 
-// Fonts — everything is Manrope (display, body, and tracked labels).
-export const FONT_DISPLAY = 'var(--font-manrope), Manrope, system-ui, sans-serif'
-export const FONT_BODY = 'var(--font-manrope), Manrope, system-ui, sans-serif'
-export const FONT_MONO = 'var(--font-manrope), Manrope, system-ui, sans-serif'
+// Fonts — Fraunces (serif display) + Manrope (UI/body).
+export const FONT_DISPLAY = 'var(--font-serif), Fraunces, ui-serif, Georgia, "Times New Roman", serif'
+export const FONT_BODY = 'var(--font-manrope), Manrope, ui-sans-serif, system-ui, sans-serif'
+export const FONT_MONO = 'var(--font-manrope), Manrope, ui-sans-serif, system-ui, sans-serif'
 
-// Radii
+// Radii — her cards are gently rounded
 export const R_BUTTON = 8
-export const R_CARD = 14
+export const R_CARD = 10
 export const R_PILL = 999
