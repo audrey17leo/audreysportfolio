@@ -55,11 +55,11 @@ export default function CaseStudyPage({ params }: Props) {
 
   const h2Style: React.CSSProperties = {
     fontFamily: FONT_DISPLAY,
-    fontWeight: 600,
-    fontSize: 'clamp(1.5rem, 2.8vw, 2.2rem)',
+    fontWeight: 300,
+    fontSize: 'clamp(1.5rem, 2.4vw, 2.25rem)',
     color: FG,
-    letterSpacing: '-0.03em',
-    lineHeight: 1.2,
+    letterSpacing: '-0.02em',
+    lineHeight: 1.17,
     margin: '0 0 28px',
   }
   const bodyStyle: React.CSSProperties = {
@@ -86,11 +86,11 @@ export default function CaseStudyPage({ params }: Props) {
           <Reveal delay={0.06}>
             <h1 style={{
               fontFamily: FONT_DISPLAY,
-              fontWeight: 600,
-              fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
+              fontWeight: 300,
+              fontSize: 'clamp(2rem, 4vw, 3rem)',
               color: FG,
-              letterSpacing: '-0.04em',
-              lineHeight: 1.05,
+              letterSpacing: '-0.02em',
+              lineHeight: 1.08,
               margin: '0 0 28px',
               maxWidth: 15 + 'ch',
             }}>
@@ -178,7 +178,7 @@ export default function CaseStudyPage({ params }: Props) {
             {project.processSections.map((section, i) => (
               <Reveal key={i} y={32}>
                 <div style={{ maxWidth: NARROW - 40, margin: '0 auto' }}>
-                  <h3 style={{ fontFamily: FONT_DISPLAY, fontWeight: 600, fontSize: '1.15rem', color: FG, letterSpacing: '-0.02em', margin: '0 0 16px' }}>
+                  <h3 style={{ fontFamily: FONT_DISPLAY, fontWeight: 500, fontSize: '1.15rem', color: FG, letterSpacing: '-0.01em', margin: '0 0 16px' }}>
                     {section.title}
                   </h3>
                   <p style={{ ...bodyStyle, fontSize: '1rem', margin: section.image || section.video ? '0 0 32px' : '0' }}>
@@ -249,7 +249,7 @@ export default function CaseStudyPage({ params }: Props) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
               {project.reflection.map((item, i) => (
                 <Reveal key={i} delay={i * 0.05}>
-                  <h3 style={{ fontFamily: FONT_DISPLAY, fontWeight: 600, fontSize: '1.1rem', color: FG, letterSpacing: '-0.02em', margin: '0 0 12px' }}>
+                  <h3 style={{ fontFamily: FONT_DISPLAY, fontWeight: 500, fontSize: '1.1rem', color: FG, letterSpacing: '-0.01em', margin: '0 0 12px' }}>
                     {item.title}
                   </h3>
                   <p style={{ ...bodyStyle, fontSize: '1rem' }}>{item.body}</p>
@@ -265,7 +265,7 @@ export default function CaseStudyPage({ params }: Props) {
             <Reveal><Label text="SOURCE CODE" /></Reveal>
             <Reveal delay={0.06}>
               <a href={project.sourceCode.url} target="_blank" rel="noopener noreferrer" data-cursor="explore" style={{
-                fontFamily: FONT_DISPLAY, fontSize: 'clamp(1.4rem, 2.6vw, 2rem)', fontWeight: 600, color: FG,
+                fontFamily: FONT_DISPLAY, fontSize: 'clamp(1.4rem, 2.6vw, 2rem)', fontWeight: 300, color: FG,
                 letterSpacing: '-0.02em', lineHeight: 1.3, textDecoration: 'none', borderBottom: `1px solid ${ACCENT}`, paddingBottom: 3, display: 'inline-block',
               }}>
                 {project.sourceCode.label} <span style={{ color: ACCENT }}>↗</span>

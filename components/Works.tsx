@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { projects as realProjects } from '@/lib/projects'
 import { useIsMobile } from '@/lib/useIsMobile'
 import { reveal, staggerContainer, once, stellaEase } from '@/lib/stellaMotion'
-import { FG, MUTED, MUTED_LIGHT, HAIRLINE, CARD, BG, FONT_BODY } from '@/lib/theme'
+import { FG, MUTED, HAIRLINE, CARD, BG, FONT_BODY } from '@/lib/theme'
 
 const displayProjects = realProjects
   .filter(p => p.slug !== 'batik')
@@ -59,7 +59,7 @@ function ProjectCard({ project }: { project: DisplayProject }) {
             width: '100%',
             aspectRatio: '16 / 10',
             background: project.bg,
-            borderRadius: 4,
+            borderRadius: 20,
             overflow: 'hidden',
             border: `1px solid ${HAIRLINE}`,
           }}
@@ -82,63 +82,40 @@ function ProjectCard({ project }: { project: DisplayProject }) {
               }} />
           ) : null}
 
-          {/* hover overlay — backdrop blur wash */}
+          {/* see project — appears on hover, vertically centered / left */}
           <div
             style={{
               position: 'absolute', inset: 0,
-              background: `${BG}59`,
-              backdropFilter: hovered ? 'blur(6px)' : 'blur(0px)',
-              WebkitBackdropFilter: hovered ? 'blur(6px)' : 'blur(0px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
+              paddingLeft: 'clamp(16px, 3vw, 40px)',
               opacity: hovered ? 1 : 0,
-              transition: 'opacity 0.4s, backdrop-filter 0.4s',
-              pointerEvents: 'none',
-            }}
-          />
-
-          {/* hover content — see project (top) + description (center), fade in */}
-          <div
-            style={{
-              position: 'absolute', inset: 0,
-              padding: 'clamp(16px, 2vw, 24px)',
-              display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
-              opacity: hovered ? 1 : 0,
-              transform: hovered ? 'translateY(0)' : 'translateY(6px)',
-              transition: 'opacity 0.35s, transform 0.35s',
+              transition: 'opacity 0.3s',
               pointerEvents: 'none',
             }}
           >
             <span
               style={{
-                alignSelf: 'flex-start',
                 fontFamily: FONT_BODY, fontSize: 14, fontWeight: 500, color: FG,
-                background: CARD, padding: '7px 13px', borderRadius: 999,
+                background: BG, padding: '9px 16px', borderRadius: 9999,
                 display: 'inline-flex', alignItems: 'center', gap: 6,
                 border: `1px solid ${HAIRLINE}`,
+                boxShadow: 'rgba(0,0,0,0.04) 0px 1px 1px 0px, rgba(0,0,0,0.04) 0px 2px 4px 0px',
               }}
             >
-              see project <span aria-hidden>↗</span>
+              see project
             </span>
-            <p
-              style={{
-                fontFamily: FONT_BODY, fontSize: 'clamp(0.9rem, 1vw, 1rem)', lineHeight: 1.5,
-                color: FG, margin: 0, maxWidth: '42ch', fontWeight: 400,
-              }}
-            >
-              {project.description}
-            </p>
           </div>
 
-          {/* tags — bottom-left, always visible */}
-          <div style={{ position: 'absolute', left: 'clamp(12px,1.5vw,16px)', bottom: 'clamp(12px,1.5vw,16px)', display: 'flex', flexWrap: 'wrap', gap: 8, maxWidth: 'calc(100% - 32px)', opacity: hovered ? 0 : 1, transition: 'opacity 0.3s' }}>
+          {/* tags — appear on hover, bottom-left (these are the description) */}
+          <div style={{ position: 'absolute', left: 'clamp(12px,1.5vw,16px)', bottom: 'clamp(12px,1.5vw,16px)', display: 'flex', flexWrap: 'wrap', gap: 8, maxWidth: 'calc(100% - 32px)', opacity: hovered ? 1 : 0, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
             {project.tags.slice(0, 3).map((t) => (
               <span
                 key={t}
                 style={{
                   fontFamily: FONT_BODY, fontSize: 14, fontWeight: 500, color: FG,
-                  background: 'rgba(255,255,255,0.9)',
-                  backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
+                  background: BG,
                   border: `1px solid ${HAIRLINE}`,
-                  padding: '4px 12px', borderRadius: 999,
+                  padding: '5px 13px', borderRadius: 9999,
                   textTransform: 'lowercase', lineHeight: '20px',
                 }}
               >
@@ -148,12 +125,6 @@ function ProjectCard({ project }: { project: DisplayProject }) {
           </div>
         </div>
       </Link>
-
-      {/* caption row */}
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, padding: '0 2px' }}>
-        <span style={{ fontFamily: FONT_BODY, fontSize: 16, fontWeight: 500, color: FG, letterSpacing: '-0.01em' }}>{project.title}</span>
-        {project.year && <span style={{ fontFamily: FONT_BODY, fontSize: 14, color: MUTED_LIGHT }}>{project.year}</span>}
-      </div>
     </motion.div>
   )
 }

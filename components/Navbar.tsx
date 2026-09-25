@@ -43,8 +43,8 @@ export default function Navbar() {
       {/* Left — serif wordmark */}
       <Link href="/" data-cursor="explore" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
         <span aria-hidden style={{ fontFamily: FONT_BODY, fontSize: '0.9rem', color: FG }}>✳</span>
-        <span style={{ fontFamily: FONT_DISPLAY, fontSize: '1.15rem', fontWeight: 500, color: FG, letterSpacing: '-0.01em' }}>
-          Audrey
+        <span style={{ fontFamily: FONT_DISPLAY, fontSize: '1.05rem', fontWeight: 600, color: FG, letterSpacing: '-0.02em' }}>
+          Audrey Leo
         </span>
       </Link>
 

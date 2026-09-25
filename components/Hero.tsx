@@ -1,7 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import { reveal, staggerContainer, stellaEase } from '@/lib/stellaMotion'
-import { MUTED, HAIRLINE, ACCENT, FONT_DISPLAY, FONT_BODY } from '@/lib/theme'
+import { FG, MUTED, HAIRLINE, ACCENT, FONT_DISPLAY, FONT_BODY } from '@/lib/theme'
 import { useIsMobile } from '@/lib/useIsMobile'
 
 // Exact link hover from ruocanpeng: muted → #FF0050
@@ -68,11 +68,11 @@ export default function Hero() {
             transition={{ duration: 0.7, ease: stellaEase }}
             style={{
               fontFamily: FONT_DISPLAY,
-              fontWeight: 600,
-              fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', // → 32px desktop
-              lineHeight: 1.2,
-              letterSpacing: '-0.055em',
-              color: 'rgba(43,43,43,0.92)',
+              fontWeight: 300, // whisper-weight (ElevenLabs signature)
+              fontSize: 'clamp(1.6rem, 2.5vw, 2rem)', // → 32px desktop (ruocan sizing)
+              lineHeight: 1.13,
+              letterSpacing: '-0.02em',
+              color: FG,
               margin: 0,
             }}
           >

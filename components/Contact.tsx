@@ -1,7 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import { reveal, staggerContainer, flipUp, once, stellaEase } from '@/lib/stellaMotion'
-import { FG, GREEN, HIGHLIGHT, MUTED, MUTED_LIGHT, HAIRLINE, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
+import { FG, GREEN, MUTED, MUTED_LIGHT, HAIRLINE, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
 import { useIsMobile } from '@/lib/useIsMobile'
 import { useMagnetic } from '@/lib/useMagnetic'
 
@@ -41,13 +41,13 @@ export default function Contact() {
         </motion.div>
 
         {/* Big statement */}
-        <h2 style={{ fontFamily: FONT_DISPLAY, margin: 0, fontWeight: 600, fontSize: 'clamp(2.2rem, 6vw, 5rem)', letterSpacing: '-0.045em', lineHeight: 1.02, color: FG, perspective: 800 }}>
+        <h2 style={{ fontFamily: FONT_DISPLAY, margin: 0, fontWeight: 300, fontSize: 'clamp(1.9rem, 4.5vw, 3rem)', letterSpacing: '-0.02em', lineHeight: 1.08, color: FG, perspective: 800 }}>
           <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.08em' }}>
             <motion.span variants={flipUp} style={{ display: 'block', transformOrigin: 'bottom' }}>Let&apos;s make something</motion.span>
           </span>
           <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.08em' }}>
             <motion.span variants={flipUp} transition={{ duration: 0.75, ease: stellaEase, delay: 0.08 }} style={{ display: 'block', transformOrigin: 'bottom' }}>
-              people <span style={{ background: HIGHLIGHT, borderRadius: 8, padding: '0 12px', boxDecorationBreak: 'clone', WebkitBoxDecorationBreak: 'clone' }}>love.</span>
+              people love.
             </motion.span>
           </span>
         </h2>

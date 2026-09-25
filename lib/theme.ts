@@ -1,32 +1,37 @@
-// Design language of ruocanpeng.com, applied to Audrey's own content:
-// editorial SERIF headline (Exposure/New Spirit → Fraunces stand-in) + Manrope UI,
-// warm neutral palette, restrained accents. Project imagery carries the colour.
+// Style: ElevenLabs design language (DESIGN.md) — warm eggshell, whisper-weight
+// Inter-300 headlines, 97% achromatic, violet/orange only inside product visuals.
+// Layout & sizing: ruocanpeng (compact hero, 2-col cards, hover reveal).
 
-export const BG = '#f6f5f2'            // warm off-white page
-export const FG = '#1c1c1c'            // near-black text
-export const CARD = '#ffffff'          // card surfaces
-export const MIST = '#eeece7'          // secondary fills / pills
-export const HAIRLINE = '#e6e3dd'      // borders / dividers
-export const MUTED = '#8b8b86'         // secondary text (sublines)
-export const MUTED_LIGHT = '#b4b2ac'   // tertiary / inactive nav
+export const BG = '#fdfcfc'            // eggshell canvas (never pure white)
+export const FG = '#000000'            // ink — primary text
+export const GRAPHITE = '#44403b'      // strong secondary text / labels
+export const MUTED = '#777169'         // smoke — body / muted descriptions
+export const MUTED_LIGHT = '#a59f97'   // ash — faint helper / caption
+export const CARD = '#f5f3f1'          // warm taupe — card/section surface
+export const MIST = '#f5f3f1'          // taupe alias
+export const STONE = '#ebe8e4'         // stone — hairline / icon plate
+export const HAIRLINE = '#ebe8e4'      // hairline border
+export const BTN_BORDER = '#e5e5e5'    // button border (legacy support)
 
-// Restrained accents — mostly monochrome; one warm tag colour like hers.
-export const ACCENT = '#1c1c1c'        // links, active nav (monochrome)
-export const TAG_GOLD = '#a9762f'      // occasional warm tag ("Circle Status")
+// UI accent is monochrome ink. Colour is decoration-only (product visuals).
+export const ACCENT = '#000000'
+export const ACCENT_SOFT = '#f5f3f1'
+export const VIOLET = '#0447ff'        // product-visual spark ONLY (not UI)
+export const ORANGE = '#ff4704'        // product-visual spark ONLY (not UI)
 
-// Legacy aliases so older component imports keep cascading cleanly.
+// Legacy aliases so existing imports keep resolving to the new palette.
 export const GREEN = MUTED
 export const HIGHLIGHT = MIST
-export const FOREST = MUTED
-export const EMBER = TAG_GOLD
-export const ACCENT_SOFT = MIST
+export const FOREST = VIOLET
+export const EMBER = ORANGE
+export const TAG_GOLD = GRAPHITE
 
-// Fonts — Fraunces (serif display) + Manrope (UI/body).
-export const FONT_DISPLAY = 'var(--font-serif), Fraunces, ui-serif, Georgia, "Times New Roman", serif'
-export const FONT_BODY = 'var(--font-manrope), Manrope, ui-sans-serif, system-ui, sans-serif'
-export const FONT_MONO = 'var(--font-manrope), Manrope, ui-sans-serif, system-ui, sans-serif'
+// Fonts — Inter everywhere (Waldenburg → Inter 300 for display), Geist Mono for micro-labels.
+export const FONT_DISPLAY = 'var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif'
+export const FONT_BODY = 'var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif'
+export const FONT_MONO = 'var(--font-geist-mono), "Geist Mono", ui-monospace, monospace'
 
-// Radii — her cards are gently rounded
-export const R_BUTTON = 8
-export const R_CARD = 10
-export const R_PILL = 999
+// Radii — pills + generous card radii
+export const R_BUTTON = 9999
+export const R_CARD = 20
+export const R_PILL = 9999

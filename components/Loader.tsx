@@ -54,8 +54,8 @@ export default function Loader() {
             transition={{ duration: 0.5 }}
             style={{
               fontFamily: FONT_DISPLAY,
-              fontSize: 'clamp(1.1rem, 2vw, 1.5rem)',
-              fontWeight: 500,
+              fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
+              fontWeight: 400,
               letterSpacing: '-0.01em',
               color: FG,
             }}
@@ -67,8 +67,8 @@ export default function Loader() {
             style={{
               fontFamily: 'var(--font-manrope), Manrope, sans-serif',
               fontSize: 'clamp(3.5rem, 14vw, 11rem)',
-              fontWeight: 600,
-              letterSpacing: '-0.05em',
+              fontWeight: 300,
+              letterSpacing: '-0.04em',
               lineHeight: 0.85,
               color: FG,
               fontVariantNumeric: 'tabular-nums',
