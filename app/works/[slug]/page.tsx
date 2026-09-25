@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import AutoPlayVideo from '@/components/AutoPlayVideo'
 import Reveal from '@/components/Reveal'
+import EvolutionScroll from '@/components/EvolutionScroll'
 import { projects, getProject, type ProcessSection } from '@/lib/projects'
 import { sfPro } from '@/lib/fonts'
 import { FG, GRAPHITE, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, CARD, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
@@ -118,9 +119,16 @@ export default function CaseStudyPage({ params }: Props) {
               </Reveal>
               <Reveal delay={0.1}><p style={{ ...body, maxWidth: 460 }}>{project.subtitleParagraph}</p></Reveal>
               <Reveal delay={0.15}>
-                <a href="#final" data-cursor="explore" style={{ display: 'inline-block', marginTop: 26, fontFamily: FONT_MONO, fontSize: 13, color: FG, textDecoration: 'none', letterSpacing: '0.04em', borderBottom: `1px solid ${HAIRLINE}`, paddingBottom: 3 }}>
-                  Skip to the work <span style={{ color: ACCENT }}>↓</span>
-                </a>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 22px', marginTop: 26, alignItems: 'center' }}>
+                  <a href="#final" data-cursor="explore" style={{ display: 'inline-block', fontFamily: FONT_MONO, fontSize: 13, color: FG, textDecoration: 'none', letterSpacing: '0.04em', borderBottom: `1px solid ${HAIRLINE}`, paddingBottom: 3 }}>
+                    Skip to the work <span style={{ color: ACCENT }}>↓</span>
+                  </a>
+                  {project.liveUrl && (
+                    <a href={project.liveUrl.url} target="_blank" rel="noopener noreferrer" data-cursor="explore" style={{ display: 'inline-block', fontFamily: FONT_MONO, fontSize: 13, color: FG, textDecoration: 'none', letterSpacing: '0.04em', borderBottom: `1px solid ${ACCENT}`, paddingBottom: 3 }}>
+                      Live → {project.liveUrl.label} <span style={{ color: ACCENT }}>↗</span>
+                    </a>
+                  )}
+                </div>
               </Reveal>
             </div>
             <Reveal delay={0.1}><Visual src={project.showcaseImages[0]} /></Reveal>
@@ -175,6 +183,13 @@ export default function CaseStudyPage({ params }: Props) {
             </div>
           )
         })}
+
+        {/* ── INTERACTIVE 8-WEEK EVOLUTION (tldraw flash only) ── */}
+        {project.slug === 'tldraw-flash' && (
+          <div style={{ padding: `${beatPad} 0 0` }}>
+            <EvolutionScroll />
+          </div>
+        )}
 
         {/* ── FINAL ── */}
         {project.finalImages.length > 0 && (

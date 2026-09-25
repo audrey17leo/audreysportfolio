@@ -45,6 +45,7 @@ export type Project = {
   reflectionHeading: string
   reflection: ReflectionItem[]
   sourceCode?: { url: string; label: string }
+  liveUrl?: { url: string; label: string }
   sectionLabels?: {
     problemSpace?: string
     concept?: string
@@ -69,6 +70,7 @@ export const projects: Project[] = [
     year: '2025 — Ongoing',
     scope: 'Product & Interaction Design\nR&D Exploration',
     role: 'Solo. Concept, interaction model, competitive research, and prototype.',
+    liveUrl: { url: 'https://tldrawflash.com', label: 'tldrawflash.com' },
     showcaseImages: ['/projects/tldraw-demo.jpg'],
 
     problemSpaceHeading: 'Animation software asks you to describe motion. Nobody moves that way.',
