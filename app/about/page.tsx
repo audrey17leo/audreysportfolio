@@ -88,12 +88,12 @@ function PhotoVideoCard() {
 
 const education = {
   school: 'University College London',
-  degree: 'BA Art & Technology — First Year',
+  degree: 'BA Art & Technology, First Year',
   grade: 'First Class Honours',
   date: 'Sept 2025 – Present',
   modules: ['Creative Computing', 'Machine Learning', 'Physical Computing', 'C++', 'Python', 'Blender', 'Figma'],
   subrole: 'Marketing Chief – Exhibitions',
-  subroleDesc: 'Manage all marketing materials for UCL East exhibitions — concept through to printed posters displayed on-site.',
+  subroleDesc: 'Manage all marketing materials for UCL East exhibitions, concept through to printed posters displayed on-site.',
 }
 
 const awards: { title: string; issuer: string; date: string; bullets: string[] }[] = [
@@ -102,7 +102,7 @@ const awards: { title: string; issuer: string; date: string; bullets: string[] }
     issuer: 'Canva UK',
     date: 'May 2026',
     bullets: [
-      'Built and shipped Link! — a mobile-first digital namecard for student networking using Canva Code in under 2 hours. Designed full front-end, animations and mockups; pitched live at Canva HQ, London.',
+      'Built and shipped Link!, a mobile-first digital namecard for student networking using Canva Code in under 2 hours. Designed full front-end, animations and mockups; pitched live at Canva HQ, London.',
       'Won first place among industry professionals as the only university student in attendance.',
     ],
   },
@@ -132,7 +132,7 @@ const experiences: {
     date: 'May 2026 – Present',
     location: 'London, UK',
     bullets: [
-      'Selected by Canva UK to represent the brand as a GenC Ambassador — part of a cohort of 34 in the UK — hosting live workshops at Canva\'s London HQ for student designers and creators.',
+      'Selected by Canva UK to represent the brand as a GenC Ambassador, part of a cohort of 34 in the UK, hosting live workshops at Canva\'s London HQ for student designers and creators.',
       'Collaborate with a global network of GenC Ambassadors to champion design education and AI-powered creative workflows across university communities.',
     ],
   },
@@ -179,7 +179,7 @@ const experiences: {
     date: 'Jun – Aug 2024',
     location: 'Jakarta, Indonesia',
     bullets: [
-      'Redesigned app layout in Figma using typography, colour, and composition principles — boosted user engagement by 15%.',
+      'Redesigned app layout in Figma using typography, colour, and composition principles, boosting user engagement by 15%.',
     ],
   },
   {
@@ -217,7 +217,7 @@ export default function AboutPage() {
       <Navbar />
       <main style={{ background: '#fafafa', minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
 
-        {/* Pastel purple nodes — decorative background */}
+        {/* Pastel purple nodes, decorative background */}
         <svg
           aria-hidden
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', userSelect: 'none' }}
@@ -229,7 +229,7 @@ export default function AboutPage() {
               <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
           </defs>
-          {/* scattered nodes — right side + corners */}
+          {/* scattered nodes, right side + corners */}
           <circle cx="78%"  cy="8%"  r="5"   fill="#D4C5E8" opacity="0.55" filter="url(#node-glow)"/>
           <circle cx="85%"  cy="18%" r="3.5" fill="#C0B0D8" opacity="0.45"/>
           <circle cx="72%"  cy="22%" r="2.5" fill="#E0D2F0" opacity="0.5"/>

@@ -43,7 +43,7 @@ export default function Hero() {
           gap: isMobile ? 22 : 44,
         }}
       >
-        {/* Portrait — 120×120 square, B&W */}
+        {/* Portrait, 120×120 square, B&W */}
         <motion.img
           variants={reveal}
           src="/AUDREYPHOTO.jpg"

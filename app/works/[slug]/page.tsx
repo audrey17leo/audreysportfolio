@@ -129,7 +129,7 @@ export default function CaseStudyPage({ params }: Props) {
       <Navbar />
       <main style={{ background: 'transparent', minHeight: '100vh' }}>
 
-        {/* ── HERO — text + showcase, side by side ── */}
+        {/* ── HERO, text + showcase, side by side ── */}
         <div className="cs-hero-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: '150px 40px 0' }}>
           <div className="cs-beat">
             <div>
@@ -171,7 +171,7 @@ export default function CaseStudyPage({ params }: Props) {
           </Reveal>
         </div>
 
-        {/* ── FRAMING — problem, then idea, read top-to-bottom ── */}
+        {/* ── FRAMING, problem, then idea, read top-to-bottom ── */}
         <div className="cs-pad" style={{ maxWidth: 720, margin: '0 auto', padding: `${beatPad} 40px 0` }}>
           <Reveal><TextBlock kicker={L.problemSpace ?? 'THE PROBLEM'} title={project.problemSpaceHeading} text={project.problemSpace} /></Reveal>
         </div>
@@ -185,7 +185,7 @@ export default function CaseStudyPage({ params }: Props) {
           <Reveal><TextBlock kicker={L.concept ?? 'THE IDEA'} title={project.conceptHeading} text={project.concept} /></Reveal>
         </div>
 
-        {/* ── PROCESS BEATS — alternating visual + text ── */}
+        {/* ── PROCESS BEATS, alternating visual + text ── */}
         {project.processSections.map((s, i) => {
           const hasVisual = !!(s.image || s.video)
           const visualFirst = i % 2 === 0

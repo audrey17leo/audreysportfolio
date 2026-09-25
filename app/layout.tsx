@@ -19,13 +19,13 @@ const geistMono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Audrey Leo — Product Designer & Creative Technologist',
+  title: 'Audrey Leo, Product Designer & Creative Technologist',
   description:
-    'Portfolio of Audrey Leo — product design, creative computing, and interactive media. Art & Technology at UCL.',
+    'Portfolio of Audrey Leo, product design, creative computing, and interactive media. Art & Technology at UCL.',
   openGraph: {
-    title: 'Audrey Leo — Product Designer & Creative Technologist',
+    title: 'Audrey Leo, Product Designer & Creative Technologist',
     description:
-      'Portfolio of Audrey Leo — product design, creative computing, and interactive media.',
+      'Portfolio of Audrey Leo, product design, creative computing, and interactive media.',
     type: 'website',
   },
   icons: [

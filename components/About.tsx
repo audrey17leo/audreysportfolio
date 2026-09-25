@@ -92,10 +92,10 @@ export default function About() {
           style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: '0 64px', alignItems: 'start' }}
         >
 
-          {/* Left — photo */}
+          {/* Left, photo */}
           <PhotoVideoCard />
 
-          {/* Right — bio */}
+          {/* Right, bio */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 24, paddingTop: 8 }}>
             <p style={{
               fontFamily: mono,
@@ -130,7 +130,7 @@ export default function About() {
               maxWidth: 480,
             }}>
               First-year Art &amp; Technology student at UCL Slade. I make things that beep, blink,
-              and make you feel something — using emerging tech as a medium for creative and emotional
+              and make you feel something, using emerging tech as a medium for creative and emotional
               work.
             </p>
 

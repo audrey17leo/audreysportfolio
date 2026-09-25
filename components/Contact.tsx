@@ -98,7 +98,7 @@ export default function Contact() {
         {/* Baseline */}
         <div style={{ marginTop: 'clamp(64px, 12vh, 130px)', paddingTop: 28, borderTop: `1px solid ${HAIRLINE}`, display: 'flex', flexDirection: isMobile ? 'column' : 'row', justifyContent: 'space-between', alignItems: isMobile ? 'flex-start' : 'center', gap: 12 }}>
           <span style={{ fontFamily: FONT_MONO, fontSize: '0.62rem', color: MUTED_LIGHT, letterSpacing: '0.03em', lineHeight: 1.6 }}>
-            © 2026 Audrey Leo — made with love, white chocolate matchas &amp; a concerning amount of green grapes.
+            © 2026 Audrey Leo, made with love, white chocolate matchas &amp; a concerning amount of green grapes.
           </span>
           <a href="#" data-cursor="explore" style={{ fontFamily: FONT_MONO, fontSize: '0.62rem', color: MUTED, letterSpacing: '0.06em', textTransform: 'uppercase', textDecoration: 'none' }}>
             Back to top ↑
