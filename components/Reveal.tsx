@@ -1,8 +1,9 @@
 'use client'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { stellaEase } from '@/lib/stellaMotion'
 
-// Reusable scroll reveal (Aditya micro-animation) usable inside server components.
+// Reusable scroll reveal usable inside server components.
+// Respects prefers-reduced-motion (renders visible, no animation).
 export default function Reveal({
   children,
   delay = 0,
@@ -18,7 +19,13 @@ export default function Reveal({
   style?: React.CSSProperties
   id?: string
 }) {
+  const reduce = useReducedMotion()
   const MotionTag = motion[as] as typeof motion.div
+
+  if (reduce) {
+    return <MotionTag id={id} style={style}>{children}</MotionTag>
+  }
+
   return (
     <MotionTag
       id={id}

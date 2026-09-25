@@ -6,6 +6,7 @@ export type ProcessSection = {
   image2?: string
   imageCaption2?: string
   video?: string
+  table?: { head: [string, string]; rows: [string, string][] }
 }
 
 export type ReflectionItem = {
@@ -85,7 +86,17 @@ export const projects: Project[] = [
       },
       {
         title: 'The loop — record, then layer one thing per pass',
-        body: 'Drag a ready-made character onto the canvas. Press record; a 3-second count-in plays. Drag the character across the stage — **that motion is the take.** Press play and it repeats, holding its last pose. Then record again, and again, adding exactly one channel each pass — a second character, a camera push, a spoken line — until the scene is full. It reads less like software and more like a puppet show you build up in takes.',
+        body: 'Drag a ready-made character onto the canvas. Press record; a 3-second count-in plays. Drag the character across the stage — **that motion is the take.** Press play and it repeats, holding its last pose. Then you build the scene up, **one channel per pass:**',
+        table: {
+          head: ['Pass', 'What you add'],
+          rows: [
+            ['1', 'A character’s walk — drag it across the stage'],
+            ['2', 'A second character, while the first plays back live'],
+            ['3', 'A camera move — drag the frame to pan, a corner to push in'],
+            ['4', 'A voice-over, spoken onto the shared clock'],
+            ['5', 'Expressions & gestures — tap “happy”, tap “wave”'],
+          ],
+        },
         image: '/projects/tldraw-flow.png',
         imageCaption: 'V1 flow — the record→layer loop, the punch-in edit model, and the filmstrip structure.',
       },

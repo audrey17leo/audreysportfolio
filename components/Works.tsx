@@ -82,27 +82,25 @@ function ProjectCard({ project }: { project: DisplayProject }) {
               }} />
           ) : null}
 
-          {/* see project — appears on hover, vertically centered / left */}
+          {/* see project — appears on hover, centered */}
           <div
             style={{
               position: 'absolute', inset: 0,
-              display: 'flex', alignItems: 'center', justifyContent: 'flex-start',
-              paddingLeft: 'clamp(16px, 3vw, 40px)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
               opacity: hovered ? 1 : 0,
-              transition: 'opacity 0.3s',
+              transform: hovered ? 'scale(1)' : 'scale(0.96)',
+              transition: 'opacity 0.28s, transform 0.28s',
               pointerEvents: 'none',
             }}
           >
             <span
               style={{
-                fontFamily: FONT_BODY, fontSize: 14, fontWeight: 500, color: FG,
-                background: BG, padding: '9px 16px', borderRadius: 9999,
-                display: 'inline-flex', alignItems: 'center', gap: 6,
-                border: `1px solid ${HAIRLINE}`,
-                boxShadow: 'rgba(0,0,0,0.04) 0px 1px 1px 0px, rgba(0,0,0,0.04) 0px 2px 4px 0px',
+                fontFamily: FONT_BODY, fontSize: 14, fontWeight: 500, color: '#fdfcfc',
+                background: FG, padding: '10px 18px', borderRadius: 9999,
+                display: 'inline-flex', alignItems: 'center', gap: 7,
               }}
             >
-              see project
+              see project <span aria-hidden>→</span>
             </span>
           </div>
 

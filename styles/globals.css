@@ -31,7 +31,15 @@ html {
 
 .cursor-blink { animation: blink 1s step-end infinite; }
 
-/* ── Case study page (server component) — mobile overrides ── */
+/* ── Case study page (server component) ── */
+/* Compact two-column "beat": visual + explanation side by side */
+.cs-beat {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(32px, 5vw, 72px);
+}
+
 @media (max-width: 767px) {
   .cs-hero-pad {
     padding-top: 100px !important;
@@ -46,6 +54,12 @@ html {
 
   .cs-grid-2 {
     grid-template-columns: 1fr !important;
+  }
+
+  .cs-beat {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+    align-items: start !important;
   }
 
   .cs-footer-flex {
