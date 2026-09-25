@@ -1,5 +1,3 @@
-const F = (id: string) => `https://framerusercontent.com/images/${id}`
-
 export type ProcessSection = {
   title: string
   body: string
@@ -56,287 +54,194 @@ export type Project = {
 }
 
 export const projects: Project[] = [
-  // ── IMPERMANENCE ────────────────────────────────────────────────────────────
+  // ── TLDRAW FLASH ──────────────────────────────────────────────────────────
   {
-    slug: 'impermanence',
-    title: 'Impermanence',
-    subtitle: 'A p5.js + Arduino installation that translates light into living memory — where darkness makes things bloom.',
-    tags: ['CREATIVE COMPUTING', 'INTERACTIVE INSTALLATION'],
-    bg: '#D8DDD8',
-    heroImage: F('GMNzAMSCYtZXRzaB7bg0DFxz08.gif'),
+    slug: 'tldraw-flash',
+    title: 'tldraw flash',
+    subtitle: 'A canvas-native animation tool where you perform motion instead of keyframing it — record, layer one thing per pass, punch-in to fix.',
+    tags: ['Product Design', 'Interaction', 'Ongoing'],
+    bg: '#dfe8fb',
+    heroImage: '/projects/tldraw-demo.jpg',
 
-    h1: 'A p5.js installation that turns darkness into living memory',
-    subtitleParagraph: 'Impermanence is a browser-based installation controlled by an Arduino photoresistor. When the room darkens, coloured particles bloom and pentatonic notes emerge, as if memory is surfacing. When light returns, everything dissolves.',
-    year: '2024',
-    scope: 'Creative Computing\nInteractive Installation',
-    role: 'Solo. Concept, circuit design, p5.js code, and sound system.',
-    showcaseImages: [
-      F('GMNzAMSCYtZXRzaB7bg0DFxz08.gif'),
-    ],
+    h1: 'An animation tool where the motion is the take',
+    subtitleParagraph: 'tldraw flash turns the infinite canvas into a stage. Instead of setting keyframes, you drag a drawing across the screen and that performance becomes the animation — then you layer the scene one thing at a time. An ongoing R&D exploration built on tldraw.',
+    year: '2025 — Ongoing',
+    scope: 'Product & Interaction Design\nR&D Exploration',
+    role: 'Solo. Concept, interaction model, competitive research, and prototype.',
+    showcaseImages: ['/projects/tldraw-demo.jpg'],
 
-    problemSpaceHeading: 'Memory is not stored. It is performed — and it needs the right conditions.',
-    problemSpace: 'We forget not because we choose to, but because the conditions for remembering stop existing. A smell, a song, a sudden quiet — these are triggers, not choices. **Impermanence** builds that logic into hardware: a photoresistor sensor that releases colour and sound only when the room is dark. You cannot force it. You can only remove the light.',
+    problemSpaceHeading: 'Animation software asks you to describe motion. Nobody moves that way.',
+    problemSpace: 'Keyframes, easing curves, dope sheets — every serious 2D tool front-loads the hardest concept in the craft. I studied the whole shelf: After Effects’ puppet tool, Procreate Dreams, StickNodes, Pivot Animator, even the motion paths hiding inside Canva and Keynote. All powerful, all slow. The timeline is the first thing you meet and the last thing you master. For a canvas-native tool like tldraw, that felt exactly backwards. **So I stopped designing a timeline** and started designing a performance.',
 
-    conceptHeading: 'What if forgetting was just a problem of light?',
-    concept: 'An Arduino Uno reads ambient light continuously via a photoresistor voltage divider. When darkness drops below a set threshold, p5.js spawns coloured particles and activates pentatonic oscillators, and the room begins to remember. Sustained darkness triggers memory mode: particles glow brighter and resist decay. When light returns, everything dissolves. The audience does not interact. They inhabit.',
+    conceptHeading: 'The motion is the take.',
+    concept: 'tldraw flash records performance, not parameters. You drag a character across the canvas and that drag — its path, its speed — is the animation. Grab the torso and the whole puppet walks; grab a limb and it swings. You handle a drawing like a physical puppet. Then you build the scene in layers, **one thing per pass**: a second character while the first plays back live, a camera move, a voice-over on the shared clock, an expression you tap in at the right beat.',
 
     processSections: [
       {
-        title: 'Circuit Design',
-        body: 'The circuit uses a photoresistor in a voltage divider configuration wired to analog input A0 on an Arduino Uno. Values stream 0 (total dark) to 1023 (bright) over Web Serial API — no server, no latency. The darkness threshold was set at 300 after testing in the gallery space, where ambient light during opening hours hovered around 450.',
+        title: 'Research — mapping every way people already fake motion',
+        body: 'Before drawing a single screen I mapped how existing tools handle 2D motion, from professional (After Effects’ As-Rigid-As-Possible puppet deforms) to playful (Pivot’s stickman rig with joint + origin points) to incidental (the drag-a-path animation buried in Canva and PowerPoint). The pattern was clear: the tools people find *fun* hide the timeline; the tools people find *capable* expose it. tldraw flash had to be both — so the interaction, not the timeline, had to carry the model.',
+        image: '/projects/tldraw-wireframe.png',
+        imageCaption: 'Interaction research + early wireframing — Canva, Keynote, After Effects, StickNodes, Pivot, Procreate Dreams, and the mechanisms pulled from each.',
       },
       {
-        title: 'Visual System',
-        body: 'The visual logic was drawn directly from constellations: nodes of light connected by proximity, not by design. Twelve pastel colours, each assigned a unique pentatonic frequency, map to individual particle types. Particles exhibit emergent flocking behaviour, connecting via proximity-based lines when within 80px of each other. Extended darkness beyond 1.5 seconds triggers memory mode, where particles glow brighter and their decay timer resets. The result is a sky that shifts each time the room goes dark.',
-        image: '/constellation.webp',
-        imageCaption: '°·⸜(｡˃ ᵕ ˂ )⸝ I\'ve always been so fascinated by these sparkles above.',
+        title: 'The loop — record, then layer one thing per pass',
+        body: 'Drag a ready-made character onto the canvas. Press record; a 3-second count-in plays. Drag the character across the stage — **that motion is the take.** Press play and it repeats, holding its last pose. Then record again, and again, adding exactly one channel each pass — a second character, a camera push, a spoken line — until the scene is full. It reads less like software and more like a puppet show you build up in takes.',
+        image: '/projects/tldraw-flow.png',
+        imageCaption: 'V1 flow — the record→layer loop, the punch-in edit model, and the filmstrip structure.',
       },
       {
-        title: 'Sound Design',
-        body: 'Twelve independent sine wave oscillators run in parallel via p5.sound. Each maps to one colour-particle pair. When a particle spawns, its oscillator briefly activates — **amplitude mapped to darkness intensity**. The result is a generative, non-repeating harmony that grows denser the longer the room stays dark. No loop. No file. Pure synthesis.',
-      },
-      {
-        title: 'Process',
-        body: 'The build started with the serial connection: getting the Arduino to talk to the browser reliably was harder than expected. Baud rate, cable quality, and browser permissions all introduced failure points. Once serial was stable, the particle system came together quickly — the flocking logic is simpler than it looks. Sound was the last layer, tuned in the gallery space itself during setup.',
-        image: F('TMyHiq1SiK9esypoj7AADxXGQWc.jpg'),
-        imageCaption: '°·⸜(｡˃ ᵕ ˂ )⸝ Gallery setup. Arduino wired to breadboard, running alongside the browser sketch on a laptop.',
+        title: 'One editing model: punch-in',
+        body: 'No trim, no retiming, no speed curves. If you flub, you scrub to it, grab just the arm, and re-record **that channel from the playhead forward.** Everything before is untouched; the walk is kept. You never adjust a curve — you re-perform. One model, learned once, applied everywhere. The camera crop renders on export; scenes chain together as a filmstrip where each card’s thumbnail *is* the camera view.',
       },
     ],
 
-    meetTheWork: 'Impermanence asks one question: what do you remember when the room goes dark? The installation offers no interface, no prompt, and no correct response. It simply responds.',
+    meetTheWork: 'V1 ships the ready-made puppet tray, the record→perform→layer loop, camera framing, and MP4 export. Rigging your own “tl-man” from a drawing and a draw-your-own-props set are in active exploration.',
     finalImages: [
-      {
-        src: F('GMNzAMSCYtZXRzaB7bg0DFxz08.gif'),
-        caption: '°·⸜(｡˃ ᵕ ˂ )⸝ look at them go !!! little particles finding each other in the dark ,,',
-      },
+      { src: '/projects/tldraw-sample.mp4', caption: 'Sample output — a scene performed and layered on the canvas.', isVideo: true },
+      { src: '/projects/tldraw-demo.jpg', caption: 'The interface — collections tray, camera framing, and the crude scrub timeline.' },
     ],
 
-    reflectionHeading: 'What the piece changed about how I think about hardware.',
+    reflectionHeading: 'What I’m taking from it',
     reflection: [
       {
-        title: 'Web Serial is fragile in ways that matter',
-        body: 'Permissions reset between sessions. Cables introduce signal noise. Baud rate mismatches produce silence rather than errors. Building a fallback mode that simulates sensor input from the mouse would make this viable in any gallery context, not just ones where serial works.',
+        title: 'The discipline was in what I removed',
+        body: 'The hard part wasn’t the tech — it was resisting the timeline everyone expects, and trusting that a single editing model (punch-in) could do the work of a dozen. Constraints didn’t limit the tool; they gave it a voice.',
       },
       {
-        title: 'The threshold is a design decision, not a calibration',
-        body: 'Setting the darkness threshold at 300 was not a technical choice. It was a curatorial one: how dark does the room need to be before memory surfaces? A future version would let the threshold shift across an exhibition\'s run, so the piece becomes harder to trigger as the days progress.',
+        title: 'Interaction can be the mental model',
+        body: 'When “drag = record” and “grab a limb = pose it,” there’s almost nothing to teach. The best documentation is a gesture that means the obvious thing.',
       },
     ],
-    sourceCode: {
-      url: 'https://editor.p5js.org/audrey17leo/sketches/_ktpYi75f',
-      label: 'View source on p5.js editor',
+    sectionLabels: {
+      problemSpace: 'THE PROBLEM',
+      concept: 'THE IDEA',
+      process: 'HOW IT WORKS',
+      finalDesign: 'WHERE IT IS NOW',
+      reflection: 'REFLECTION',
     },
   },
 
-  // ── MEMORY DISTORTION BOX ───────────────────────────────────────────────────
+  // ── GOFRESH ───────────────────────────────────────────────────────────────
   {
-    slug: 'memory-distortion-box',
-    title: 'Memory Distortion Box',
-    subtitle: 'A sensor-driven sound installation that treats grief as data, retrieved only in darkness, never on demand.',
-    tags: ['INSTALLATION', 'SOUND ART'],
-    bg: '#1a1a2e',
-    heroImage: '/memory-distortion-box-cover.png',
+    slug: 'gofresh',
+    title: 'gofresh',
+    subtitle: 'A two-sided food-waste system — a consumer rescue app and a smart retail till — measured in the same currency: CO₂ saved.',
+    tags: ['Product Design', 'Systems', 'Gartner Winner'],
+    bg: '#e9f1ec',
+    heroImage: '/projects/gofresh-app.jpg',
 
-    h1: 'A sensor-driven sound installation that treats grief as a retrieval problem',
-    subtitleParagraph: 'Also titled Random Access Grief, the Memory Distortion Box is a sealed, featureless object built around an Arduino Uno, a photoresistor voltage divider on analog pin A0, and a three-channel Pure Data patch communicating over serial at 9600 baud. The 10-bit ADC reading maps ambient light to playback speed, pitch shift, and reverb depth in real time. When the room darkens past the threshold, the audio begins: slowing, distorting, reversing. When light returns, silence.',
+    h1: 'Turning the expiry line into a discount, not a decision',
+    subtitleParagraph: 'A third of the food we produce is never eaten. gofresh treats supermarket waste as a supply-chain loop rather than a shopping feature — pairing a consumer rescue app with a retail till that discounts near-expiry stock automatically. Winner, Gartner Case Competition.',
     year: '2024',
-    scope: 'Sound Installation\nPhysical Fabrication\nCircuit Design\nDSP Programming',
-    role: 'Solo. Concept, CAD modelling, laser-cut fabrication, circuit design, and Pure Data DSP programming.',
-    showcaseImages: [
-      '/memory-distortion-box-cover.png',
-    ],
+    scope: 'Product Design\nSystems Thinking',
+    role: 'Case competition. Product design, system framing, and prototype.',
+    showcaseImages: ['/projects/gofresh-app.jpg'],
 
-    problemSpaceHeading: "Grief doesn't arrive when you call it. It arrives when the room gets quiet.",
-    problemSpace: 'The Memory Distortion Box encodes interaction into the physics of the circuit. The photoresistor on A0 is the only input: no buttons, no screen, no UI. Ambient light keeps the analog read value high and the audio silent. Darkness drops the reading below the threshold (empirically set at 300 out of 1023) and triggers playback. The only way to hear the piece is to physically block the sensor with your hand and wait, which enforces a slowness that most digital experiences do not.',
+    problemSpaceHeading: 'The surplus isn’t created by the shopper. It’s created at the till.',
+    problemSpace: 'Most food-rescue apps put the whole burden on the consumer: go find the deal, go to the store, feel virtuous. But the surplus is *created* upstream — by staff, under time pressure, at the moment a perfectly good croissant crosses an invisible expiry line and gets binned. Design only the consumer side and you solve half the loop. **So I designed both sides of the same system.**',
 
-    conceptHeading: 'Emotional memory as data corruption. Loss as hardware failure.',
-    concept: 'Three audio channels run concurrently in a Pure Data patch, each receiving the same normalised sensor value (0.0 to 1.0) but processing it through different DSP chains. Channel 1 uses [speed~] on a voice recording: playback rate drops linearly with light level and reverses below 0.3. Channel 2 passes a drone oscillator through [pitch~], dropping by up to a tritone in total darkness. Channel 3 drives a granular texture via grain size and density parameters, becoming denser as light falls. The three channels are summed but never tempo-synced, producing a composition that shifts irreproducibly each time the threshold is crossed.',
+    conceptHeading: 'Two surfaces, one goal, one currency.',
+    concept: 'gofresh is a consumer app *and* a retail till that share a single metric — CO₂ avoided — so the impact is legible to a shopper and a store manager at once. The app creates demand for rescued food; the till creates the supply and measures it. Saving money and saving carbon become the same tap.',
 
     processSections: [
       {
-        title: 'Enclosure',
-        body: 'The enclosure was designed in AutoCAD as a 180×120×80mm box with finger-joint edges and kerf compensation set to 0.2mm for the laser cutter. Material: 6mm black MDF, cut on a CO2 laser, assembled with wood glue and internal 3D-printed PLA corner brackets for rigidity. The front face has a 6mm circular aperture for the photoresistor, no label, no indicator LED, no visible seam. The Arduino and breadboard sit on a laser-cut internal shelf; all wiring is routed flush to avoid rattle. The object is deliberately archival in appearance: it should read as a found object, not a prototype.',
-        image: '/3dmodel.png',
-        imageCaption: '°·⸜(｡˃ ᵕ ˂ )⸝ 3D model. AutoCAD enclosure design before fabrication.',
+        title: 'gofresh — the consumer side',
+        body: 'Near-expiry groceries surface as offers, not afterthoughts — 80% off the Mediterranean pasta, 40% off the garden salad — each with “find nearest store” and a countdown framed as *rescue this*, not *hurry up*. An **Impact tab** makes the abstract personal: “12.4 kg of CO₂e saved,” a monthly goal, and rewards that turn a good habit into a streak worth keeping.',
+        image: '/projects/gofresh-app.jpg',
+        imageCaption: 'The market and impact tracker — discounts framed as rescue, savings framed as carbon.',
       },
       {
-        title: 'Circuit and Sensor Logic',
-        body: 'The sensor circuit is a standard photoresistor voltage divider: a 10kΩ fixed resistor and an LDR in series between 5V and GND, with the midpoint read on Arduino analog pin A0. The Arduino\'s 10-bit ADC returns values from 0 (dark) to 1023 (bright). These values are sent over serial at 9600 baud as a single integer per loop iteration. The Pure Data patch receives via [comport] and normalises the reading to a 0.0–1.0 float using [/ 1023]. The threshold (300) was determined empirically during calibration: it corresponds to the ambient light level of a dim gallery room with no directed light on the sensor.',
-        image: '/tinkercad-schematic.png',
-        imageCaption: '°·⸜(｡˃ ᵕ ˂ )⸝ Schematic made on Tinkercad.',
-      },
-      {
-        title: 'Audio System',
-        body: 'The Pure Data patch runs three independent DSP chains fed by the same normalised sensor value. Voice channel: a pre-recorded field recording loaded into [readsf~], routed through a [vd~] variable delay line to simulate speed change. Below a normalised value of 0.3, playback direction inverts via buffer scrubbing. Drone channel: a [osc~] sine oscillator detuned in real time using the sensor value mapped to a pitch range of one tritone (six semitones), processed through a [freeverb~] reverb unit with wet depth also sensor-driven. Granular channel: a custom granular abstraction controls grain size (30 to 300ms), density (1 to 12 grains/sec), and scatter, all inverse-mapped to light level. The three channels sum to a stereo [dac~] output. No tempo sync between channels: the composition is structurally non-repeating.',
-        image: '/puredata.png',
-        imageCaption: '°·⸜(｡˃ ᵕ ˂ )⸝ Pure Data patch. Three-channel DSP system with sensor-mapped parameters.',
+        title: 'SmartTill — the retail side',
+        body: 'Every scan saves something. The till auto-flags stock as **REDUCED · 2 days**, drops the price, and shows the CO₂ avoided right on the basket line. Staff get an Expiry Manager, a Learn module, and Analytics — so “waste” stops being a loss written off at close and becomes a number they can watch fall in real time (“7 items reduced today”).',
+        image: '/projects/gofresh-till.jpg',
+        imageCaption: 'SmartTill — point of sale, expiry management, and a live food-waste-savings readout.',
       },
     ],
 
-    meetTheWork: 'Random Access Grief. A box that remembers on its own terms: only in the dark, never twice the same way.',
+    meetTheWork: 'One system, two surfaces: demand and supply speaking the same language. The consumer app makes rescued food desirable; the till makes it effortless to create and impossible to ignore.',
     finalImages: [
-      {
-        src: F('dxTiqEF1kzI84WXVQxeFdo9YvgA.jpg'),
-        caption: '°·⸜(｡˃ ᵕ ˂ )⸝ Finished Piece.',
-      },
-      {
-        src: F('LcHld9m2pHmj4Yprv3J6BtyH0BM.jpg'),
-        caption: '°·⸜(｡˃ ᵕ ˂ )⸝ Other tinkers we did, lasercut and soldering.',
-      },
+      { src: '/projects/gofresh-till.jpg', caption: 'SmartTill — waste becomes a measured, falling number.' },
+      { src: '/projects/gofresh-app.jpg', caption: 'gofresh app — the rescue market and personal CO₂ impact.' },
     ],
 
-    reflectionHeading: 'What the audience taught me that the design process did not.',
+    reflectionHeading: 'What I’m taking from it',
     reflection: [
       {
-        title: 'The hand was the right interface all along',
-        body: 'Visitors consistently covered the aperture with their palm rather than reducing ambient room light. This collapsed the interaction distance from room-scale to body-scale, which changed what the piece communicated. A v2 would formalise this: replace the LDR with a proximity or capacitive touch sensor recessed into a palm-sized indent, giving the hand a designated place and making the gesture legible without instruction. The circuit change is minimal; the interaction design implication is significant.',
+        title: 'Design the incentive, not the guilt',
+        body: 'Sustainability features fail when they ask people to be virtuous. This one worked because the sustainable choice and the cheap choice were the same choice — on both sides of the counter.',
       },
       {
-        title: 'Modular patch design is a production requirement, not a preference',
-        body: 'The PD patch grew organically during development and became difficult to debug under exhibition conditions. A single misrouted connection could silence all three channels with no obvious visual indicator. A v2 would restructure into named subpatches ([voice-channel], [drone-channel], [granular-channel]) with isolated test modes, a [loadbang]-driven calibration routine, and error state indicators using [print] to console. Maintainability in live installation contexts is a design constraint, not an afterthought.',
+        title: 'A metric only matters if both ends can read it',
+        body: 'Putting CO₂e on the shopper’s Impact tab *and* the manager’s analytics made a single number do the persuading — no lecture required.',
       },
     ],
+    sectionLabels: {
+      problemSpace: 'THE PROBLEM',
+      concept: 'THE SYSTEM',
+      process: 'THE TWO SURFACES',
+      finalDesign: 'THE WORK',
+      reflection: 'REFLECTION',
+    },
   },
 
-  // ── PLASTIC PANIC ────────────────────────────────────────────────────────────
+  // ── FOLIO ─────────────────────────────────────────────────────────────────
   {
-    slug: 'plastic-panic',
-    title: 'Plastic Panic',
-    subtitle: 'A 2D pixel game built in Godot where ocean debris density scales with survival time. Education through systems, not lectures.',
-    tags: ['GAME DESIGN', 'C++', 'PIXEL ART', 'ORIGINAL MUSIC'],
-    bg: '#134E5E',
-    heroImage: F('v6vBj0wRDyoQcOvYUg0KCOKBwSg.jpg'),
+    slug: 'folio',
+    title: 'folio',
+    subtitle: 'A portfolio builder that optimises for momentum over options — from blank page to a first draft you’d actually keep.',
+    tags: ['Web App', 'Visual Design', 'Canva Winner'],
+    bg: '#efeaff',
+    heroImage: '/projects/folio-web.jpg',
 
-    h1: 'A pixel game that makes ocean pollution feel urgent before you have time to think',
-    subtitleParagraph: 'Plastic Panic is a 2D pixel game built in Godot using GDScript. The player controls a sea turtle navigating a procedurally spawning debris field; spawn rate scales with elapsed survival time. Collision applies a progressive speed penalty until movement stops. The mechanic is deliberately simple: the weight comes from what the turtle represents, not from system complexity.',
+    h1: 'From “build your portfolio” to “here’s your portfolio”',
+    subtitleParagraph: 'Everyone tells creatives to make a portfolio, then hands them a blank canvas and walks away. folio removes the blank-page tax — a guided web app that turns your work into a laid-out site in the first ten minutes. Built and won in a hackathon sprint. Winner, Canva Hackathon.',
     year: '2024',
-    scope: 'Game Design\nCreative Technology',
-    role: 'Solo. Visual design, Godot/C++ programming, sprite animation, and original music composition in Strudel.',
-    showcaseImages: [
-      F('v6vBj0wRDyoQcOvYUg0KCOKBwSg.jpg'),
-    ],
+    scope: 'Product & Visual Design',
+    role: 'Hackathon. Product design, visual design, and build.',
+    showcaseImages: ['/projects/folio-web.jpg'],
 
-    problemSpaceHeading: 'Environmental education fails when it lectures. It works when it makes you feel something first.',
-    problemSpace: 'A beach cleanup in Bali made the scale of the problem concrete: plastic being collected was immediately replaced by new plastic washing in from the tide. The cleanup felt futile in a way that was clarifying. The problem is not littering; it is throughput. Plastic Panic communicates that through repetition: trash keeps spawning, spawn rate keeps climbing, and the player has to keep moving.',
+    problemSpaceHeading: 'The gap isn’t talent. It’s the first ten minutes.',
+    problemSpace: 'Portfolio builders hand you infinite freedom and zero momentum. Templates feel generic; from-scratch feels endless; both leave you staring at an empty page. For a hackathon audience of students and creatives, the win was never going to be *more features* — it was getting someone to a **first draft** they’d want to keep. **So folio optimises for momentum, not options.**',
 
-    conceptHeading: 'The mechanic is simple. The weight comes from what the turtle represents.',
-    concept: 'A sea turtle navigates an ocean filling with debris. Spawn rate accelerates over elapsed time; there is no winning state, only a longer survival interval. Collision triggers a progressive movement speed reduction until the entity reaches zero velocity. No explosion, no game-over fanfare. The system is designed to feel futile just before it terminates.',
+    conceptHeading: 'Speed is a feeling, and it’s designable.',
+    concept: 'A single, confident entry point — “Build now” — and a guided flow that assembles your work into a laid-out site instead of a blank canvas. The signature gradient orb isn’t decoration; it’s the “generating” moment made calm and alive, so the one unavoidable wait feels like magic instead of loading.',
 
     processSections: [
       {
-        title: 'Sprite Design',
-        body: 'All assets were drawn in Procreate at 32x32px: the turtle, three trash variants (plastic bag, bottle, wrapper), and tiling ocean background. The 32x32 constraint enforced legibility at runtime scale with no room for surface detail. Character and object designs were kept visually distinct to ensure immediate readability at high debris density.',
-        image: F('jEDXcktxbk4MdNruBhFeZou94c.jpg'),
-        imageCaption: '°·⸜(｡˃ ᵕ ˂ )⸝ Sprite sheet. Characters and trash objects drawn at 32x32px in Procreate.',
+        title: 'A card-first way to arrange work',
+        body: 'Work becomes modular blocks you can rearrange, rather than sections you have to format. The card concept made the very first interaction *productive* — drop your pieces in, and the layout already looks intentional.',
+        video: '/projects/folio-concept.mp4',
+        imageCaption: 'Card concept — arranging work as modular, rearrangeable blocks.',
       },
       {
-        title: 'Animation',
-        body: 'The turtle swim cycle is four frames: neutral, left-stroke, glide, right-stroke, running at 8fps. The low frame rate reinforces the underwater physics feel and distinguishes the character from surface-speed game conventions. Trash objects use a per-instance randomised drift vector to simulate ocean current; no two objects move identically, preventing the scene from reading as static.',
-        image: F('rJx8qOAaKbF54gKAS46arHJseU.gif'),
-        imageCaption: '°·⸜(｡˃ ᵕ ˂ )⸝ Animation frames. Turtle movement cycle, four-frame loop at 8fps.',
-      },
-      {
-        title: 'Gameplay Mechanics',
-        body: 'Built in Godot using C++. Movement uses a momentum model: the turtle continues moving after input is released, making avoidance feel physical rather than cursor-like. Trash objects spawn from the right edge at randomised heights and speeds scaled to elapsed survival time. Collision detection uses Godot\'s built-in Area2D nodes. Score increments per second survived. No threshold, no congratulations screen.',
-      },
-      {
-        title: 'Sound',
-        body: 'The soundtrack was composed in Strudel, a live-coding environment for generative music. A pentatonic melody runs over an ocean-ambient drone. Tempo is directly coupled to the trash spawn rate: as the spawn interval decreases, BPM increases proportionally. Tension escalates in the audio before the player consciously registers it in the game state.',
+        title: 'One system, two views',
+        body: 'The same content reflows between a website and an app layout, so a portfolio built once reads well everywhere. Designing the responsive system up front is what let the flow stay simple: you make decisions about *work*, not about breakpoints.',
+        image: '/projects/folio-mobile.jpg',
+        imageCaption: 'The responsive layout reflows the same content between website and app.',
       },
     ],
 
-    meetTheWork: 'Plastic Panic. A game about surviving something that does not stop.',
+    meetTheWork: 'Built and shipped in a hackathon sprint — and it won. Judges responded to the same thing users did: it removed the friction between having work and having a portfolio.',
     finalImages: [
-      {
-        src: '/plasticpanic.mov',
-        caption: '°·⸜(｡˃ ᵕ ˂ )⸝ Gameplay. Debris density increases over time. There is no winning state.',
-        isVideo: true,
-      },
+      { src: '/projects/folio-concept.mp4', caption: 'The build flow — from entry point to a first, keepable draft.', isVideo: true },
+      { src: '/projects/folio-web.jpg', caption: 'The landing moment — one confident action, and the generating orb.' },
     ],
 
-    reflectionHeading: 'What coding the mechanics taught me about what things mean.',
+    reflectionHeading: 'What I’m taking from it',
     reflection: [
       {
-        title: 'Momentum is a design decision, not a feature',
-        body: 'Movement tuning took more iteration than any other mechanic. Too much momentum and the game becomes uncontrollable; too little and it reads like a cursor. The turtle needs to feel alive, which required more precision in the physics parameters than expected.',
-      },
-      {
-        title: 'The score is the message',
-        body: 'Survival time as the score metric communicates one thing: you can last, but not forever. A v2 would convert elapsed time to a real-world data point at the game-over screen. "You lasted 47 seconds. That\'s how long it takes 8 million plastic bottles to enter the ocean."',
+        title: 'Momentum is a feature',
+        body: 'The most valuable thing folio gives isn’t a template — it’s permission to start. Designing the first ten minutes did more for the experience than any amount of customisation would have.',
       },
     ],
+    sectionLabels: {
+      problemSpace: 'THE PROBLEM',
+      concept: 'THE IDEA',
+      process: 'WHAT I DESIGNED',
+      finalDesign: 'THE WORK',
+      reflection: 'REFLECTION',
+    },
   },
-
-  // ── REDESIGNED AIR PURIFIER ──────────────────────────────────────────────────
-  {
-    slug: 'cr-purifier',
-    title: 'Redesigned Air Purifier',
-    subtitle: 'Compact air purifier redesigned for small-space living. Corner-mounted, tool-free, under £40.',
-    tags: ['PRODUCT DESIGN', 'FABRICATION', 'MARKETING'],
-    bg: '#D6D0C8',
-    heroImage: '/cr-purifier-render-nobg.png',
-
-    h1: 'A compact air purifier redesigned for the spaces people actually live in',
-    subtitleParagraph: 'Most air purifiers need 50cm of floor space. This one fits in a corner — two MERV-13 filters in an L-shape, no tools needed, under £40 from a hardware store.',
-    year: '2023',
-    scope: 'Product Design\nFabrication\nBuild Documentation',
-    role: 'Solo. User research, mechanical design, physical prototyping, laser cutting, and go-to-market documentation.',
-    showcaseImages: [
-      '/cr-purifier-render-nobg.png',
-    ],
-
-    problemSpaceHeading: 'The most effective air purifier format is too big for the rooms where air quality matters most.',
-    problemSpace: 'The standard four-filter square configuration requires a 50×50cm footprint and projects into the room on all sides. For the average UK student bedroom (under 10sqm) or shared flat, this is a non-starter. The filter-to-fan ratio on that design is well-established: four 20×20-inch MERV-13 faces to a single box fan. The design challenge was reducing that footprint without gutting the filtration logic. The constraint: no specialist tools, no custom components, no ordering online.',
-
-    conceptHeading: 'Same filtration logic. Forty percent smaller footprint. No tools required.',
-    concept: 'Two MERV-13 filters are arranged in an L-configuration rather than a square, reducing the footprint from four filter faces to two. The unit sits in a corner: the two adjacent walls act as passive airflow guides, directing intake air toward both filter faces and partially compensating for the reduced filtration area. CADR (Clean Air Delivery Rate) drops relative to the four-filter format but remains above the threshold for rooms under 20sqm. The fan sits on top facing up, pulling air through both filter faces simultaneously. Build time is under 20 minutes. The instruction set fits on one side of A5.',
-
-    processSections: [
-      {
-        title: 'Research and Geometry Testing',
-        body: 'The first stage was working out whether corner placement could genuinely substitute for the missing filter faces. Two-filter L-configurations reduce total filter area by 50%, which under normal conditions halves CADR. Corner deployment partially recovers this by redirecting ambient airflow: at 90-degree wall junctions, air pressure from room circulation is guided toward both filter faces rather than dissipating. I tested three room configurations to check whether this effect was consistent across different wall materials and room sizes. It was consistent enough to proceed. The design locked in: two filters, corner-only placement, fan on top.',
-        image: F('Lg89TpGFsjWu5n4clXjJo1drbM.jpg'),
-        imageCaption: '°·⸜(｡˃ ᵕ ˂ )⸝ Sketches to visualize.',
-      },
-      {
-        title: 'Prototyping',
-        body: 'First build used two MERV-13 20×20-inch filters, a 20-inch box fan, and duct tape at the join. Functional but not structurally sound for repeated assembly. I moved the join to a laser-cut 6mm MDF bracket, designed with a friction-fit tongue-and-groove that holds both filter faces at exactly 90 degrees without adhesive. The bracket is flat-pack: ships in an envelope, assembles in under two minutes. No tools. No glue.',
-        image: F('kuIEK27hBhGsWgpYo9EZzXK2QHM.jpg'),
-        imageCaption: '°·⸜(｡˃ ᵕ ˂ )⸝ Sketches to visualize.',
-      },
-      {
-        title: 'Material Specification',
-        body: 'Full bill of materials: two MERV-13 20×20-inch filters (£12–16 each), one 20-inch box fan (£18–24), one laser-cut MDF bracket (£2–4 if self-cut, designed for 6mm sheet with 0.2mm kerf compensation). Total: £32–44 depending on sourcing. All components are stocked at B&Q, Screwfix, or equivalent. The bracket file is designed for a standard 600×400mm laser bed. Assembly requires no tools. Disassembly is full and reversible.',
-        image: F('erRmJeaSNj01D1SZLrJ8Y5TXl2E.jpg'),
-        imageCaption: '°·⸜(｡˃ ᵕ ˂ )⸝ Prototype A. Laser-cut MDF bracket replacing duct tape. Friction-fit, no adhesive.',
-      },
-    ],
-
-    meetTheWork: 'Compact. Corner-deployed. Under 20 minutes to build. No tools. Under £40.',
-    finalImages: [
-      {
-        src: '/FRONT PURIFIER.jpg',
-        caption: '',
-      },
-      {
-        src: F('dqQB5hZNeH5HPAkMfd0M7A5K9I.jpg'),
-        caption: '°·⸜(｡˃ ᵕ ˂ )⸝ Final piece.',
-      },
-    ],
-
-    reflectionHeading: 'What I would do differently.',
-    reflection: [
-      {
-        title: 'The instructions needed more work than the object',
-        body: 'I spent most of the project on the physical design. But when I tested it with people who had never built anything before, the object itself was fine. The instructions weren\'t. "Friction-fit joint" means nothing if you\'ve never assembled flat-pack before. A v2 would photograph every step at 1:1 scale, no text, and run it past someone who\'d never seen the product.',
-      },
-      {
-        title: 'The CADR claim needs a particle counter',
-        body: 'The corner-placement airflow guidance argument is geometrically sound and consistent in informal testing across three room configurations. But "consistent in informal testing" is not a measured CADR figure. A rigorous v2 would run the unit against a calibrated particle counter in a sealed room and publish the numbers. Until then, the efficiency claim is directionally correct but not independently verified.',
-      },
-    ],
-  },
-
 ]
 
 export function getProject(slug: string): Project | undefined {
