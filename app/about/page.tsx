@@ -215,7 +215,7 @@ export default function AboutPage() {
   return (
     <>
       <Navbar />
-      <main style={{ background: '#F5F5F3', minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
+      <main style={{ background: '#fafafa', minHeight: '100vh', position: 'relative', overflow: 'hidden' }}>
 
         {/* Pastel purple nodes — decorative background */}
         <svg
@@ -275,12 +275,12 @@ export default function AboutPage() {
             {/* Text */}
             <div style={{ paddingTop: 8 }}>
               <h1 style={{
-                fontFamily: sfPro,
-                fontWeight: 500,
-                fontSize: 'clamp(2rem, 3.5vw, 2.8rem)',
-                color: '#111',
-                letterSpacing: '-0.03em',
-                lineHeight: 1.1,
+                fontFamily: 'var(--font-display), "Space Grotesk", system-ui, sans-serif',
+                fontWeight: 600,
+                fontSize: 'clamp(2.2rem, 4vw, 3.2rem)',
+                color: '#262626',
+                letterSpacing: '-0.04em',
+                lineHeight: 1.05,
                 margin: '0 0 32px',
               }}>
                 Audrey Leo

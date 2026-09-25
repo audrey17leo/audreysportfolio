@@ -3,29 +3,28 @@ import { useState, useRef, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { projects as realProjects } from '@/lib/projects'
-import { sfPro, mono } from '@/lib/fonts'
 import { useIsMobile } from '@/lib/useIsMobile'
+import { reveal, staggerContainer, flipUp, imageReveal, cardHover, cardHoverTransition, once } from '@/lib/stellaMotion'
+import { BG, FG, ACCENT, MUTED, MUTED_LIGHT, HAIRLINE, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
 
-const baseProjects = realProjects
+const displayProjects = realProjects
   .filter(p => p.slug !== 'batik')
-  .map(p => ({
+  .map((p, i) => ({
     id: p.slug,
     slug: p.slug,
     title: p.title,
     description: p.subtitle,
     tags: p.tags,
+    year: p.year,
     image: p.heroImage as string | null,
-    aspectRatio: '4/3' as const,
     video:      p.slug === 'plastic-panic' ? '/imac_composite.mp4'  : undefined as string | undefined,
     videoHover: p.slug === 'plastic-panic' ? '/imac_composite2.mp4' : undefined as string | undefined,
-    comingSoon: false,
+    index: i,
   }))
-
-const displayProjects = baseProjects
 
 type DisplayProject = typeof displayProjects[number]
 
-function ProjectCard({ project, index }: { project: DisplayProject; index: number }) {
+function ProjectCard({ project }: { project: DisplayProject }) {
   const [hovered, setHovered] = useState(false)
   const hasVideo = !!project.video && !!project.videoHover
   const vid1Ref = useRef<HTMLVideoElement>(null)
@@ -46,133 +45,43 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
     return () => { c1?.(); c2?.() }
   }, [])
 
+  const isImpermanence = project.id === 'impermanence'
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: (index % 2) * 0.08 }}
+      variants={reveal}
+      whileHover={cardHover}
+      transition={cardHoverTransition}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{
-        cursor: project.comingSoon ? 'default' : project.slug ? 'pointer' : 'default',
-        background: '#F5F5F3',
-        border: '1px solid #E0E0DC',
-        borderRadius: 16,
-        padding: 16,
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-      }}
+      style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column' }}
     >
-      {/* Coming soon overlay */}
-      {project.comingSoon && hovered && (
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 10,
-          background: 'rgba(245,245,243,0.88)',
-          backdropFilter: 'blur(6px)',
-          WebkitBackdropFilter: 'blur(6px)',
+      {/* Media (Aditya image reveal) */}
+      <motion.div
+        variants={imageReveal}
+        style={{
+          width: '100%',
+          aspectRatio: '4 / 3',
           borderRadius: 16,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <span style={{ fontFamily: mono, fontSize: '0.65rem', color: '#999', letterSpacing: '0.1em' }}>
-            coming soon!
-          </span>
-        </div>
-      )}
-
-      {/* Tag */}
-      <p style={{
-        fontFamily: mono,
-        fontSize: '0.58rem',
-        color: '#aaa',
-        letterSpacing: '0.06em',
-        margin: '0 0 10px',
-        textTransform: 'uppercase',
-      }}>
-        [{project.tags.join(', ')}]
-      </p>
-
-      {/* Media container */}
-      {project.id === 'impermanence' && project.image ? (
-        /* ── Soft glow frame for Impermanence ── */
-        <div style={{
-          width: '100%',
-          aspectRatio: project.aspectRatio,
-          marginBottom: 14,
-          position: 'relative',
-        }}>
-          {/* Blurred glow */}
-          <img
-            src={project.image}
-            aria-hidden
-            style={{
-              position: 'absolute',
-              inset: 26,
-              width: 'calc(100% - 52px)',
-              height: 'calc(100% - 52px)',
-              objectFit: 'cover',
-              filter: 'blur(18px) saturate(1.2)',
-              opacity: 0.38,
-              borderRadius: 10,
-              zIndex: 0,
-            }}
-          />
-          {/* Gradient border + image */}
-          <div style={{
-            position: 'absolute', inset: 30,
-            zIndex: 1,
-            borderRadius: 11,
-            padding: '1.5px',
-            background: 'linear-gradient(135deg, rgba(205,182,255,0.75), rgba(182,208,255,0.75), rgba(182,238,224,0.6), rgba(255,218,192,0.65), rgba(205,182,255,0.75))',
-            boxSizing: 'border-box' as const,
-          }}>
-            <div style={{ width: '100%', height: '100%', borderRadius: 10, overflow: 'hidden' }}>
-              <img
-                src={project.image}
-                alt={project.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-              />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div style={{
-          width: '100%',
-          aspectRatio: project.aspectRatio,
-          borderRadius: 10,
           overflow: 'hidden',
-          marginBottom: 14,
           position: 'relative',
-          background: '#F5F5F3',
-        }}>
+          background: isImpermanence ? '#0d0d10' : '#f0f0ee',
+          border: `1px solid ${HAIRLINE}`,
+        }}
+      >
         {hasVideo ? (
           <>
             <video
               ref={vid1Ref}
               src={project.video}
               autoPlay loop muted playsInline preload="auto"
-              style={{
-                position: 'absolute', inset: 0,
-                width: '100%', height: '100%',
-                objectFit: 'cover',
-                opacity: hovered ? 0 : 1,
-                transition: 'opacity 0.4s ease',
-                mixBlendMode: 'multiply',
-              }}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: hovered ? 0 : 1, transition: 'opacity 0.4s ease' }}
             />
             <video
               ref={vid2Ref}
               src={project.videoHover}
               autoPlay loop muted playsInline preload="auto"
-              style={{
-                position: 'absolute', inset: 0,
-                width: '100%', height: '100%',
-                objectFit: 'cover',
-                opacity: hovered ? 1 : 0,
-                transition: 'opacity 0.4s ease',
-                mixBlendMode: 'multiply',
-              }}
+              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: hovered ? 1 : 0, transition: 'opacity 0.4s ease' }}
             />
           </>
         ) : project.image ? (
@@ -180,38 +89,36 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
             src={project.image}
             alt={project.title}
             style={{
-              width: '100%', height: '100%', display: 'block',
+              width: '100%',
+              height: '100%',
+              display: 'block',
               objectFit: project.image.endsWith('.png') ? 'contain' : 'cover',
-              transform: project.image.endsWith('.png') ? 'scale(1.35)' : 'none',
+              transform: (project.image.endsWith('.png') ? 'scale(1.22)' : 'scale(1)') + (hovered ? ' scale(1.04)' : ''),
+              transition: 'transform 0.6s cubic-bezier(0.22,1,0.36,1)',
             }}
           />
         ) : null}
-        </div>
-      )}
+      </motion.div>
+
+      {/* Meta row */}
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginTop: 18, gap: 16 }}>
+        <p style={{ fontFamily: FONT_MONO, margin: 0, fontSize: '0.64rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: MUTED_LIGHT }}>
+          {project.tags.join(' · ')}
+        </p>
+        {project.year && (
+          <span style={{ fontFamily: FONT_MONO, fontSize: '0.64rem', letterSpacing: '0.04em', color: MUTED_LIGHT }}>{project.year}</span>
+        )}
+      </div>
 
       {/* Title */}
-      <h2 style={{
-        fontFamily: sfPro,
-        fontWeight: 500,
-        fontSize: '0.95rem',
-        color: '#111',
-        letterSpacing: '-0.01em',
-        margin: '0 0 4px',
-        lineHeight: 1.3,
-      }}>
+      <h3 style={{ fontFamily: FONT_DISPLAY, margin: '8px 0 8px', fontWeight: 600, fontSize: '1.4rem', letterSpacing: '-0.02em', color: FG, lineHeight: 1.15, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
         {project.title}
-      </h2>
+        <span aria-hidden style={{ color: ACCENT, opacity: hovered ? 1 : 0, transform: hovered ? 'translateX(0)' : 'translateX(-6px)', transition: 'all 0.35s cubic-bezier(0.22,1,0.36,1)', fontSize: '1rem' }}>→</span>
+      </h3>
 
       {/* Description */}
       {project.description && (
-        <p style={{
-          fontFamily: sfPro,
-          fontSize: '0.75rem',
-          color: '#999',
-          lineHeight: 1.5,
-          fontWeight: 400,
-          margin: 0,
-        }}>
+        <p style={{ margin: 0, fontSize: '0.92rem', lineHeight: 1.55, color: MUTED, maxWidth: '48ch' }}>
           {project.description}
         </p>
       )}
@@ -223,30 +130,47 @@ export default function Works() {
   const isMobile = useIsMobile()
 
   return (
-    <section id="works" style={{ background: '#F5F5F3', padding: '16px 0 120px' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '0 20px' : '0 48px' }}>
+    <section id="works" style={{ background: BG, padding: 'clamp(80px, 12vh, 150px) 0' }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto', padding: isMobile ? '0 24px' : '0 clamp(48px, 6vw, 96px)' }}>
 
-          {/* 2-column grid — single column on mobile */}
-          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '24px' : '64px 32px' }}>
-            {displayProjects.map((p, i) =>
-              p.slug ? (
-                <Link
-                  key={p.id}
-                  href={`/works/${p.slug}`}
-                  style={{ textDecoration: 'none', display: 'block', gridColumn: p.comingSoon ? '1 / -1' : undefined }}
-                  data-cursor="explore"
-                >
-                  <ProjectCard project={p} index={i} />
-                </Link>
-              ) : (
-                <div key={p.id} style={{ gridColumn: p.comingSoon && !isMobile ? '1 / -1' : undefined }}>
-                  <div style={{ maxWidth: p.comingSoon && !isMobile ? 'calc((100% - 32px) / 2)' : '100%', margin: p.comingSoon && !isMobile ? '0 auto' : undefined }}>
-                    <ProjectCard project={p} index={i} />
-                  </div>
-                </div>
-              )
-            )}
+        {/* Section header */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={once}
+          variants={staggerContainer}
+          style={{ marginBottom: 'clamp(40px, 6vh, 72px)', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}
+        >
+          <div style={{ perspective: 800 }}>
+            <motion.div variants={reveal} style={{ fontFamily: FONT_MONO, fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED_LIGHT, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />
+              Selected work
+            </motion.div>
+            <span style={{ display: 'block', overflow: 'hidden' }}>
+              <motion.h2 variants={flipUp} style={{ fontFamily: FONT_DISPLAY, margin: 0, fontWeight: 600, fontSize: 'clamp(1.9rem, 3.6vw, 3.2rem)', letterSpacing: '-0.035em', color: FG, transformOrigin: 'bottom' }}>
+                Things I&apos;ve made.
+              </motion.h2>
+            </span>
           </div>
+          <motion.p variants={reveal} style={{ margin: 0, fontSize: '0.92rem', color: MUTED, maxWidth: '34ch', lineHeight: 1.6 }}>
+            A mix of product, creative computing &amp; interactive work — each with a full case study.
+          </motion.p>
+        </motion.div>
+
+        {/* Grid */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={once}
+          style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '56px' : 'clamp(56px, 6vw, 96px) clamp(32px, 4vw, 56px)' }}
+        >
+          {displayProjects.map((p) => (
+            <Link key={p.id} href={`/works/${p.slug}`} style={{ textDecoration: 'none', display: 'block' }} data-cursor="explore">
+              <ProjectCard project={p} />
+            </Link>
+          ))}
+        </motion.div>
 
       </div>
     </section>

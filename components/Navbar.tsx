@@ -1,110 +1,105 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { sfPro } from '@/lib/fonts'
+import { useState, useEffect } from 'react'
 import { useIsMobile } from '@/lib/useIsMobile'
+import { FG, MUTED, BG, ACCENT, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
 
 const links = [
-  { label: 'Home',   href: '/' },
-  { label: 'Works',  href: '/#works' },
-  { label: 'About',  href: '/about' },
+  { label: 'Work', href: '/#works' },
+  { label: 'About', href: '/about' },
   { label: 'Garden', href: '/garden' },
 ]
 
 export default function Navbar() {
   const pathname = usePathname()
   const isMobile = useIsMobile()
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 20,
-      left: 0,
-      right: 0,
-      zIndex: 100,
-      display: 'flex',
-      justifyContent: 'center',
-      pointerEvents: 'none',
-      padding: '0 16px',
-    }}>
-      {/* Outer pill */}
-      <div style={{
-        pointerEvents: 'all',
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        background: 'rgba(232, 232, 230, 0.88)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderRadius: 999,
-        padding: '5px 5px',
-        gap: 6,
-        width: '100%',
-        maxWidth: 720,
-        border: '1px solid rgba(0,0,0,0.07)',
-        boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
-      }}>
+        padding: isMobile ? '16px 24px' : '20px clamp(32px, 5vw, 64px)',
+        background: scrolled ? 'rgba(250,250,250,0.72)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(14px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(14px)' : 'none',
+        borderBottom: scrolled ? `1px solid ${'rgba(0,0,0,0.06)'}` : '1px solid transparent',
+        transition: 'background 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease',
+      }}
+    >
+      {/* Left — name/logo */}
+      <Link href="/" data-cursor="explore" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <img src="/a-logo.png" alt="Audrey Leo" style={{ height: 26, width: 'auto', display: 'block' }} />
+        <span style={{ fontFamily: FONT_DISPLAY, fontSize: '1rem', fontWeight: 600, color: FG, letterSpacing: '-0.02em' }}>
+          Audrey Leo
+        </span>
+      </Link>
 
-        {/* Left — avatar + name */}
-        <Link href="/" style={{ textDecoration: 'none' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 9,
-            background: 'rgba(255,255,255,0.75)',
-            borderRadius: 999,
-            padding: isMobile ? '5px 5px' : '5px 16px 5px 5px',
-            border: '1px solid rgba(0,0,0,0.06)',
-          }}>
-            <img
-              src="/a-logo.png"
-              alt="Audrey Leo"
-              style={{ height: 30, width: 'auto', display: 'block', flexShrink: 0 }}
-            />
-            {!isMobile && (
-              <span style={{ fontFamily: sfPro, fontSize: '0.85rem', fontWeight: 500, color: '#111', letterSpacing: '-0.01em', whiteSpace: 'nowrap' }}>
-                Audrey Leo
-              </span>
-            )}
-          </div>
-        </Link>
-
-        {/* Center — nav links */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          background: 'rgba(255,255,255,0.75)',
-          borderRadius: 999,
-          padding: '5px 6px',
-          gap: 2,
-          border: '1px solid rgba(0,0,0,0.06)',
-        }}>
-          {links.map(l => {
-            const active = pathname === l.href || (l.href === '/#works' && pathname.startsWith('/works'))
-            return (
-              <Link
-                key={l.label}
-                href={l.href}
-                style={{
-                  fontFamily: sfPro,
-                  fontSize: isMobile ? '0.78rem' : '0.83rem',
-                  fontWeight: active ? 600 : 400,
-                  color: active ? '#111' : '#888',
-                  textDecoration: 'none',
-                  padding: isMobile ? '6px 10px' : '6px 16px',
-                  borderRadius: 999,
-                  letterSpacing: '-0.01em',
-                  whiteSpace: 'nowrap',
-                  transition: 'color 0.18s',
-                }}
-              >
-                {l.label}
-              </Link>
-            )
-          })}
-        </div>
-
-
+      {/* Right — links */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 16 : 28 }}>
+        {links.map((l) => {
+          const active =
+            (l.href === '/#works' && pathname.startsWith('/works')) ||
+            (l.href !== '/#works' && pathname === l.href)
+          return (
+            <Link
+              key={l.label}
+              href={l.href}
+              data-cursor="explore"
+              style={{
+                fontFamily: FONT_MONO,
+                fontSize: '0.72rem',
+                letterSpacing: '0.06em',
+                textTransform: 'uppercase',
+                fontWeight: 500,
+                color: active ? FG : MUTED,
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                transition: 'color 0.2s',
+              }}
+            >
+              {active && <span style={{ width: 5, height: 5, borderRadius: '50%', background: ACCENT }} />}
+              {l.label}
+            </Link>
+          )
+        })}
+        {!isMobile && (
+          <Link
+            href="/#contact"
+            data-cursor="explore"
+            style={{
+              fontFamily: FONT_MONO,
+              fontSize: '0.72rem',
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              fontWeight: 500,
+              color: BG,
+              background: FG,
+              padding: '9px 18px',
+              borderRadius: 999,
+              textDecoration: 'none',
+            }}
+          >
+            Contact
+          </Link>
+        )}
       </div>
     </div>
   )

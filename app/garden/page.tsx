@@ -8,7 +8,7 @@ export default function GardenPage() {
     <>
       <Navbar />
       <main style={{
-        background: '#F5F5F3',
+        background: '#fafafa',
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',

@@ -1,38 +1,40 @@
 import type { Metadata } from 'next'
-import { Inter, Dancing_Script, DM_Sans } from 'next/font/google'
+import { Figtree, Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import ClientProviders from '@/components/ClientProviders'
 
-const inter = Inter({
+// Aditya Muralidhar design language:
+// Figtree (body) · Space Grotesk (display, stands in for Stack Sans) · JetBrains Mono (labels)
+const figtree = Figtree({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
-  variable: '--font-inter',
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-body',
   display: 'swap',
 })
 
-const dancingScript = Dancing_Script({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  weight: ['700'],
-  variable: '--font-dancing',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-display',
   display: 'swap',
 })
 
-const dmSans = DM_Sans({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
-  weight: ['300', '400', '500'],
-  variable: '--font-cormorant', // reuse same CSS var so Hero picks it up
+  weight: ['400', '500'],
+  variable: '--font-mono',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'Audrey Leo — Creative & Technologist',
+  title: 'Audrey Leo — Product Designer & Creative Technologist',
   description:
-    'Portfolio of Audrey Leo, art & technology student at UCL Slade School of Art. Creative computing, interactive media, and design.',
+    'Portfolio of Audrey Leo — product design, creative computing, and interactive media. Art & Technology at UCL.',
   openGraph: {
-    title: 'Audrey Leo — Creative & Technologist',
+    title: 'Audrey Leo — Product Designer & Creative Technologist',
     description:
-      'Portfolio of Audrey Leo, art & technology student at UCL Slade School of Art.',
+      'Portfolio of Audrey Leo — product design, creative computing, and interactive media.',
     type: 'website',
   },
   icons: [
@@ -47,8 +49,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${dancingScript.variable} ${dmSans.variable}`}>
-      <body className="font-sans antialiased" style={{ cursor: 'none' }}>
+    <html lang="en" className={`${figtree.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}>
+      <body
+        className="antialiased"
+        style={{
+          cursor: 'none',
+          fontFamily: 'var(--font-body), Figtree, system-ui, sans-serif',
+          background: '#fafafa',
+          color: '#262626',
+        }}
+      >
         <ClientProviders>{children}</ClientProviders>
         <Analytics />
       </body>

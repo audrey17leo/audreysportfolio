@@ -2,8 +2,10 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import AutoPlayVideo from '@/components/AutoPlayVideo'
+import Reveal from '@/components/Reveal'
 import { projects, getProject } from '@/lib/projects'
-import { sfPro, mono } from '@/lib/fonts'
+import { sfPro } from '@/lib/fonts'
+import { BG, FG, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, CARD, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
 
 export function generateStaticParams() {
   return projects.map(p => ({ slug: p.slug }))
@@ -16,26 +18,33 @@ function parseBold(text: string): React.ReactNode {
   const parts = text.split(/\*\*(.*?)\*\*/g)
   return parts.map((part, i) =>
     i % 2 === 1
-      ? <strong key={i} style={{ fontWeight: 500, color: '#111' }}>{part}</strong>
+      ? <strong key={i} style={{ fontWeight: 600, color: FG }}>{part}</strong>
       : part
   )
 }
 
-// Section label — same across all sections
+// Section label — mono, bracketed, accent dot
 function Label({ text }: { text: string }) {
   return (
     <p style={{
-      fontFamily: mono,
-      fontSize: '0.55rem',
-      color: '#888',
+      fontFamily: FONT_MONO,
+      fontSize: '0.62rem',
+      color: MUTED_LIGHT,
       letterSpacing: '0.14em',
       textTransform: 'uppercase',
-      margin: '0 0 6px',
+      margin: '0 0 16px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10,
     }}>
-      [{text}]
+      <span style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />
+      {text}
     </p>
   )
 }
+
+const NARROW = 780
+const WIDE = 1120
 
 export default function CaseStudyPage({ params }: Props) {
   const project = getProject(params.slug)
@@ -44,315 +53,189 @@ export default function CaseStudyPage({ params }: Props) {
   const currentIdx = projects.findIndex(p => p.slug === params.slug)
   const nextProjects = [1, 2].map(offset => projects[(currentIdx + offset) % projects.length])
 
+  const h2Style: React.CSSProperties = {
+    fontFamily: FONT_DISPLAY,
+    fontWeight: 600,
+    fontSize: 'clamp(1.5rem, 2.8vw, 2.2rem)',
+    color: FG,
+    letterSpacing: '-0.03em',
+    lineHeight: 1.2,
+    margin: '0 0 28px',
+  }
+  const bodyStyle: React.CSSProperties = {
+    fontFamily: sfPro,
+    fontWeight: 400,
+    fontSize: '1.05rem',
+    color: MUTED,
+    lineHeight: 1.8,
+    margin: 0,
+  }
+
   return (
     <>
       <Navbar />
-      <main style={{ background: '#fff', minHeight: '100vh' }}>
+      <main style={{ background: BG, minHeight: '100vh' }}>
 
-        {/* ── HERO: tag + H1 + subtitle paragraph + skip link ── */}
-        <div className="cs-hero-pad" style={{ maxWidth: 820, margin: '0 auto', padding: '160px 48px 72px' }}>
-          <p style={{
-            fontFamily: mono,
-            fontSize: '0.58rem',
-            color: '#bbb',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            margin: '0 0 24px',
-          }}>
-            [{project.tags.join(' · ')}]
-          </p>
-
-          <h1 style={{
-            fontFamily: sfPro,
-            fontWeight: 400,
-            fontSize: 'clamp(2.4rem, 5.5vw, 4rem)',
-            color: '#111',
-            letterSpacing: '-0.03em',
-            lineHeight: 1.08,
-            margin: '0 0 28px',
-          }}>
-            {project.h1}
-          </h1>
-
-          <p style={{
-            fontFamily: sfPro,
-            fontWeight: 300,
-            fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)',
-            color: '#666',
-            lineHeight: 1.75,
-            margin: '0 0 28px',
-            maxWidth: 640,
-          }}>
-            {project.subtitleParagraph}
-          </p>
-
-          <a
-            href="#final"
-            style={{
-              fontFamily: mono,
-              fontSize: '0.62rem',
-              color: '#bbb',
-              textDecoration: 'none',
-              letterSpacing: '0.06em',
-              borderBottom: '1px solid #e8e8e8',
-              paddingBottom: 2,
-            }}
-          >
-            Skip to Final Design ↓
-          </a>
+        {/* ── HERO ── */}
+        <div className="cs-hero-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: '170px 48px 64px' }}>
+          <Reveal>
+            <p style={{ fontFamily: FONT_MONO, fontSize: '0.66rem', color: MUTED_LIGHT, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 28px' }}>
+              [{project.tags.join(' · ')}]
+            </p>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <h1 style={{
+              fontFamily: FONT_DISPLAY,
+              fontWeight: 600,
+              fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
+              color: FG,
+              letterSpacing: '-0.04em',
+              lineHeight: 1.05,
+              margin: '0 0 28px',
+              maxWidth: 15 + 'ch',
+            }}>
+              {project.h1}
+            </h1>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <p style={{ ...bodyStyle, maxWidth: 640, margin: '0 0 28px' }}>
+              {project.subtitleParagraph}
+            </p>
+          </Reveal>
+          <Reveal delay={0.16}>
+            <a href="#final" data-cursor="explore" style={{
+              fontFamily: FONT_MONO, fontSize: '0.66rem', color: FG, textDecoration: 'none',
+              letterSpacing: '0.06em', borderBottom: `1px solid ${HAIRLINE}`, paddingBottom: 3,
+            }}>
+              Skip to Final Design <span style={{ color: ACCENT }}>↓</span>
+            </a>
+          </Reveal>
         </div>
 
         {/* ── SHOWCASE IMAGES ── */}
-        <div className="cs-pad" style={{ maxWidth: 1100, margin: '0 auto', padding: '0 48px 72px' }}>
+        <div className="cs-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: '0 48px 96px' }}>
           {project.showcaseImages.length === 1 ? (
-            <div style={{ borderRadius: 16, overflow: 'hidden' }}>
+            <Reveal style={{ borderRadius: 18, overflow: 'hidden', border: `1px solid ${HAIRLINE}` }}>
               <img
                 src={project.showcaseImages[0]}
                 alt={project.title}
-                style={{
-                  width: '100%', display: 'block', maxHeight: 580,
-                  objectFit: project.showcaseImages[0].endsWith('.png') ? 'contain' : 'cover',
-                }}
+                style={{ width: '100%', display: 'block', maxHeight: 640, objectFit: project.showcaseImages[0].endsWith('.png') ? 'contain' : 'cover' }}
               />
-            </div>
+            </Reveal>
           ) : (
-            <div style={{ display: 'flex', gap: 16 }}>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
               {project.showcaseImages.map((src, i) => (
-                <div key={i} style={{ flex: 1, borderRadius: 16, overflow: 'hidden' }}>
-                  <img
-                    src={src}
-                    alt=""
-                    style={{
-                      width: '100%', display: 'block', maxHeight: 500,
-                      objectFit: src.endsWith('.png') ? 'contain' : 'cover',
-                    }}
-                  />
-                </div>
+                <Reveal key={i} delay={i * 0.08} style={{ flex: '1 1 320px', borderRadius: 18, overflow: 'hidden', border: `1px solid ${HAIRLINE}` }}>
+                  <img src={src} alt="" style={{ width: '100%', display: 'block', maxHeight: 520, objectFit: src.endsWith('.png') ? 'contain' : 'cover' }} />
+                </Reveal>
               ))}
             </div>
           )}
         </div>
 
-        {/* ── METADATA: SCOPE | ROLE ── */}
-        <div className="cs-pad" style={{ maxWidth: 820, margin: '0 auto', padding: '0 48px 96px' }}>
-          <div className="cs-grid-2" style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 40,
-            borderTop: '1px solid #f0f0ec',
-            paddingTop: 32,
-          }}>
-            {[
-              { label: 'SCOPE', value: project.scope },
-              { label: 'ROLE',  value: project.role  },
-            ].map(({ label, value }) => (
-              <div key={label}>
-                <p style={{
-                  fontFamily: mono,
-                  fontSize: '0.52rem',
-                  color: '#ccc',
-                  letterSpacing: '0.14em',
-                  textTransform: 'uppercase',
-                  margin: '0 0 10px',
-                }}>
-                  {label}
-                </p>
-                <p style={{
-                  fontFamily: sfPro,
-                  fontSize: '0.9rem',
-                  color: '#444',
-                  fontWeight: 300,
-                  margin: 0,
-                  lineHeight: 1.65,
-                  whiteSpace: 'pre-line',
-                }}>
-                  {value}
-                </p>
-              </div>
-            ))}
-          </div>
+        {/* ── METADATA: SCOPE | ROLE | YEAR ── */}
+        <div className="cs-pad" style={{ maxWidth: NARROW, margin: '0 auto', padding: '0 48px 110px' }}>
+          <Reveal>
+            <div className="cs-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32, borderTop: `1px solid ${HAIRLINE}`, paddingTop: 36 }}>
+              {[
+                { label: 'YEAR', value: project.year },
+                { label: 'SCOPE', value: project.scope },
+                { label: 'ROLE', value: project.role },
+              ].map(({ label, value }) => (
+                <div key={label}>
+                  <p style={{ fontFamily: FONT_MONO, fontSize: '0.6rem', color: MUTED_LIGHT, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 12px' }}>
+                    {label}
+                  </p>
+                  <p style={{ fontFamily: sfPro, fontSize: '0.92rem', color: FG, fontWeight: 400, margin: 0, lineHeight: 1.6, whiteSpace: 'pre-line' }}>
+                    {value}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
 
         {/* ── PROBLEM SPACE ── */}
-        <div className="cs-pad" style={{ maxWidth: 820, margin: '0 auto', padding: '0 48px 96px' }}>
-          <Label text={project.sectionLabels?.problemSpace ?? 'PROBLEM SPACE'} />
-          <h2 style={{
-            fontFamily: sfPro,
-            fontWeight: 400,
-            fontSize: 'clamp(1.3rem, 2.5vw, 1.9rem)',
-            color: '#111',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.3,
-            margin: '0 0 28px',
-          }}>
-            {project.problemSpaceHeading}
-          </h2>
-          <p style={{
-            fontFamily: sfPro,
-            fontWeight: 300,
-            fontSize: '1rem',
-            color: '#555',
-            lineHeight: 1.85,
-            margin: 0,
-          }}>
-            {parseBold(project.problemSpace)}
-          </p>
+        <div className="cs-pad" style={{ maxWidth: NARROW, margin: '0 auto', padding: '0 48px 110px' }}>
+          <Reveal><Label text={project.sectionLabels?.problemSpace ?? 'PROBLEM SPACE'} /></Reveal>
+          <Reveal delay={0.06}><h2 style={h2Style}>{project.problemSpaceHeading}</h2></Reveal>
+          <Reveal delay={0.1}><p style={bodyStyle}>{parseBold(project.problemSpace)}</p></Reveal>
         </div>
 
         {/* ── CONCEPT ── */}
-        <div className="cs-pad" style={{ maxWidth: 820, margin: '0 auto', padding: '0 48px 96px' }}>
-          <Label text={project.sectionLabels?.concept ?? 'CONCEPT'} />
-          <h2 style={{
-            fontFamily: sfPro,
-            fontWeight: 400,
-            fontSize: 'clamp(1.3rem, 2.5vw, 1.9rem)',
-            color: '#111',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.3,
-            margin: '0 0 28px',
-          }}>
-            {project.conceptHeading}
-          </h2>
-          <p style={{
-            fontFamily: sfPro,
-            fontWeight: 300,
-            fontSize: '1rem',
-            color: '#555',
-            lineHeight: 1.85,
-            margin: 0,
-          }}>
-            {project.concept}
-          </p>
+        <div className="cs-pad" style={{ maxWidth: NARROW, margin: '0 auto', padding: '0 48px 110px' }}>
+          <Reveal><Label text={project.sectionLabels?.concept ?? 'CONCEPT'} /></Reveal>
+          <Reveal delay={0.06}><h2 style={h2Style}>{project.conceptHeading}</h2></Reveal>
+          <Reveal delay={0.1}><p style={bodyStyle}>{project.concept}</p></Reveal>
         </div>
 
         {/* ── PROCESS ── */}
-        <div className="cs-pad" style={{ maxWidth: 820, margin: '0 auto', padding: '0 48px 96px' }}>
-          <Label text={project.sectionLabels?.process ?? 'PROCESS'} />
-          <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 64 }}>
+        <div className="cs-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: '0 48px 110px' }}>
+          <div style={{ maxWidth: NARROW - 40, margin: '0 auto' }}>
+            <Reveal><Label text={project.sectionLabels?.process ?? 'PROCESS'} /></Reveal>
+          </div>
+          <div style={{ marginTop: 48, display: 'flex', flexDirection: 'column', gap: 88 }}>
             {project.processSections.map((section, i) => (
-              <div key={i}>
-                <h3 style={{
-                  fontFamily: sfPro,
-                  fontWeight: 600,
-                  fontSize: '0.95rem',
-                  color: '#111',
-                  letterSpacing: '-0.01em',
-                  margin: '0 0 14px',
-                }}>
-                  {section.title}
-                </h3>
-                <p style={{
-                  fontFamily: sfPro,
-                  fontWeight: 300,
-                  fontSize: '0.97rem',
-                  color: '#555',
-                  lineHeight: 1.85,
-                  margin: section.image || section.video ? '0 0 28px' : '0',
-                }}>
-                  {parseBold(section.body)}
-                </p>
+              <Reveal key={i} y={32}>
+                <div style={{ maxWidth: NARROW - 40, margin: '0 auto' }}>
+                  <h3 style={{ fontFamily: FONT_DISPLAY, fontWeight: 600, fontSize: '1.15rem', color: FG, letterSpacing: '-0.02em', margin: '0 0 16px' }}>
+                    {section.title}
+                  </h3>
+                  <p style={{ ...bodyStyle, fontSize: '1rem', margin: section.image || section.video ? '0 0 32px' : '0' }}>
+                    {parseBold(section.body)}
+                  </p>
+                </div>
                 {section.video && (
-                  <figure style={{ margin: 0 }}>
-                    <div style={{ borderRadius: 14, overflow: 'hidden' }}>
-                      <AutoPlayVideo
-                        src={section.video}
-                        style={{ width: '100%', display: 'block' }}
-                      />
+                  <figure style={{ margin: '0 auto', maxWidth: WIDE }}>
+                    <div style={{ borderRadius: 16, overflow: 'hidden', border: `1px solid ${HAIRLINE}` }}>
+                      <AutoPlayVideo src={section.video} style={{ width: '100%', display: 'block' }} />
                     </div>
-                    {section.imageCaption && (
-                      <figcaption style={{ fontFamily: mono, fontSize: '0.66rem', color: '#888', letterSpacing: '0.04em', marginTop: 12, lineHeight: 1.5 }}>
-                        {section.imageCaption}
-                      </figcaption>
-                    )}
+                    {section.imageCaption && <Caption text={section.imageCaption} />}
                   </figure>
                 )}
                 {section.image && !section.video && (
-                  <figure style={{ margin: 0 }}>
-                    <div style={{ borderRadius: 14, overflow: 'hidden' }}>
-                      <img
-                        src={section.image}
-                        alt={section.imageCaption ?? section.title}
-                        style={{ width: '100%', display: 'block', objectFit: 'cover' }}
-                      />
+                  <figure style={{ margin: '0 auto', maxWidth: WIDE }}>
+                    <div style={{ borderRadius: 16, overflow: 'hidden', border: `1px solid ${HAIRLINE}` }}>
+                      <img src={section.image} alt={section.imageCaption ?? section.title} style={{ width: '100%', display: 'block', objectFit: 'cover' }} />
                     </div>
-                    {section.imageCaption && (
-                      <figcaption style={{ fontFamily: mono, fontSize: '0.66rem', color: '#888', letterSpacing: '0.04em', marginTop: 12, lineHeight: 1.5 }}>
-                        {section.imageCaption}
-                      </figcaption>
-                    )}
+                    {section.imageCaption && <Caption text={section.imageCaption} />}
                   </figure>
                 )}
                 {section.image2 && (
-                  <figure style={{ margin: '24px 0 0' }}>
-                    <div style={{ borderRadius: 14, overflow: 'hidden' }}>
-                      <img
-                        src={section.image2}
-                        alt={section.imageCaption2 ?? section.title}
-                        style={{ width: '100%', display: 'block', objectFit: 'cover' }}
-                      />
+                  <figure style={{ margin: '24px auto 0', maxWidth: WIDE }}>
+                    <div style={{ borderRadius: 16, overflow: 'hidden', border: `1px solid ${HAIRLINE}` }}>
+                      <img src={section.image2} alt={section.imageCaption2 ?? section.title} style={{ width: '100%', display: 'block', objectFit: 'cover' }} />
                     </div>
-                    {section.imageCaption2 && (
-                      <figcaption style={{ fontFamily: mono, fontSize: '0.66rem', color: '#888', letterSpacing: '0.04em', marginTop: 12, lineHeight: 1.5 }}>
-                        {section.imageCaption2}
-                      </figcaption>
-                    )}
+                    {section.imageCaption2 && <Caption text={section.imageCaption2} />}
                   </figure>
                 )}
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
 
         {/* ── FINAL DESIGN ── */}
         {project.finalImages.length > 0 && (
-          <div id="final" className="cs-pad" style={{ maxWidth: 820, margin: '0 auto', padding: '0 48px 96px' }}>
-            <Label text={project.sectionLabels?.finalDesign ?? 'FINAL DESIGN'} />
-            <h2 style={{
-              fontFamily: sfPro,
-              fontWeight: 400,
-              fontSize: 'clamp(1.6rem, 3vw, 2.4rem)',
-              color: '#111',
-              letterSpacing: '-0.025em',
-              lineHeight: 1.15,
-              margin: '0 0 20px',
-            }}>
-              {project.title}
-            </h2>
-            <p style={{
-              fontFamily: sfPro,
-              fontWeight: 300,
-              fontSize: '0.97rem',
-              color: '#666',
-              lineHeight: 1.8,
-              margin: '0 0 48px',
-              maxWidth: 580,
-            }}>
-              {project.meetTheWork}
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+          <div id="final" className="cs-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: '0 48px 110px' }}>
+            <div style={{ maxWidth: NARROW - 40, margin: '0 auto 48px' }}>
+              <Reveal><Label text={project.sectionLabels?.finalDesign ?? 'FINAL DESIGN'} /></Reveal>
+              <Reveal delay={0.06}>
+                <h2 style={{ ...h2Style, fontSize: 'clamp(1.8rem, 3.4vw, 2.8rem)', margin: '0 0 20px' }}>{project.title}</h2>
+              </Reveal>
+              <Reveal delay={0.1}><p style={{ ...bodyStyle, maxWidth: 600 }}>{project.meetTheWork}</p></Reveal>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
               {project.finalImages.map((img, i) => (
-                <figure key={i} style={{ margin: 0 }}>
-                  <div style={{ borderRadius: 14, overflow: 'hidden', aspectRatio: '16/9' }}>
+                <Reveal key={i} y={36} as="figure" style={{ margin: 0 }}>
+                  <div style={{ borderRadius: 16, overflow: 'hidden', aspectRatio: '16/9', border: `1px solid ${HAIRLINE}` }}>
                     {img.isVideo ? (
-                      <AutoPlayVideo
-                        src={img.src}
-                        style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }}
-                      />
+                      <AutoPlayVideo src={img.src} style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }} />
                     ) : (
-                      <img
-                        src={img.src}
-                        alt={img.caption}
-                        style={{ width: '100%', display: 'block', objectFit: 'cover' }}
-                      />
+                      <img src={img.src} alt={img.caption} style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover' }} />
                     )}
                   </div>
-                  {img.caption && (
-                    <figcaption style={{ fontFamily: mono, fontSize: '0.66rem', color: '#888', letterSpacing: '0.04em', marginTop: 12, lineHeight: 1.5 }}>
-                      {img.caption}
-                    </figcaption>
-                  )}
-                </figure>
+                  {img.caption && <Caption text={img.caption} />}
+                </Reveal>
               ))}
             </div>
           </div>
@@ -360,43 +243,17 @@ export default function CaseStudyPage({ params }: Props) {
 
         {/* ── REFLECTION ── */}
         {project.reflection.length > 0 && (
-          <div className="cs-pad" style={{ maxWidth: 820, margin: '0 auto', padding: '0 48px 96px' }}>
-            <Label text={project.sectionLabels?.reflection ?? 'REFLECTION'} />
-            <h2 style={{
-              fontFamily: sfPro,
-              fontWeight: 400,
-              fontSize: 'clamp(1.3rem, 2.5vw, 1.9rem)',
-              color: '#111',
-              letterSpacing: '-0.02em',
-              lineHeight: 1.3,
-              margin: '0 0 40px',
-            }}>
-              {project.reflectionHeading}
-            </h2>
+          <div className="cs-pad" style={{ maxWidth: NARROW, margin: '0 auto', padding: '0 48px 110px' }}>
+            <Reveal><Label text={project.sectionLabels?.reflection ?? 'REFLECTION'} /></Reveal>
+            <Reveal delay={0.06}><h2 style={{ ...h2Style, margin: '0 0 40px' }}>{project.reflectionHeading}</h2></Reveal>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
               {project.reflection.map((item, i) => (
-                <div key={i}>
-                  <h3 style={{
-                    fontFamily: sfPro,
-                    fontWeight: 600,
-                    fontSize: '0.95rem',
-                    color: '#111',
-                    letterSpacing: '-0.01em',
-                    margin: '0 0 12px',
-                  }}>
+                <Reveal key={i} delay={i * 0.05}>
+                  <h3 style={{ fontFamily: FONT_DISPLAY, fontWeight: 600, fontSize: '1.1rem', color: FG, letterSpacing: '-0.02em', margin: '0 0 12px' }}>
                     {item.title}
                   </h3>
-                  <p style={{
-                    fontFamily: sfPro,
-                    fontWeight: 300,
-                    fontSize: '0.97rem',
-                    color: '#555',
-                    lineHeight: 1.85,
-                    margin: 0,
-                  }}>
-                    {item.body}
-                  </p>
-                </div>
+                  <p style={{ ...bodyStyle, fontSize: '1rem' }}>{item.body}</p>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -404,110 +261,71 @@ export default function CaseStudyPage({ params }: Props) {
 
         {/* ── SOURCE CODE ── */}
         {project.sourceCode && (
-          <div className="cs-pad" style={{ maxWidth: 820, margin: '0 auto', padding: '0 48px 96px' }}>
-            <Label text="SOURCE CODE" />
-            <a
-              href={project.sourceCode.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                fontFamily: sfPro,
-                fontSize: 'clamp(1.3rem, 2.5vw, 1.9rem)',
-                fontWeight: 400,
-                color: '#111',
-                letterSpacing: '-0.02em',
-                lineHeight: 1.3,
-                textDecoration: 'none',
-                borderBottom: '1px solid #e0e0e0',
-                paddingBottom: 2,
-                display: 'inline-block',
-              }}
-            >
-              {project.sourceCode.label} ↗
-            </a>
+          <div className="cs-pad" style={{ maxWidth: NARROW, margin: '0 auto', padding: '0 48px 110px' }}>
+            <Reveal><Label text="SOURCE CODE" /></Reveal>
+            <Reveal delay={0.06}>
+              <a href={project.sourceCode.url} target="_blank" rel="noopener noreferrer" data-cursor="explore" style={{
+                fontFamily: FONT_DISPLAY, fontSize: 'clamp(1.4rem, 2.6vw, 2rem)', fontWeight: 600, color: FG,
+                letterSpacing: '-0.02em', lineHeight: 1.3, textDecoration: 'none', borderBottom: `1px solid ${ACCENT}`, paddingBottom: 3, display: 'inline-block',
+              }}>
+                {project.sourceCode.label} <span style={{ color: ACCENT }}>↗</span>
+              </a>
+            </Reveal>
           </div>
         )}
 
-        {/* ── INTERESTED IN MORE? ── */}
-        <div className="cs-pad" style={{ maxWidth: 820, margin: '0 auto', padding: '0 48px 40px' }}>
-          <Label text="INTERESTED IN MORE?" />
-          <h2 style={{
-            fontFamily: sfPro,
-            fontWeight: 400,
-            fontSize: 'clamp(1.3rem, 2.5vw, 1.9rem)',
-            color: '#111',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.3,
-            margin: '0 0 32px',
-          }}>
-            See the next projects here →
-          </h2>
-
-          <div className="cs-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-            {nextProjects.map((p) => (
-              <Link key={p.slug} href={`/works/${p.slug}`} style={{ textDecoration: 'none', display: 'block' }}>
-                <div style={{
-                  background: '#f9f9f8',
-                  border: '1px solid #ebebE8',
-                  borderRadius: 16,
-                  overflow: 'hidden',
-                }}>
-                  <div style={{ background: p.bg, aspectRatio: '4/3', overflow: 'hidden' }}>
-                    <img
-                      src={p.heroImage}
-                      alt={p.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                    />
+        {/* ── NEXT PROJECTS ── */}
+        <div className="cs-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: '0 48px 40px' }}>
+          <Reveal><Label text="INTERESTED IN MORE?" /></Reveal>
+          <Reveal delay={0.06}>
+            <h2 style={{ ...h2Style, margin: '0 0 40px' }}>See the next projects <span style={{ color: ACCENT }}>→</span></h2>
+          </Reveal>
+          <div className="cs-grid-2" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 28 }}>
+            {nextProjects.map((p, i) => (
+              <Reveal key={p.slug} delay={i * 0.08}>
+                <Link href={`/works/${p.slug}`} data-cursor="explore" style={{ textDecoration: 'none', display: 'block' }}>
+                  <div style={{ background: CARD, border: `1px solid ${HAIRLINE}`, borderRadius: 18, overflow: 'hidden' }}>
+                    <div style={{ background: p.bg, aspectRatio: '4/3', overflow: 'hidden' }}>
+                      <img src={p.heroImage} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                    </div>
+                    <div style={{ padding: '18px 20px 22px' }}>
+                      <p style={{ fontFamily: FONT_MONO, fontSize: '0.58rem', color: MUTED_LIGHT, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px' }}>
+                        {p.tags.slice(0, 2).join(' · ')}
+                      </p>
+                      <p style={{ fontFamily: FONT_DISPLAY, fontSize: '1.05rem', fontWeight: 600, color: FG, margin: '0 0 6px', letterSpacing: '-0.02em' }}>
+                        {p.title}
+                      </p>
+                      <p style={{ fontFamily: sfPro, fontSize: '0.82rem', color: MUTED, fontWeight: 400, margin: 0, lineHeight: 1.5 }}>
+                        {p.subtitle}
+                      </p>
+                    </div>
                   </div>
-                  <div style={{ padding: '14px 16px 18px' }}>
-                    <p style={{ fontFamily: mono, fontSize: '0.52rem', color: '#bbb', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>
-                      [{p.tags.slice(0, 2).join(', ')}]
-                    </p>
-                    <p style={{ fontFamily: sfPro, fontSize: '0.92rem', fontWeight: 500, color: '#111', margin: '0 0 4px', letterSpacing: '-0.01em' }}>
-                      {p.title}
-                    </p>
-                    <p style={{ fontFamily: sfPro, fontSize: '0.75rem', color: '#aaa', fontWeight: 300, margin: 0, lineHeight: 1.5 }}>
-                      {p.subtitle}
-                    </p>
-                  </div>
-                </div>
-              </Link>
+                </Link>
+              </Reveal>
             ))}
-          </div>
-
-          <div style={{ marginTop: 24, textAlign: 'center' }}>
-            <Link
-              href="/works"
-              style={{ fontFamily: mono, fontSize: '0.6rem', color: '#bbb', textDecoration: 'none', letterSpacing: '0.08em', textTransform: 'uppercase', borderBottom: '1px solid #e8e8e8', paddingBottom: 2 }}
-            >
-              view all works →
-            </Link>
           </div>
         </div>
 
         {/* ── FOOTER ── */}
         <div className="cs-pad cs-footer-flex" style={{
-          maxWidth: 820,
-          margin: '0 auto',
-          padding: '40px 48px 100px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderTop: '1px solid #f0f0ec',
-          marginTop: 32,
+          maxWidth: WIDE, margin: '40px auto 0', padding: '40px 48px 100px',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1px solid ${HAIRLINE}`,
         }}>
-          <Link
-            href="/works"
-            style={{ fontFamily: mono, fontSize: '0.6rem', color: '#ccc', textDecoration: 'none', letterSpacing: '0.06em' }}
-          >
+          <Link href="/works" data-cursor="explore" style={{ fontFamily: FONT_MONO, fontSize: '0.66rem', color: MUTED, textDecoration: 'none', letterSpacing: '0.06em' }}>
             ← all works
           </Link>
-          <span style={{ fontFamily: sfPro, fontSize: '0.85rem', color: '#ccc' }}>
-            Thanks for stopping by! :)
-          </span>
+          <span style={{ fontFamily: sfPro, fontSize: '0.9rem', color: MUTED }}>Thanks for stopping by :)</span>
         </div>
 
       </main>
     </>
+  )
+}
+
+function Caption({ text }: { text: string }) {
+  return (
+    <figcaption style={{ fontFamily: FONT_MONO, fontSize: '0.68rem', color: MUTED, letterSpacing: '0.03em', marginTop: 14, lineHeight: 1.5, textAlign: 'center' }}>
+      {text}
+    </figcaption>
   )
 }

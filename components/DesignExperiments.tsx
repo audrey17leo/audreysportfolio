@@ -1,7 +1,8 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { sfPro, mono } from '@/lib/fonts'
+import { sfPro } from '@/lib/fonts'
+import { BG, FG, ACCENT, MUTED, MUTED_LIGHT, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
 
 const F = (id: string) => `https://framerusercontent.com/images/${id}`
 
@@ -111,7 +112,7 @@ export default function DesignExperiments() {
   }
 
   return (
-    <section style={{ background: '#F5F5F3', paddingBottom: 120, position: 'relative' }}>
+    <section style={{ background: BG, padding: 'clamp(40px, 8vh, 90px) 0 clamp(80px, 12vh, 140px)', position: 'relative' }}>
 
       <style>{`
         @keyframes marquee-scroll {
@@ -133,14 +134,15 @@ export default function DesignExperiments() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          style={{ marginBottom: 36 }}
+          style={{ marginBottom: 48 }}
         >
-          <p style={{ fontFamily: mono, fontSize: '0.58rem', color: '#bbb', letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 12px' }}>
-            [Design Experiments]
+          <p style={{ fontFamily: FONT_MONO, fontSize: '0.7rem', color: MUTED_LIGHT, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />
+            Design experiments
           </p>
-          <h2 style={{ fontFamily: sfPro, fontWeight: 300, fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', color: '#111', letterSpacing: '-0.025em', lineHeight: 1.15, margin: 0 }}>
-            Textiles, 3D, and things made{' '}
-            <span style={{ fontWeight: 600 }}>for the love of making.</span>
+          <h2 style={{ fontFamily: FONT_DISPLAY, fontWeight: 600, fontSize: 'clamp(1.7rem, 3.4vw, 2.8rem)', color: FG, letterSpacing: '-0.035em', lineHeight: 1.12, margin: 0 }}>
+            Textiles, 3D &amp; things made{' '}
+            <span style={{ color: ACCENT }}>for the love of making.</span>
           </h2>
         </motion.div>
       </div>
@@ -176,12 +178,12 @@ export default function DesignExperiments() {
                 </div>
                 <p style={{
                   fontFamily: sfPro,
-                  fontSize: '0.82rem',
-                  color: hovered !== null && !isHovered ? '#aaa' : '#555',
-                  letterSpacing: '-0.01em',
-                  margin: '12px 2px 0',
-                  lineHeight: 1.4,
-                  fontWeight: 300,
+                  fontSize: '0.85rem',
+                  color: hovered !== null && !isHovered ? MUTED_LIGHT : MUTED,
+                  letterSpacing: '-0.005em',
+                  margin: '14px 2px 0',
+                  lineHeight: 1.45,
+                  fontWeight: 400,
                   transition: 'color 0.3s ease',
                 }}>
                   {card.caption}

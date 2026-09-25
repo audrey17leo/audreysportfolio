@@ -13,6 +13,9 @@ export default function IntroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
+    // Allow skipping the intro via ?nointro (handy for previews).
+    // Done in an effect (not during render) to avoid an SSR hydration mismatch.
+    if (window.location.search.includes('nointro')) { setVisible(false); return }
     const v = videoRef.current
     if (!v) return
     v.muted = true
