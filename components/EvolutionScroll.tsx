@@ -96,7 +96,7 @@ export default function EvolutionScroll() {
       <div className="evo-grid" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: 'clamp(28px, 4vw, 64px)', marginTop: 'clamp(36px, 6vh, 72px)' }}>
         {/* sticky visual (desktop) */}
         {!isMobile && (
-          <div style={{ position: 'sticky', top: 90, alignSelf: 'start', height: 'max-content' }}>
+          <div style={{ position: 'sticky', top: 88, alignSelf: 'start', height: 'calc(100vh - 130px)', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{ borderRadius: 20, overflow: 'hidden', border: `1px solid ${HAIRLINE}`, background: CARD, aspectRatio: '1440 / 860', position: 'relative' }}>
               {STEPS.map((s, i) => (
                 <img key={s.img} src={s.img} alt={s.title}

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { projects as realProjects } from '@/lib/projects'
 import { useIsMobile } from '@/lib/useIsMobile'
 import { reveal, staggerContainer, once, stellaEase } from '@/lib/stellaMotion'
-import { FG, MUTED, HAIRLINE, CARD, BG, FONT_BODY } from '@/lib/theme'
+import { FG, MUTED, HAIRLINE, CARD, FONT_BODY } from '@/lib/theme'
 
 const displayProjects = realProjects
   .filter(p => p.slug !== 'batik')
@@ -82,39 +82,47 @@ function ProjectCard({ project }: { project: DisplayProject }) {
               }} />
           ) : null}
 
-          {/* see project — appears on hover, centered */}
+          {/* hover scrim — keeps labels legible over any image */}
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute', inset: 0, pointerEvents: 'none',
+              background: 'linear-gradient(to top, rgba(20,20,20,0.30), transparent 42%), linear-gradient(to bottom, rgba(20,20,20,0.16), transparent 34%)',
+              opacity: hovered ? 1 : 0, transition: 'opacity 0.3s',
+            }}
+          />
+
+          {/* see project — top-left, appears on hover */}
           <div
             style={{
-              position: 'absolute', inset: 0,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              opacity: hovered ? 1 : 0,
-              transform: hovered ? 'scale(1)' : 'scale(0.96)',
-              transition: 'opacity 0.28s, transform 0.28s',
-              pointerEvents: 'none',
+              position: 'absolute', top: 'clamp(12px,1.5vw,16px)', left: 'clamp(12px,1.5vw,16px)',
+              opacity: hovered ? 1 : 0, transform: hovered ? 'translateY(0)' : 'translateY(-4px)',
+              transition: 'opacity 0.28s, transform 0.28s', pointerEvents: 'none',
             }}
           >
             <span
               style={{
-                fontFamily: FONT_BODY, fontSize: 14, fontWeight: 500, color: '#fdfcfc',
-                background: FG, padding: '10px 18px', borderRadius: 9999,
+                fontFamily: FONT_BODY, fontSize: 13.5, fontWeight: 500, color: FG,
+                background: CARD, padding: '8px 15px', borderRadius: 9999,
                 display: 'inline-flex', alignItems: 'center', gap: 7,
+                boxShadow: 'rgba(0,0,0,0.10) 0px 2px 8px',
               }}
             >
               see project <span aria-hidden>→</span>
             </span>
           </div>
 
-          {/* tags — appear on hover, bottom-left (these are the description) */}
-          <div style={{ position: 'absolute', left: 'clamp(12px,1.5vw,16px)', bottom: 'clamp(12px,1.5vw,16px)', display: 'flex', flexWrap: 'wrap', gap: 8, maxWidth: 'calc(100% - 32px)', opacity: hovered ? 1 : 0, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
+          {/* tags — bottom-left, appear on hover */}
+          <div style={{ position: 'absolute', left: 'clamp(12px,1.5vw,16px)', bottom: 'clamp(12px,1.5vw,16px)', display: 'flex', flexWrap: 'wrap', gap: 7, maxWidth: 'calc(100% - 32px)', opacity: hovered ? 1 : 0, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
             {project.tags.slice(0, 3).map((t) => (
               <span
                 key={t}
                 style={{
-                  fontFamily: FONT_BODY, fontSize: 14, fontWeight: 500, color: FG,
-                  background: BG,
-                  border: `1px solid ${HAIRLINE}`,
-                  padding: '5px 13px', borderRadius: 9999,
-                  textTransform: 'lowercase', lineHeight: '20px',
+                  fontFamily: FONT_BODY, fontSize: 13, fontWeight: 500, color: FG,
+                  background: CARD,
+                  padding: '5px 12px', borderRadius: 9999,
+                  textTransform: 'lowercase', lineHeight: '18px',
+                  boxShadow: 'rgba(0,0,0,0.10) 0px 2px 8px',
                 }}
               >
                 {t.toLowerCase()}

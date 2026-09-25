@@ -14,11 +14,33 @@ export function generateStaticParams() {
 
 type Props = { params: { slug: string } }
 
-// Parse **bold** into nodes
-function parseBold(text: string): React.ReactNode {
-  const parts = text.split(/\*\*(.*?)\*\*/g)
-  return parts.map((part, i) =>
-    i % 2 === 1 ? <strong key={i} style={{ fontWeight: 600, color: FG }}>{part}</strong> : part
+// Inline **bold** and *italic*
+function inline(text: string, base = 0): React.ReactNode {
+  const nodes: React.ReactNode[] = []
+  const re = /\*\*([^*]+)\*\*|\*([^*]+)\*/g
+  let last = 0, m: RegExpExecArray | null, k = base
+  while ((m = re.exec(text))) {
+    if (m.index > last) nodes.push(text.slice(last, m.index))
+    if (m[1] !== undefined) nodes.push(<strong key={k++} style={{ fontWeight: 600, color: FG }}>{m[1]}</strong>)
+    else nodes.push(<em key={k++} style={{ fontStyle: 'italic' }}>{m[2]}</em>)
+    last = re.lastIndex
+  }
+  if (last < text.length) nodes.push(text.slice(last))
+  return nodes
+}
+
+// Rich body text: \n\n => paragraph, \n => line break, with inline emphasis.
+function RichText({ text, style }: { text: string; style?: React.CSSProperties }) {
+  return (
+    <>
+      {text.split('\n\n').map((para, i) => (
+        <p key={i} style={{ ...style, margin: i === 0 ? 0 : '0.9em 0 0' }}>
+          {para.split('\n').map((line, j) => (
+            <span key={j}>{j > 0 ? <br /> : null}{inline(line, j * 100)}</span>
+          ))}
+        </p>
+      ))}
+    </>
   )
 }
 
@@ -86,7 +108,7 @@ function TextBlock({ kicker, title, text, table }: { kicker?: string; title?: st
     <div>
       {kicker && <p style={label}><Dot />{kicker}</p>}
       {title && <h2 style={heading}>{title}</h2>}
-      {text && <p style={body}>{parseBold(text)}</p>}
+      {text && <RichText text={text} style={body} />}
       {table && <StateTable table={table} />}
     </div>
   )
@@ -149,12 +171,18 @@ export default function CaseStudyPage({ params }: Props) {
           </Reveal>
         </div>
 
-        {/* ── FRAMING — problem | idea, side by side ── */}
-        <div className="cs-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: `${beatPad} 40px 0` }}>
-          <div className="cs-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(32px, 5vw, 72px)', alignItems: 'start' }}>
-            <Reveal><TextBlock kicker={L.problemSpace ?? 'THE PROBLEM'} title={project.problemSpaceHeading} text={project.problemSpace} /></Reveal>
-            <Reveal delay={0.08}><TextBlock kicker={L.concept ?? 'THE IDEA'} title={project.conceptHeading} text={project.concept} /></Reveal>
-          </div>
+        {/* ── FRAMING — problem, then idea, read top-to-bottom ── */}
+        <div className="cs-pad" style={{ maxWidth: 720, margin: '0 auto', padding: `${beatPad} 40px 0` }}>
+          <Reveal><TextBlock kicker={L.problemSpace ?? 'THE PROBLEM'} title={project.problemSpaceHeading} text={project.problemSpace} /></Reveal>
+        </div>
+        {/* centered turn from problem to idea */}
+        <div className="cs-pad" style={{ maxWidth: 720, margin: '0 auto', padding: `clamp(40px, 7vh, 80px) 40px 0`, textAlign: 'center' }}>
+          <Reveal>
+            <span style={{ display: 'inline-block', fontFamily: FONT_MONO, fontSize: 12, letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED_LIGHT }}>So the design turned on one idea ↓</span>
+          </Reveal>
+        </div>
+        <div className="cs-pad" style={{ maxWidth: 720, margin: '0 auto', padding: `clamp(28px, 4vh, 44px) 40px 0` }}>
+          <Reveal><TextBlock kicker={L.concept ?? 'THE IDEA'} title={project.conceptHeading} text={project.concept} /></Reveal>
         </div>
 
         {/* ── PROCESS BEATS — alternating visual + text ── */}
@@ -217,7 +245,7 @@ export default function CaseStudyPage({ params }: Props) {
               {project.reflection.map((item, i) => (
                 <Reveal key={i} delay={i * 0.06}>
                   <h3 style={{ fontFamily: FONT_DISPLAY, fontWeight: 500, fontSize: 17, color: FG, letterSpacing: '-0.01em', margin: '0 0 10px' }}>{item.title}</h3>
-                  <p style={{ ...body, maxWidth: 460 }}>{item.body}</p>
+                  <div style={{ maxWidth: 460 }}><RichText text={item.body} style={body} /></div>
                 </Reveal>
               ))}
             </div>

@@ -74,21 +74,21 @@ export const projects: Project[] = [
     showcaseImages: ['/projects/tldraw-demo.jpg'],
 
     problemSpaceHeading: 'Animation software asks you to describe motion. Nobody moves that way.',
-    problemSpace: 'Keyframes, easing curves, dope sheets — every serious 2D tool front-loads the hardest concept in the craft. I studied the whole shelf: After Effects’ puppet tool, Procreate Dreams, StickNodes, Pivot Animator, even the motion paths hiding inside Canva and Keynote. All powerful, all slow. The timeline is the first thing you meet and the last thing you master. For a canvas-native tool like tldraw, that felt exactly backwards. **So I stopped designing a timeline** and started designing a performance.',
+    problemSpace: 'Keyframes. Easing curves. Dope sheets.\nEvery serious 2D tool front-loads the hardest idea in the craft.\n\nI studied the whole shelf — After Effects, Procreate Dreams, StickNodes, Pivot, even the motion paths hiding inside Canva and Keynote. All powerful. All slow.\n\nThe pattern was quiet but total: **the tools people find fun hide the timeline. The tools people find capable expose it.**\n\ntldraw is a canvas, and a canvas is for playing. So I stopped trying to make a better timeline — and started designing a performance.',
 
     conceptHeading: 'The motion is the take.',
-    concept: 'tldraw flash records performance, not parameters. You drag a character across the canvas and that drag — its path, its speed — is the animation. Grab the torso and the whole puppet walks; grab a limb and it swings. You handle a drawing like a physical puppet. Then you build the scene in layers, **one thing per pass**: a second character while the first plays back live, a camera move, a voice-over on the shared clock, an expression you tap in at the right beat.',
+    concept: 'tldraw flash records performance, not parameters.\n\nYou drag a drawing across the canvas.\nThat drag — its path, its speed — **is** the animation.\nGrab the torso and the whole puppet walks. Grab a limb and it swings.\nYou handle a drawing the way you would handle a puppet.\n\nThen the scene builds the way a scene actually gets built — **one thing per pass.** A second character while the first plays back live. A camera move. A voice-over on the shared clock. An expression, tapped in on the beat.',
 
     processSections: [
       {
-        title: 'Research — mapping every way people already fake motion',
-        body: 'Before drawing a single screen I mapped how existing tools handle 2D motion, from professional (After Effects’ As-Rigid-As-Possible puppet deforms) to playful (Pivot’s stickman rig with joint + origin points) to incidental (the drag-a-path animation buried in Canva and PowerPoint). The pattern was clear: the tools people find *fun* hide the timeline; the tools people find *capable* expose it. tldraw flash had to be both — so the interaction, not the timeline, had to carry the model.',
+        title: 'First I mapped every way people already fake motion',
+        body: 'Before a single screen, I asked a smaller question:\n**how do people animate when they aren’t really trying to?**\n\nI mapped the whole range — from professional (After Effects’ as-rigid-as-possible puppet deforms) to playful (Pivot’s stickman rig, joint points and origin points) to accidental (the drag-a-path animation buried in Canva and PowerPoint).\n\nOne line ran through all of it. The fun tools hide the timeline; the capable tools expose it. tldraw flash had to be both — so the interaction, not the timeline, had to carry the whole model.',
         image: '/projects/tldraw-wireframe.png',
         imageCaption: 'Interaction research + early wireframing — Canva, Keynote, After Effects, StickNodes, Pivot, Procreate Dreams, and the mechanisms pulled from each.',
       },
       {
         title: 'The loop — record, then layer one thing per pass',
-        body: 'Drag a ready-made character onto the canvas. Press record; a 3-second count-in plays. Drag the character across the stage — **that motion is the take.** Press play and it repeats, holding its last pose. Then you build the scene up, **one channel per pass:**',
+        body: 'Drag a character onto the canvas. Press record; a three-second count-in plays.\nDrag it across the stage — **that motion is the take.**\nPress play, and it repeats, holding its last pose.\n\nThen the scene builds up, one channel at a time:',
         table: {
           head: ['Pass', 'What you add'],
           rows: [
@@ -104,7 +104,7 @@ export const projects: Project[] = [
       },
       {
         title: 'One editing model: punch-in',
-        body: 'No trim, no retiming, no speed curves. If you flub, you scrub to it, grab just the arm, and re-record **that channel from the playhead forward.** Everything before is untouched; the walk is kept. You never adjust a curve — you re-perform. One model, learned once, applied everywhere. The camera crop renders on export; scenes chain together as a filmstrip where each card’s thumbnail *is* the camera view.',
+        body: 'No trim. No retiming. No speed curves.\n\nFlub a take? Scrub to it, grab just the arm, and re-record **that channel from the playhead forward.** Everything before it is untouched — the walk you liked is kept.\n\nYou never adjust a curve. You re-perform.\nOne model, learned once, true everywhere — and the reason the whole tool stays teachable. Scenes chain as a filmstrip, where each card’s thumbnail *is* the camera view.',
       },
     ],
 
@@ -118,11 +118,11 @@ export const projects: Project[] = [
     reflection: [
       {
         title: 'The discipline was in what I removed',
-        body: 'The hard part wasn’t the tech — it was resisting the timeline everyone expects, and trusting that a single editing model (punch-in) could do the work of a dozen. Constraints didn’t limit the tool; they gave it a voice.',
+        body: 'The hard part was never the tech.\nIt was resisting the timeline everyone expects — and trusting that one editing model could do the work of a dozen.\n\nConstraints didn’t limit the tool. They gave it a voice.',
       },
       {
-        title: 'Interaction can be the mental model',
-        body: 'When “drag = record” and “grab a limb = pose it,” there’s almost nothing to teach. The best documentation is a gesture that means the obvious thing.',
+        title: 'The interaction is the manual',
+        body: 'When drag means record and grabbing a limb means posing it, there is almost nothing left to teach.\n\nThe best documentation is a gesture that means the obvious thing.',
       },
     ],
     sectionLabels: {
