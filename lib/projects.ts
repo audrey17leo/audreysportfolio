@@ -63,7 +63,7 @@ export const projects: Project[] = [
     subtitle: 'A canvas-native animation tool where you perform motion instead of keyframing it, record, layer one thing per pass, punch-in to fix.',
     tags: ['Product Design', 'Interaction', 'Ongoing'],
     bg: '#dfe8fb',
-    heroImage: '/projects/tldraw-demo.jpg',
+    heroImage: '/projects/cover-tldraw.jpg',
 
     h1: 'An animation tool where the motion is the take',
     subtitleParagraph: 'tldraw flash turns the infinite canvas into a stage. Instead of setting keyframes, you drag a drawing across the screen and that performance becomes the animation, then you layer the scene one thing at a time. An ongoing R&D exploration built on tldraw.',
@@ -71,7 +71,7 @@ export const projects: Project[] = [
     scope: 'Product & Interaction Design\nR&D Exploration',
     role: 'Solo. Concept, interaction model, competitive research, and prototype.',
     liveUrl: { url: 'https://tldrawflash.com', label: 'tldrawflash.com' },
-    showcaseImages: ['/projects/tldraw-demo.jpg'],
+    showcaseImages: ['/projects/cover-tldraw.jpg'],
 
     problemSpaceHeading: 'Animation software asks you to describe motion. Nobody moves that way.',
     problemSpace: 'Keyframes. Easing curves. Dope sheets.\nEvery serious 2D tool front-loads the hardest idea in the craft.\n\nI studied the whole shelf, After Effects, Procreate Dreams, StickNodes, Pivot, even the motion paths hiding inside Canva and Keynote. All powerful. All slow.\n\nThe pattern was quiet but total: **the tools people find fun hide the timeline. The tools people find capable expose it.**\n\ntldraw is a canvas, and a canvas is for playing. So I stopped trying to make a better timeline, and started designing a performance.',
@@ -141,14 +141,14 @@ export const projects: Project[] = [
     subtitle: 'A two-sided food-waste system, a consumer rescue app and a smart retail till, measured in the same currency: CO₂ saved.',
     tags: ['Product Design', 'Systems', 'Gartner Winner'],
     bg: '#e9f1ec',
-    heroImage: '/projects/gofresh-app.jpg',
+    heroImage: '/projects/cover-gofresh.jpg',
 
     h1: 'Turning the expiry line into a discount, not a decision',
     subtitleParagraph: 'A third of the food we produce is never eaten. gofresh treats supermarket waste as a supply-chain loop rather than a shopping feature, pairing a consumer rescue app with a retail till that discounts near-expiry stock automatically. Winner, Gartner Case Competition.',
     year: '2024',
     scope: 'Product Design\nSystems Thinking',
     role: 'Case competition. Product design, system framing, and prototype.',
-    showcaseImages: ['/projects/gofresh-app.jpg'],
+    showcaseImages: ['/projects/cover-gofresh.jpg'],
 
     problemSpaceHeading: 'The waste isn’t made by the shopper. It’s made at the till.',
     problemSpace: 'A third of the food we grow is never eaten.\nMost of it doesn’t rot in a field. It gets binned at a shop, on a normal Tuesday, by someone with a job to do.\n\nSo I looked at where the waste is actually *made*, and it wasn’t the shopper.\nIt was the till. The exact moment a perfectly good croissant crosses an invisible expiry line and stops being sellable.\n\nEvery food-rescue app I found designed the shopper: go find the deal, go to the store, feel good.\nThat solves half a loop. **So I designed both halves of it.**',
@@ -204,14 +204,14 @@ export const projects: Project[] = [
     subtitle: 'A portfolio builder that optimises for momentum over options, from blank page to a first draft you’d actually keep.',
     tags: ['Web App', 'Visual Design', 'Canva Winner'],
     bg: '#efeaff',
-    heroImage: '/projects/folio-web.jpg',
+    heroImage: '/projects/cover-folio.jpg',
 
     h1: 'From “build your portfolio” to “here’s your portfolio”',
     subtitleParagraph: 'Everyone tells creatives to make a portfolio, then hands them a blank canvas and walks away. folio removes the blank-page tax, a guided web app that turns your work into a laid-out site in the first ten minutes. Built and won in a hackathon sprint. Winner, Canva Hackathon.',
     year: '2024',
     scope: 'Product & Visual Design',
     role: 'Hackathon. Product design, visual design, and build.',
-    showcaseImages: ['/projects/folio-web.jpg'],
+    showcaseImages: ['/projects/cover-folio.jpg'],
 
     problemSpaceHeading: 'The gap isn’t talent. It’s the first ten minutes.',
     problemSpace: '“Just make a portfolio,” everyone says. Then they hand you a blank canvas and walk away.\n\nWhat stops people isn’t talent, and it isn’t time. It’s the first ten minutes. The empty page that asks you to be your own art director before you’ve made a single decision.\n\nTemplates feel generic. From-scratch feels endless. Both leave you staring.\nFor a room full of students at a hackathon, the win was never *more features*. It was getting someone to a **first draft they’d keep.**',
