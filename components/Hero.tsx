@@ -1,17 +1,30 @@
 'use client'
 import { motion } from 'framer-motion'
 import dynamic from 'next/dynamic'
-import { reveal, staggerContainer } from '@/lib/stellaMotion'
-import { FG, MUTED, MUTED_LIGHT, HAIRLINE, CARD, HIGHLIGHT, GREEN, FONT_DISPLAY, FONT_MONO, FONT_BODY, R_CARD } from '@/lib/theme'
+import { reveal, staggerContainer, flipUp, stellaEase } from '@/lib/stellaMotion'
+import { FG, ACCENT, MUTED, MUTED_LIGHT, HAIRLINE, CARD, FONT_DISPLAY } from '@/lib/theme'
 import { useIsMobile } from '@/lib/useIsMobile'
 
 const SleepingModel = dynamic(() => import('./SleepingModel'), { ssr: false })
 
-const metaLabel: React.CSSProperties = {
-  fontFamily: FONT_MONO,
-  fontSize: '0.7rem',
-  letterSpacing: '0.14em',
-  textTransform: 'uppercase',
+const HEADLINE: { text: string; accent?: boolean }[] = [
+  { text: 'Audrey Leo builds calm,' },
+  { text: 'human-centered', accent: true },
+  { text: 'products.' },
+]
+
+function FlipLine({ text, accent, delay }: { text: string; accent?: boolean; delay: number }) {
+  return (
+    <span style={{ display: 'block', overflow: 'hidden', paddingBottom: '0.06em' }}>
+      <motion.span
+        variants={flipUp}
+        transition={{ duration: 0.7, ease: stellaEase, delay }}
+        style={{ display: 'block', transformOrigin: 'bottom', color: accent ? ACCENT : FG }}
+      >
+        {text}
+      </motion.span>
+    </span>
+  )
 }
 
 export default function Hero() {
@@ -22,152 +35,137 @@ export default function Hero() {
       style={{
         minHeight: '100svh',
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        padding: isMobile ? '104px 24px 28px' : 'clamp(110px, 13vh, 150px) clamp(32px, 5vw, 72px) clamp(28px, 4vh, 44px)',
+        alignItems: 'center',
+        padding: isMobile ? '120px 24px 72px' : 'clamp(120px, 16vh, 200px) clamp(32px, 6vw, 96px) clamp(72px, 10vh, 120px)',
       }}
     >
-      {/* ── TOP META ROW — frames the top edge ── */}
-      <motion.div
-        initial="hidden"
-        animate="show"
-        variants={staggerContainer}
-        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}
-      >
-        <motion.span variants={reveal} style={{ ...metaLabel, color: MUTED, display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ width: 7, height: 7, borderRadius: '50%', background: GREEN, display: 'inline-block' }} />
-          Product designer — creative technologist
-        </motion.span>
-        {!isMobile && (
-          <motion.span variants={reveal} style={{ ...metaLabel, color: MUTED_LIGHT }}>
-            Based in London — 51.5°N
-          </motion.span>
-        )}
-      </motion.div>
-
-      {/* ── CENTER — wordmark ↔ statement ── */}
       <div
         style={{
-          flex: 1,
-          display: 'grid',
-          gridTemplateColumns: isMobile ? '1fr' : '1.02fr 0.98fr',
-          gap: isMobile ? 40 : 'clamp(40px, 6vw, 88px)',
+          maxWidth: 1280,
+          margin: '0 auto',
+          width: '100%',
+          display: 'flex',
+          flexDirection: isMobile ? 'column-reverse' : 'row',
           alignItems: 'center',
-          padding: isMobile ? '48px 0' : 0,
+          gap: isMobile ? 40 : 'clamp(40px, 6vw, 96px)',
         }}
       >
-        {/* LEFT — dominant stacked wordmark */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-          style={{
-            fontFamily: FONT_DISPLAY,
-            fontWeight: 500,
-            fontSize: 'clamp(3.4rem, 11vw, 9rem)',
-            lineHeight: 0.86,
-            letterSpacing: '-0.045em',
-            color: FG,
-            margin: 0,
-          }}
-        >
-          Audrey<br />Leo
-        </motion.h1>
-
-        {/* RIGHT — statement + credentials + pinned 3D */}
-        <motion.div
-          initial="hidden"
-          animate="show"
-          variants={staggerContainer}
-          style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(28px, 4vh, 44px)' }}
-        >
-          <motion.p
+        {/* LEFT — the statement */}
+        <motion.div initial="hidden" animate="show" variants={staggerContainer} style={{ flex: 1, width: isMobile ? '100%' : undefined }}>
+          <motion.div
             variants={reveal}
             style={{
-              fontFamily: FONT_BODY,
-              fontSize: 'clamp(1.35rem, 2vw, 1.9rem)',
-              fontWeight: 400,
-              lineHeight: 1.36,
-              letterSpacing: '-0.01em',
-              color: FG,
-              margin: 0,
-              maxWidth: 480,
+              fontSize: '0.74rem',
+              letterSpacing: '0.16em',
+              textTransform: 'uppercase',
+              fontWeight: 600,
+              color: MUTED_LIGHT,
+              marginBottom: 'clamp(22px, 3.5vh, 40px)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
             }}
           >
-            I design what people{' '}
-            <span style={{ background: HIGHLIGHT, borderRadius: 6, padding: '0 8px', boxDecorationBreak: 'clone', WebkitBoxDecorationBreak: 'clone' }}>feel</span>,
-            not just what they notice — accessible, clear &amp; intentional.
+            <span style={{ width: 7, height: 7, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />
+            Product designer &amp; creative technologist
+          </motion.div>
+
+          <h1
+            style={{
+              fontFamily: FONT_DISPLAY,
+              fontWeight: 700,
+              fontSize: 'clamp(2.5rem, 6.4vw, 5.2rem)',
+              lineHeight: 1.0,
+              letterSpacing: '-0.045em',
+              margin: 0,
+              perspective: 900,
+            }}
+          >
+            {HEADLINE.map((l, i) => (
+              <FlipLine key={l.text} text={l.text} accent={l.accent} delay={0.2 + i * 0.08} />
+            ))}
+          </h1>
+
+          <motion.p
+            variants={reveal}
+            transition={{ duration: 0.6, ease: stellaEase, delay: 0.5 }}
+            style={{
+              marginTop: 'clamp(24px, 3.5vh, 40px)',
+              maxWidth: 460,
+              fontSize: 'clamp(1rem, 1.25vw, 1.12rem)',
+              lineHeight: 1.6,
+              color: MUTED,
+              fontWeight: 400,
+            }}
+          >
+            I shape products end-to-end — design, research &amp; creative strategy — turning
+            ambiguous ideas into things people actually want to use.
           </motion.p>
 
-          {/* credentials + pinned polaroid share a baseline row → balances the wordmark */}
-          <motion.div variants={reveal} style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <span style={{ ...metaLabel, fontSize: '0.72rem', color: MUTED }}>
-                Currently{' '}
-                <a href="https://www.tldraw.com" target="_blank" rel="noopener noreferrer" data-cursor="explore" style={{ color: FG, textDecoration: 'none', borderBottom: `1px solid ${FG}`, paddingBottom: 2 }}>
-                  Product R&amp;D @ tldraw ↗
-                </a>
+          <motion.div
+            variants={reveal}
+            transition={{ duration: 0.6, ease: stellaEase, delay: 0.6 }}
+            style={{ marginTop: 'clamp(28px, 4vh, 48px)', display: 'flex', flexWrap: 'wrap', gap: '10px 22px' }}
+          >
+            {['Currently — Product R&D @ tldraw', 'Art & Technology @ UCL'].map((m) => (
+              <span key={m} style={{ fontSize: '0.72rem', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600, color: MUTED }}>
+                {m}
               </span>
-              <span style={{ ...metaLabel, fontSize: '0.7rem', color: MUTED_LIGHT }}>
-                Art &amp; Technology @ UCL
-              </span>
-              <span style={{ ...metaLabel, fontSize: '0.7rem', color: MUTED_LIGHT }}>
-                Prev. LFW · Lawson · IDN
-              </span>
-            </div>
-
-            {/* pinned polaroid — small, to the side */}
-            <figure style={{ margin: 0, flexShrink: 0, width: isMobile ? 128 : 168 }}>
-              <div
-                style={{
-                  width: '100%',
-                  aspectRatio: '1 / 1',
-                  background: CARD,
-                  border: `1px solid ${HAIRLINE}`,
-                  borderRadius: R_CARD,
-                  overflow: 'hidden',
-                  position: 'relative',
-                }}
-              >
-                <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-                  <SleepingModel />
-                </div>
-              </div>
-              <figcaption style={{ ...metaLabel, fontSize: '0.56rem', color: MUTED_LIGHT, marginTop: 8, letterSpacing: '0.1em' }}>
-                fig.01 — always napping
-              </figcaption>
-            </figure>
+            ))}
           </motion.div>
-        </motion.div>
-      </div>
 
-      {/* ── BOTTOM BASELINE ROW — frames the bottom edge ── */}
-      <motion.div
-        initial="hidden"
-        animate="show"
-        variants={staggerContainer}
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          gap: 16,
-          paddingTop: 'clamp(20px, 3vh, 32px)',
-          borderTop: `1px solid ${HAIRLINE}`,
-          flexWrap: 'wrap',
-        }}
-      >
-        <motion.a
-          variants={reveal}
-          href="#works"
-          data-cursor="explore"
-          style={{ ...metaLabel, color: FG, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 10 }}
+          <motion.a
+            variants={reveal}
+            transition={{ duration: 0.6, ease: stellaEase, delay: 0.7 }}
+            href="#works"
+            data-cursor="explore"
+            whileHover={{ x: 4 }}
+            style={{
+              marginTop: 'clamp(36px, 5vh, 60px)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 10,
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              letterSpacing: '0.02em',
+              color: FG,
+              textDecoration: 'none',
+              borderBottom: `1.5px solid ${ACCENT}`,
+              paddingBottom: 5,
+            }}
+          >
+            Selected work
+            <span aria-hidden style={{ color: ACCENT }}>↓</span>
+          </motion.a>
+        </motion.div>
+
+        {/* RIGHT — small pinned figure, balances the text column */}
+        <motion.figure
+          initial={{ opacity: 0, scale: 0.94 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9, delay: 0.35, ease: stellaEase }}
+          style={{ margin: 0, flexShrink: 0, width: isMobile ? 180 : 260 }}
         >
-          Selected work ↓
-        </motion.a>
-        <motion.span variants={reveal} style={{ ...metaLabel, fontSize: '0.66rem', color: MUTED_LIGHT }}>
-          Portfolio © 2026
-        </motion.span>
-      </motion.div>
+          <div
+            style={{
+              width: '100%',
+              aspectRatio: '1 / 1',
+              background: CARD,
+              border: `1px solid ${HAIRLINE}`,
+              borderRadius: 18,
+              overflow: 'hidden',
+              position: 'relative',
+            }}
+          >
+            <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+              <SleepingModel />
+            </div>
+          </div>
+          <figcaption style={{ marginTop: 12, fontSize: '0.66rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, color: MUTED_LIGHT, textAlign: 'center' }}>
+            Always napping · fig.01
+          </figcaption>
+        </motion.figure>
+      </div>
     </section>
   )
 }

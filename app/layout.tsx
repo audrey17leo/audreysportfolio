@@ -1,22 +1,13 @@
 import type { Metadata } from 'next'
-import { Schibsted_Grotesk, JetBrains_Mono } from 'next/font/google'
+import { Manrope } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import ClientProviders from '@/components/ClientProviders'
 
-// Flim design language:
-// Swizzy → Schibsted Grotesk (display) · PP Neue Montreal Mono → JetBrains Mono · Arial (body)
-const schibsted = Schibsted_Grotesk({
+const manrope = Manrope({
   subsets: ['latin'],
-  weight: ['400', '500', '700', '900'],
-  variable: '--font-display',
-  display: 'swap',
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-mono',
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-manrope',
   display: 'swap',
 })
 
@@ -42,18 +33,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${schibsted.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en" className={manrope.variable}>
       <body
         className="antialiased"
         style={{
           cursor: 'none',
-          fontFamily: 'Arial, system-ui, sans-serif',
-          color: '#141414',
-          // Sketchpad grid on warm canvas — the Flim surface
-          background: '#f5f5f5',
-          backgroundImage:
-            'linear-gradient(#d9d9d9 1px, transparent 1px), linear-gradient(90deg, #d9d9d9 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
+          fontFamily: 'var(--font-manrope), Manrope, system-ui, sans-serif',
+          background: '#fafafa',
+          color: '#2b2b2b',
         }}
       >
         <ClientProviders>{children}</ClientProviders>
