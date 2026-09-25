@@ -32,12 +32,41 @@ html {
 .cursor-blink { animation: blink 1s step-end infinite; }
 
 /* ── Case study page (server component) ── */
-/* Compact two-column "beat": visual + explanation side by side */
+/* Two-column "beat": big visual left, explanation right (consistent) */
 .cs-beat {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: clamp(32px, 5vw, 72px);
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: start;
+  gap: clamp(36px, 5vw, 80px);
+}
+
+/* Circle-status layout: sticky left TOC + single content column */
+.cs-body {
+  display: grid;
+  grid-template-columns: 168px minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 88px);
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.cs-toc {
+  position: sticky;
+  top: 92px;
+  align-self: start;
+  height: max-content;
+}
+/* Full-width image with a subtle hover-zoom */
+.cs-img {
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid #e6e3dd;
+  background: #ffffff;
+}
+.cs-img img, .cs-img video { display: block; width: 100%; height: auto; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.cs-img:hover img, .cs-img:hover video { transform: scale(1.03); }
+
+@media (max-width: 900px) {
+  .cs-body { grid-template-columns: 1fr; gap: 8px; }
+  .cs-toc { display: none; }
 }
 
 @media (max-width: 767px) {

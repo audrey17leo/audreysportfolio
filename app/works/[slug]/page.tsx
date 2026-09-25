@@ -4,9 +4,9 @@ import Navbar from '@/components/Navbar'
 import AutoPlayVideo from '@/components/AutoPlayVideo'
 import Reveal from '@/components/Reveal'
 import EvolutionScroll from '@/components/EvolutionScroll'
+import CaseTOC from '@/components/CaseTOC'
 import { projects, getProject, type ProcessSection } from '@/lib/projects'
-import { sfPro } from '@/lib/fonts'
-import { FG, GRAPHITE, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, CARD, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
+import { FG, GRAPHITE, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, FONT_DISPLAY, FONT_BODY, FONT_MONO } from '@/lib/theme'
 
 export function generateStaticParams() {
   return projects.map(p => ({ slug: p.slug }))
@@ -14,7 +14,9 @@ export function generateStaticParams() {
 
 type Props = { params: { slug: string } }
 
-// Inline **bold** and *italic*
+const sectionGap = 'clamp(56px, 9vh, 104px)'
+
+// ── inline **bold** / *italic* ──
 function inline(text: string, base = 0): React.ReactNode {
   const nodes: React.ReactNode[] = []
   const re = /\*\*([^*]+)\*\*|\*([^*]+)\*/g
@@ -29,12 +31,12 @@ function inline(text: string, base = 0): React.ReactNode {
   return nodes
 }
 
-// Rich body text: \n\n => paragraph, \n => line break, with inline emphasis.
+// \n\n => paragraph, \n => line break
 function RichText({ text, style }: { text: string; style?: React.CSSProperties }) {
   return (
     <>
       {text.split('\n\n').map((para, i) => (
-        <p key={i} style={{ ...style, margin: i === 0 ? 0 : '0.9em 0 0' }}>
+        <p key={i} style={{ ...style, margin: i === 0 ? 0 : '0.85em 0 0' }}>
           {para.split('\n').map((line, j) => (
             <span key={j}>{j > 0 ? <br /> : null}{inline(line, j * 100)}</span>
           ))}
@@ -44,37 +46,37 @@ function RichText({ text, style }: { text: string; style?: React.CSSProperties }
   )
 }
 
-const WIDE = 1180
-
-const label: React.CSSProperties = {
+// ── type scale, matched to ruocanpeng/circle-status (36 / 24 / 20, body 16/1.6) ──
+const eyebrow: React.CSSProperties = {
   fontFamily: FONT_MONO, fontSize: 12, color: GRAPHITE, letterSpacing: '0.12em',
-  textTransform: 'uppercase', margin: '0 0 18px', display: 'flex', alignItems: 'center', gap: 10,
+  textTransform: 'uppercase', margin: '0 0 14px', display: 'flex', alignItems: 'center', gap: 9,
 }
-const heading: React.CSSProperties = {
-  fontFamily: FONT_DISPLAY, fontWeight: 300, fontSize: 'clamp(1.35rem, 2vw, 1.8rem)',
-  color: FG, letterSpacing: '-0.02em', lineHeight: 1.18, margin: '0 0 20px',
+const h1Style: React.CSSProperties = {
+  fontFamily: FONT_DISPLAY, fontWeight: 500, fontSize: 'clamp(1.9rem, 2.8vw, 2.25rem)',
+  color: FG, letterSpacing: '-0.03em', lineHeight: 1.12, margin: '0 0 20px',
 }
-const body: React.CSSProperties = {
-  fontFamily: sfPro, fontWeight: 400, fontSize: 16, color: MUTED, lineHeight: 1.6,
-  letterSpacing: '0.16px', margin: 0,
+const h2Style: React.CSSProperties = {
+  fontFamily: FONT_DISPLAY, fontWeight: 500, fontSize: 'clamp(1.3rem, 1.9vw, 1.5rem)',
+  color: FG, letterSpacing: '-0.025em', lineHeight: 1.28, margin: '0 0 16px',
+}
+const bodyStyle: React.CSSProperties = {
+  fontFamily: FONT_BODY, fontWeight: 400, fontSize: 16, color: MUTED, lineHeight: 1.6, margin: 0,
 }
 
 function Dot() {
   return <span style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />
 }
 
-function Visual({ src, caption, isVideo }: { src: string; caption?: string; isVideo?: boolean }) {
+function FullImage({ src, caption, isVideo }: { src: string; caption?: string; isVideo?: boolean }) {
   return (
-    <figure style={{ margin: 0 }}>
-      <div style={{ borderRadius: 20, overflow: 'hidden', border: `1px solid ${HAIRLINE}`, background: CARD }}>
+    <figure style={{ margin: '24px 0 0' }}>
+      <div className="cs-img">
         {isVideo || src.endsWith('.mp4')
           ? <AutoPlayVideo src={src} style={{ width: '100%', display: 'block' }} />
-          : <img src={src} alt={caption ?? ''} style={{ width: '100%', height: 'auto', display: 'block' }} />}
+          : <img src={src} alt={caption ?? ''} />}
       </div>
       {caption && (
-        <figcaption style={{ fontFamily: FONT_MONO, fontSize: 12, color: MUTED_LIGHT, letterSpacing: '0.02em', marginTop: 12, lineHeight: 1.5 }}>
-          {caption}
-        </figcaption>
+        <figcaption style={{ fontFamily: FONT_MONO, fontSize: 12, color: MUTED_LIGHT, marginTop: 11, lineHeight: 1.5 }}>{caption}</figcaption>
       )}
     </figure>
   )
@@ -82,34 +84,22 @@ function Visual({ src, caption, isVideo }: { src: string; caption?: string; isVi
 
 function StateTable({ table }: { table: NonNullable<ProcessSection['table']> }) {
   return (
-    <div style={{ marginTop: 24, border: `1px solid ${HAIRLINE}`, borderRadius: 12, overflow: 'hidden' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '0.9fr 2.1fr' }}>
+    <div style={{ marginTop: 22, border: `1px solid ${HAIRLINE}`, borderRadius: 12, overflow: 'hidden' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '0.7fr 2.3fr' }}>
         {table.head.map((h, i) => (
-          <div key={i} style={{ fontFamily: FONT_MONO, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: GRAPHITE, padding: '12px 16px', borderBottom: `1px solid ${HAIRLINE}`, background: CARD }}>{h}</div>
+          <div key={i} style={{ fontFamily: FONT_MONO, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: GRAPHITE, padding: '11px 15px', borderBottom: `1px solid ${HAIRLINE}`, background: '#fff' }}>{h}</div>
         ))}
         {table.rows.map((row, r) =>
           row.map((cell, c) => (
             <div key={`${r}-${c}`} style={{
-              fontFamily: sfPro, fontSize: 14.5, color: c === 0 ? FG : MUTED, fontWeight: c === 0 ? 500 : 400,
-              padding: '13px 16px', lineHeight: 1.45,
+              fontFamily: FONT_BODY, fontSize: 14, color: c === 0 ? FG : MUTED, fontWeight: c === 0 ? 500 : 400,
+              padding: '12px 15px', lineHeight: 1.45,
               borderBottom: r < table.rows.length - 1 ? `1px solid ${HAIRLINE}` : 'none',
               borderLeft: c === 1 ? `1px solid ${HAIRLINE}` : 'none',
             }}>{cell}</div>
           ))
         )}
       </div>
-    </div>
-  )
-}
-
-// A text block (label + heading + body + optional table)
-function TextBlock({ kicker, title, text, table }: { kicker?: string; title?: string; text?: string; table?: ProcessSection['table'] }) {
-  return (
-    <div>
-      {kicker && <p style={label}><Dot />{kicker}</p>}
-      {title && <h2 style={heading}>{title}</h2>}
-      {text && <RichText text={text} style={body} />}
-      {table && <StateTable table={table} />}
     </div>
   )
 }
@@ -121,149 +111,146 @@ export default function CaseStudyPage({ params }: Props) {
   const currentIdx = projects.findIndex(p => p.slug === params.slug)
   const nextProjects = [1, 2].map(o => projects[(currentIdx + o) % projects.length])
   const L = project.sectionLabels ?? {}
+  const isFlash = project.slug === 'tldraw-flash'
 
-  const beatPad = 'clamp(56px, 9vh, 104px)'
+  const tocSections = [
+    { id: 'overview', label: 'Overview' },
+    { id: 'problem', label: 'The problem' },
+    { id: 'idea', label: 'The idea' },
+    { id: 'process', label: 'Process' },
+    ...(isFlash ? [{ id: 'evolution', label: 'Evolution' }] : []),
+    ...(project.finalImages.length ? [{ id: 'work', label: 'The work' }] : []),
+    ...(project.reflection.length ? [{ id: 'reflection', label: 'Reflection' }] : []),
+  ]
 
   return (
     <>
       <Navbar />
       <main style={{ background: 'transparent', minHeight: '100vh' }}>
 
-        {/* ── HERO, text + showcase, side by side ── */}
-        <div className="cs-hero-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: '150px 40px 0' }}>
-          <div className="cs-beat">
+        {/* ── HERO BANNER ── */}
+        <div className="cs-hero-pad" style={{ maxWidth: 1240, margin: '0 auto', padding: '104px 40px 0' }}>
+          <Reveal>
+            <Link href="/#works" data-cursor="explore" style={{ fontFamily: FONT_MONO, fontSize: 12.5, color: MUTED, textDecoration: 'none', letterSpacing: '0.04em' }}>← back to work</Link>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <div className="cs-img" style={{ marginTop: 18 }}>
+              <img src={project.showcaseImages[0]} alt={project.title} />
+            </div>
+          </Reveal>
+        </div>
+
+        {/* ── BODY: sticky TOC + content ── */}
+        <div className="cs-pad" style={{ padding: `clamp(52px, 8vh, 96px) 40px 0` }}>
+          <div className="cs-body">
+            <CaseTOC sections={tocSections} />
+
             <div>
-              <Reveal><p style={{ ...label, color: MUTED_LIGHT }}>[{project.tags.join(' · ')}]</p></Reveal>
-              <Reveal delay={0.05}>
-                <h1 style={{ fontFamily: FONT_DISPLAY, fontWeight: 300, fontSize: 'clamp(1.9rem, 3.2vw, 2.9rem)', color: FG, letterSpacing: '-0.025em', lineHeight: 1.1, margin: '0 0 22px' }}>
-                  {project.h1}
-                </h1>
-              </Reveal>
-              <Reveal delay={0.1}><p style={{ ...body, maxWidth: 460 }}>{project.subtitleParagraph}</p></Reveal>
-              <Reveal delay={0.15}>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 22px', marginTop: 26, alignItems: 'center' }}>
-                  <a href="#final" data-cursor="explore" style={{ display: 'inline-block', fontFamily: FONT_MONO, fontSize: 13, color: FG, textDecoration: 'none', letterSpacing: '0.04em', borderBottom: `1px solid ${HAIRLINE}`, paddingBottom: 3 }}>
-                    Skip to the work <span style={{ color: ACCENT }}>↓</span>
-                  </a>
-                  {project.liveUrl && (
-                    <a href={project.liveUrl.url} target="_blank" rel="noopener noreferrer" data-cursor="explore" style={{ display: 'inline-block', fontFamily: FONT_MONO, fontSize: 13, color: FG, textDecoration: 'none', letterSpacing: '0.04em', borderBottom: `1px solid ${ACCENT}`, paddingBottom: 3 }}>
+              {/* Overview */}
+              <section id="overview">
+                <Reveal><p style={{ ...eyebrow, color: MUTED_LIGHT }}>[{project.tags.join(' · ')}]</p></Reveal>
+                <Reveal delay={0.04}><h1 style={h1Style}>{project.h1}</h1></Reveal>
+                <Reveal delay={0.08}><RichText text={project.subtitleParagraph} style={{ ...bodyStyle, maxWidth: '62ch' }} /></Reveal>
+                <Reveal delay={0.11}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '18px 40px', marginTop: 28, borderTop: `1px solid ${HAIRLINE}`, paddingTop: 24 }}>
+                    {[{ k: 'Year', v: project.year }, { k: 'Scope', v: project.scope }, { k: 'Role', v: project.role }].map(({ k, v }) => (
+                      <div key={k} style={{ minWidth: 130 }}>
+                        <p style={{ fontFamily: FONT_MONO, fontSize: 11, color: MUTED_LIGHT, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 7px' }}>{k}</p>
+                        <p style={{ fontFamily: FONT_BODY, fontSize: 14, color: FG, margin: 0, lineHeight: 1.5, whiteSpace: 'pre-line' }}>{v}</p>
+                      </div>
+                    ))}
+                  </div>
+                </Reveal>
+                {project.liveUrl && (
+                  <Reveal delay={0.14}>
+                    <a href={project.liveUrl.url} target="_blank" rel="noopener noreferrer" data-cursor="explore" style={{ display: 'inline-block', marginTop: 22, fontFamily: FONT_MONO, fontSize: 13, color: FG, textDecoration: 'none', letterSpacing: '0.04em', borderBottom: `1px solid ${ACCENT}`, paddingBottom: 3 }}>
                       Live → {project.liveUrl.label} <span style={{ color: ACCENT }}>↗</span>
                     </a>
-                  )}
-                </div>
-              </Reveal>
-            </div>
-            <Reveal delay={0.1}><Visual src={project.showcaseImages[0]} /></Reveal>
-          </div>
-        </div>
+                  </Reveal>
+                )}
+              </section>
 
-        {/* ── META strip ── */}
-        <div className="cs-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: `${beatPad} 40px 0` }}>
-          <Reveal>
-            <div className="cs-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 28, borderTop: `1px solid ${HAIRLINE}`, paddingTop: 28 }}>
-              {[{ k: 'Year', v: project.year }, { k: 'Scope', v: project.scope }, { k: 'Role', v: project.role }].map(({ k, v }) => (
-                <div key={k}>
-                  <p style={{ fontFamily: FONT_MONO, fontSize: 11, color: MUTED_LIGHT, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 10px' }}>{k}</p>
-                  <p style={{ fontFamily: sfPro, fontSize: 14.5, color: FG, margin: 0, lineHeight: 1.55, whiteSpace: 'pre-line' }}>{v}</p>
-                </div>
+              {/* The problem */}
+              <section id="problem" style={{ marginTop: sectionGap }}>
+                <Reveal><p style={eyebrow}><Dot />{L.problemSpace ?? 'THE PROBLEM'}</p></Reveal>
+                <Reveal delay={0.04}><h2 style={h2Style}>{project.problemSpaceHeading}</h2></Reveal>
+                <Reveal delay={0.08}><RichText text={project.problemSpace} style={bodyStyle} /></Reveal>
+              </section>
+
+              {/* The idea */}
+              <section id="idea" style={{ marginTop: sectionGap }}>
+                <Reveal><p style={eyebrow}><Dot />{L.concept ?? 'THE IDEA'}</p></Reveal>
+                <Reveal delay={0.04}><h2 style={h2Style}>{project.conceptHeading}</h2></Reveal>
+                <Reveal delay={0.08}><RichText text={project.concept} style={bodyStyle} /></Reveal>
+              </section>
+
+              {/* Process */}
+              {project.processSections.map((s, i) => (
+                <section key={i} id={i === 0 ? 'process' : undefined} style={{ marginTop: sectionGap }}>
+                  {i === 0 && <Reveal><p style={eyebrow}><Dot />{L.process ?? 'PROCESS'}</p></Reveal>}
+                  <Reveal delay={0.04}>
+                    <h2 style={h2Style}>
+                      <span style={{ color: MUTED_LIGHT, fontVariantNumeric: 'tabular-nums' }}>{String(i + 1).padStart(2, '0')} · </span>
+                      {s.title}
+                    </h2>
+                  </Reveal>
+                  <Reveal delay={0.08}><RichText text={s.body} style={bodyStyle} /></Reveal>
+                  {s.table && <Reveal delay={0.1}><StateTable table={s.table} /></Reveal>}
+                  {(s.video || s.image) && <Reveal delay={0.1}><FullImage src={(s.video ?? s.image)!} caption={s.imageCaption} isVideo={!!s.video} /></Reveal>}
+                  {s.image2 && <Reveal delay={0.1}><FullImage src={s.image2} caption={s.imageCaption2} /></Reveal>}
+                </section>
               ))}
-            </div>
-          </Reveal>
-        </div>
 
-        {/* ── FRAMING, problem, then idea, read top-to-bottom ── */}
-        <div className="cs-pad" style={{ maxWidth: 720, margin: '0 auto', padding: `${beatPad} 40px 0` }}>
-          <Reveal><TextBlock kicker={L.problemSpace ?? 'THE PROBLEM'} title={project.problemSpaceHeading} text={project.problemSpace} /></Reveal>
-        </div>
-        {/* centered turn from problem to idea */}
-        <div className="cs-pad" style={{ maxWidth: 720, margin: '0 auto', padding: `clamp(40px, 7vh, 80px) 40px 0`, textAlign: 'center' }}>
-          <Reveal>
-            <span style={{ display: 'inline-block', fontFamily: FONT_MONO, fontSize: 12, letterSpacing: '0.14em', textTransform: 'uppercase', color: MUTED_LIGHT }}>So the design turned on one idea ↓</span>
-          </Reveal>
-        </div>
-        <div className="cs-pad" style={{ maxWidth: 720, margin: '0 auto', padding: `clamp(28px, 4vh, 44px) 40px 0` }}>
-          <Reveal><TextBlock kicker={L.concept ?? 'THE IDEA'} title={project.conceptHeading} text={project.concept} /></Reveal>
-        </div>
+              {/* Evolution (tldraw flash only) — breaks the column width */}
+              {isFlash && (
+                <section id="evolution" style={{ marginTop: sectionGap }}>
+                  <EvolutionScroll />
+                </section>
+              )}
 
-        {/* ── PROCESS BEATS, alternating visual + text ── */}
-        {project.processSections.map((s, i) => {
-          const hasVisual = !!(s.image || s.video)
-          const visualFirst = i % 2 === 0
-          const kicker = i === 0 ? (L.process ?? 'PROCESS') : undefined
-          const textCol = (
-            <Reveal delay={hasVisual ? 0.08 : 0}>
-              <TextBlock kicker={kicker} title={s.title} text={s.body} table={s.table} />
-            </Reveal>
-          )
-          if (!hasVisual) {
-            return (
-              <div key={i} className="cs-pad" style={{ maxWidth: 760, margin: '0 auto', padding: `${beatPad} 40px 0` }}>
-                {textCol}
-              </div>
-            )
-          }
-          const visualCol = <Reveal><Visual src={(s.video ?? s.image)!} caption={s.imageCaption} isVideo={!!s.video} /></Reveal>
-          return (
-            <div key={i} className="cs-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: `${beatPad} 40px 0` }}>
-              <div className="cs-beat">
-                {visualFirst ? <>{visualCol}{textCol}</> : <>{textCol}{visualCol}</>}
-              </div>
-            </div>
-          )
-        })}
+              {/* The work */}
+              {project.finalImages.length > 0 && (
+                <section id="work" style={{ marginTop: sectionGap }}>
+                  <Reveal><p style={eyebrow}><Dot />{L.finalDesign ?? 'THE WORK'}</p></Reveal>
+                  <Reveal delay={0.04}><h2 style={h2Style}>{project.title}</h2></Reveal>
+                  <Reveal delay={0.08}><RichText text={project.meetTheWork} style={bodyStyle} /></Reveal>
+                  {project.finalImages.map((img, i) => (
+                    <Reveal key={i} delay={0.1}><FullImage src={img.src} caption={img.caption} isVideo={img.isVideo} /></Reveal>
+                  ))}
+                </section>
+              )}
 
-        {/* ── INTERACTIVE 8-WEEK EVOLUTION (tldraw flash only) ── */}
-        {project.slug === 'tldraw-flash' && (
-          <div style={{ padding: `${beatPad} 0 0` }}>
-            <EvolutionScroll />
-          </div>
-        )}
-
-        {/* ── FINAL ── */}
-        {project.finalImages.length > 0 && (
-          <div id="final" className="cs-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: `${beatPad} 40px 0` }}>
-            <div className="cs-beat">
-              <Reveal><Visual src={project.finalImages[0].src} caption={project.finalImages[0].caption} isVideo={project.finalImages[0].isVideo} /></Reveal>
-              <Reveal delay={0.08}>
-                <TextBlock kicker={L.finalDesign ?? 'THE WORK'} title={project.title} text={project.meetTheWork} />
-              </Reveal>
-            </div>
-            {project.finalImages.slice(1).map((img, i) => (
-              <div key={i} style={{ marginTop: 'clamp(24px, 4vh, 40px)' }}>
-                <Reveal><Visual src={img.src} caption={img.caption} isVideo={img.isVideo} /></Reveal>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* ── REFLECTION ── */}
-        {project.reflection.length > 0 && (
-          <div className="cs-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: `${beatPad} 40px 0` }}>
-            <Reveal><p style={label}><Dot />{L.reflection ?? 'REFLECTION'}</p></Reveal>
-            <Reveal delay={0.05}><h2 style={{ ...heading, maxWidth: 720, marginBottom: 36 }}>{project.reflectionHeading}</h2></Reveal>
-            <div className="cs-grid-2" style={{ display: 'grid', gridTemplateColumns: project.reflection.length > 1 ? '1fr 1fr' : '1fr', gap: 'clamp(28px, 4vw, 56px)', alignItems: 'start' }}>
-              {project.reflection.map((item, i) => (
-                <Reveal key={i} delay={i * 0.06}>
-                  <h3 style={{ fontFamily: FONT_DISPLAY, fontWeight: 500, fontSize: 17, color: FG, letterSpacing: '-0.01em', margin: '0 0 10px' }}>{item.title}</h3>
-                  <div style={{ maxWidth: 460 }}><RichText text={item.body} style={body} /></div>
-                </Reveal>
-              ))}
+              {/* Reflection */}
+              {project.reflection.length > 0 && (
+                <section id="reflection" style={{ marginTop: sectionGap }}>
+                  <Reveal><p style={eyebrow}><Dot />{L.reflection ?? 'REFLECTION'}</p></Reveal>
+                  <Reveal delay={0.04}><h2 style={{ ...h2Style, marginBottom: 28 }}>{project.reflectionHeading}</h2></Reveal>
+                  <div style={{ display: 'grid', gap: 'clamp(24px, 3.5vh, 40px)' }}>
+                    {project.reflection.map((item, i) => (
+                      <Reveal key={i} delay={i * 0.05}>
+                        <h3 style={{ fontFamily: FONT_DISPLAY, fontWeight: 500, fontSize: '1.25rem', color: FG, letterSpacing: '-0.02em', margin: '0 0 8px', lineHeight: 1.3 }}>{item.title}</h3>
+                        <RichText text={item.body} style={bodyStyle} />
+                      </Reveal>
+                    ))}
+                  </div>
+                </section>
+              )}
             </div>
           </div>
-        )}
+        </div>
 
         {/* ── NEXT ── */}
-        <div className="cs-pad" style={{ maxWidth: WIDE, margin: '0 auto', padding: `${beatPad} 40px 0` }}>
-          <Reveal><p style={label}><Dot />NEXT</p></Reveal>
-          <div className="cs-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginTop: 8 }}>
+        <div className="cs-pad" style={{ maxWidth: 1120, margin: '0 auto', padding: `${sectionGap} 40px 0` }}>
+          <Reveal><p style={eyebrow}><Dot />NEXT</p></Reveal>
+          <div className="cs-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginTop: 6 }}>
             {nextProjects.map((p, i) => (
               <Reveal key={p.slug} delay={i * 0.08}>
                 <Link href={`/works/${p.slug}`} data-cursor="explore" style={{ textDecoration: 'none', display: 'block' }}>
-                  <div style={{ borderRadius: 20, overflow: 'hidden', border: `1px solid ${HAIRLINE}`, aspectRatio: '16/10', background: p.bg }}>
-                    <img src={p.heroImage} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                  <div className="cs-img" style={{ aspectRatio: '16/10', background: p.bg, position: 'relative' }}>
+                    <img src={p.heroImage} alt={p.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
                   </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 14 }}>
-                    <span style={{ fontFamily: FONT_DISPLAY, fontSize: 17, fontWeight: 500, color: FG, letterSpacing: '-0.01em' }}>{p.title}</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 13 }}>
+                    <span style={{ fontFamily: FONT_DISPLAY, fontSize: 16, fontWeight: 500, color: FG, letterSpacing: '-0.01em' }}>{p.title}</span>
                     <span style={{ fontFamily: FONT_MONO, fontSize: 12, color: MUTED_LIGHT }}>{p.year}</span>
                   </div>
                 </Link>
@@ -273,9 +260,9 @@ export default function CaseStudyPage({ params }: Props) {
         </div>
 
         {/* ── FOOTER ── */}
-        <div className="cs-pad cs-footer-flex" style={{ maxWidth: WIDE, margin: `${beatPad} auto 0`, padding: '32px 40px 96px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1px solid ${HAIRLINE}` }}>
+        <div className="cs-pad cs-footer-flex" style={{ maxWidth: 1120, margin: `${sectionGap} auto 0`, padding: '30px 40px 96px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1px solid ${HAIRLINE}` }}>
           <Link href="/#works" data-cursor="explore" style={{ fontFamily: FONT_MONO, fontSize: 13, color: MUTED, textDecoration: 'none', letterSpacing: '0.04em' }}>← all work</Link>
-          <span style={{ fontFamily: sfPro, fontSize: 14, color: MUTED_LIGHT }}>Thanks for reading.</span>
+          <span style={{ fontFamily: FONT_BODY, fontSize: 14, color: MUTED_LIGHT }}>Thanks for reading.</span>
         </div>
 
       </main>
