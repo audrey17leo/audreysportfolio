@@ -5,12 +5,14 @@ import { mono } from '@/lib/fonts'
 const DOT_COLOR  = '#1C1C1A'
 const PILL_COLOR = '#1C1C1A'
 
+type CursorMode = 'none' | 'explore' | 'see-project'
+
 export default function CustomCursor() {
   const cursorRef   = useRef<HTMLDivElement>(null)
-  const [exploring, setExploring] = useState(false)
+  const [mode, setMode]       = useState<CursorMode>('none')
   const [visible,   setVisible]   = useState(false)
 
-  const exploringRef = useRef(false)
+  const modeRef      = useRef<CursorMode>('none')
   const visibleRef   = useRef(false)
 
   useEffect(() => {
@@ -42,10 +44,12 @@ export default function CustomCursor() {
       if (overRaf !== null) return
       overRaf = requestAnimationFrame(() => {
         overRaf = null
-        const isExplore = !!pendingTarget?.closest('[data-cursor="explore"]')
-        if (isExplore === exploringRef.current) return
-        exploringRef.current = isExplore
-        setExploring(isExplore)
+        const el = pendingTarget?.closest('[data-cursor]') as HTMLElement | null
+        const val = el?.getAttribute('data-cursor')
+        const m: CursorMode = val === 'see-project' ? 'see-project' : val === 'explore' ? 'explore' : 'none'
+        if (m === modeRef.current) return
+        modeRef.current = m
+        setMode(m)
       })
     }
 
@@ -67,6 +71,9 @@ export default function CustomCursor() {
     }
   }, [])
 
+  const isExplore = mode === 'explore'
+  const isSee = mode === 'see-project'
+
   return (
     <div
       ref={cursorRef}
@@ -77,29 +84,27 @@ export default function CustomCursor() {
         pointerEvents: 'none',
         zIndex: 9999999,
         willChange: 'transform',
-        width: exploring ? 72 : 10,
-        height: exploring ? 26 : 10,
-        borderRadius: 100,
-        background: exploring ? PILL_COLOR : DOT_COLOR,
+        width: isSee ? 116 : isExplore ? 72 : 10,
+        height: isSee ? 38 : isExplore ? 26 : 10,
+        borderRadius: isSee ? 12 : 100,
+        background: isSee ? '#ffffff' : isExplore ? PILL_COLOR : DOT_COLOR,
+        boxShadow: isSee ? '0 6px 22px rgba(20,20,30,0.16)' : 'none',
         opacity: visible ? 1 : 0,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
-        transition: 'opacity 0.15s ease, width 0.18s cubic-bezier(0.22,1,0.36,1), height 0.18s cubic-bezier(0.22,1,0.36,1)',
+        transition: 'opacity 0.15s ease, width 0.2s cubic-bezier(0.22,1,0.36,1), height 0.2s cubic-bezier(0.22,1,0.36,1)',
       }}
     >
-      {exploring && (
-        <span style={{
-          fontFamily: mono,
-          fontSize: '0.55rem',
-          letterSpacing: '0.09em',
-          textTransform: 'uppercase',
-          color: '#fff',
-          whiteSpace: 'nowrap',
-          userSelect: 'none',
-        }}>
+      {isExplore && (
+        <span style={{ fontFamily: mono, fontSize: '0.55rem', letterSpacing: '0.09em', textTransform: 'uppercase', color: '#fff', whiteSpace: 'nowrap', userSelect: 'none' }}>
           Explore
+        </span>
+      )}
+      {isSee && (
+        <span style={{ fontFamily: 'var(--font-inter), Inter, sans-serif', fontSize: '0.86rem', fontWeight: 500, color: '#1c1c1a', whiteSpace: 'nowrap', userSelect: 'none' }}>
+          see project
         </span>
       )}
     </div>

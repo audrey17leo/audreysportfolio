@@ -35,6 +35,7 @@ export type Project = {
   tags: string[]
   bg: string
   heroImage: string
+  cardVideo?: string      // optional card motion: cover -> autoplay after 3s -> then hover-only
   cardLine: string        // one-liner shown under the card (what it is)
   discipline: string      // eemon-style discipline label, e.g. "SOFTWARE DESIGN"
 
@@ -253,6 +254,7 @@ export const projects: Project[] = [
     tags: ['Product Design', 'Systems', 'Gartner Winner'],
     bg: '#e9f1ec',
     heroImage: '/projects/cover-gofresh.jpg',
+    cardVideo: '/gofreshmotion.mp4',
     cardLine: 'A two-sided system that turns food waste into CO₂ saved.',
     discipline: 'PRODUCT DESIGN & SYSTEMS',
 

@@ -27,6 +27,7 @@ const displayProjects = realProjects
     yearShort: p.year.split('·')[0].trim(),
     bg: p.bg || CARD,
     image: p.heroImage as string | null,
+    cardVideo: p.cardVideo as string | undefined,
     video:      p.slug === 'plastic-panic' ? '/imac_composite.mp4'  : undefined as string | undefined,
     videoHover: p.slug === 'plastic-panic' ? '/imac_composite2.mp4' : undefined as string | undefined,
   }))
@@ -38,6 +39,11 @@ function ProjectCard({ project }: { project: DisplayProject }) {
   const hasVideo = !!project.video && !!project.videoHover
   const vid1 = useRef<HTMLVideoElement>(null)
   const vid2 = useRef<HTMLVideoElement>(null)
+
+  // Card motion video: cover for 3s -> autoplay once -> then plays only on hover.
+  const cardVid = useRef<HTMLVideoElement>(null)
+  const [videoOn, setVideoOn] = useState(false)  // video layer visible + playing
+  const autoDoneRef = useRef(false)              // first (delayed) autoplay finished
 
   useEffect(() => {
     const setup = (v: HTMLVideoElement | null) => {
@@ -51,6 +57,45 @@ function ProjectCard({ project }: { project: DisplayProject }) {
     return () => { c1?.(); c2?.() }
   }, [])
 
+  // 3s-delayed first play of the card motion video.
+  useEffect(() => {
+    if (!project.cardVideo) return
+    const t = setTimeout(() => {
+      const v = cardVid.current
+      if (!v) return
+      v.currentTime = 0
+      setVideoOn(true)
+      v.play().catch(() => {})
+    }, 3000)
+    return () => clearTimeout(t)
+  }, [project.cardVideo])
+
+  const onCardVideoEnded = () => {
+    autoDoneRef.current = true
+    // after the first pass, revert to the cover unless the cursor is on the card
+    if (!hovered) {
+      setVideoOn(false)
+      const v = cardVid.current
+      if (v) { v.pause(); v.currentTime = 0 }
+    }
+  }
+
+  const enter = () => {
+    setHovered(true)
+    if (project.cardVideo && autoDoneRef.current) {
+      setVideoOn(true)
+      cardVid.current?.play().catch(() => {})
+    }
+  }
+  const leave = () => {
+    setHovered(false)
+    if (project.cardVideo && autoDoneRef.current) {
+      setVideoOn(false)
+      const v = cardVid.current
+      if (v) { v.pause(); v.currentTime = 0 }
+    }
+  }
+
   const isPng = !!project.image && project.image.endsWith('.png')
   const baseScale = 1
   const accent = ACCENTS[project.slug] ?? FG
@@ -59,9 +104,9 @@ function ProjectCard({ project }: { project: DisplayProject }) {
     <motion.div variants={reveal} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <Link
         href={`/works/${project.slug}`}
-        data-cursor="explore"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        data-cursor="see-project"
+        onMouseEnter={enter}
+        onMouseLeave={leave}
         style={{ textDecoration: 'none', display: 'block' }}
       >
         <div
@@ -76,7 +121,16 @@ function ProjectCard({ project }: { project: DisplayProject }) {
           }}
         >
           {/* media */}
-          {hasVideo ? (
+          {project.cardVideo ? (
+            <>
+              {project.image && (
+                <img src={project.image} alt={project.title}
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${hovered ? 1.02 : 1})`, transition: 'transform 0.5s cubic-bezier(0.22,1,0.36,1)' }} />
+              )}
+              <video ref={cardVid} src={project.cardVideo} muted playsInline preload="auto" onEnded={onCardVideoEnded}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: videoOn ? 1 : 0, transition: 'opacity 0.5s ease' }} />
+            </>
+          ) : hasVideo ? (
             <>
               <video ref={vid1} src={project.video} autoPlay loop muted playsInline preload="auto"
                 style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: hovered ? 0 : 1, transition: 'opacity 0.4s' }} />
@@ -93,26 +147,13 @@ function ProjectCard({ project }: { project: DisplayProject }) {
               }} />
           ) : null}
 
-          {/* see project — centered, appears on hover (ruocanpeng) */}
-          <div
-            style={{
-              position: 'absolute', top: '50%', left: '50%',
-              transform: hovered ? 'translate(-50%, -50%)' : 'translate(-50%, calc(-50% + 5px))',
-              opacity: hovered ? 1 : 0, transition: 'opacity 0.28s ease, transform 0.28s ease', pointerEvents: 'none',
-            }}
-          >
-            <span style={{ fontFamily: FONT_BODY, fontSize: 16, fontWeight: 500, color: '#2a2a2a', background: '#fff', padding: '11px 22px', borderRadius: 10, whiteSpace: 'nowrap', boxShadow: '0 8px 24px rgba(20,20,30,0.12)' }}>
-              see project
-            </span>
-          </div>
-
           {/* labels — bottom-left on hover: name in the project's accent, then descriptors */}
           <div style={{ position: 'absolute', left: 'clamp(14px,1.6vw,20px)', bottom: 'clamp(14px,1.6vw,20px)', display: 'flex', flexWrap: 'wrap', gap: 8, maxWidth: 'calc(100% - 40px)', opacity: hovered ? 1 : 0, transform: hovered ? 'translateY(0)' : 'translateY(6px)', transition: 'opacity 0.3s ease, transform 0.3s ease', pointerEvents: 'none' }}>
-            <span style={{ fontFamily: FONT_BODY, fontSize: 15, fontWeight: 500, color: accent, background: '#fff', padding: '8px 16px', borderRadius: 10, whiteSpace: 'nowrap', boxShadow: '0 6px 18px rgba(20,20,30,0.10)' }}>
+            <span style={{ fontFamily: FONT_BODY, fontSize: 15, fontWeight: 500, color: accent, background: '#fff', padding: '8px 17px', borderRadius: 13, whiteSpace: 'nowrap', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
               {project.title}
             </span>
             {project.tags.slice(0, 2).map((t) => (
-              <span key={t} style={{ fontFamily: FONT_BODY, fontSize: 15, fontWeight: 500, color: '#555', background: '#fff', padding: '8px 16px', borderRadius: 10, whiteSpace: 'nowrap', boxShadow: '0 6px 18px rgba(20,20,30,0.10)' }}>
+              <span key={t} style={{ fontFamily: FONT_BODY, fontSize: 15, fontWeight: 500, color: '#555', background: '#fff', padding: '8px 17px', borderRadius: 13, whiteSpace: 'nowrap', boxShadow: '0 2px 10px rgba(0,0,0,0.06)' }}>
                 {t.toLowerCase()}
               </span>
             ))}
