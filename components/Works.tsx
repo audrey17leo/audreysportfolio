@@ -42,7 +42,7 @@ function ProjectCard({ project }: { project: DisplayProject }) {
   }, [])
 
   const isPng = !!project.image && project.image.endsWith('.png')
-  const baseScale = isPng ? 0.82 : 1
+  const baseScale = 1
 
   return (
     <motion.div variants={reveal} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

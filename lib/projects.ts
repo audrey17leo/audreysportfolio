@@ -62,8 +62,8 @@ export const projects: Project[] = [
     title: 'tldraw flash',
     subtitle: 'A canvas-native animation tool where you perform motion instead of keyframing it, record, layer one thing per pass, punch-in to fix.',
     tags: ['Product Design', 'Interaction', 'Ongoing'],
-    bg: '#dfe8fb',
-    heroImage: '/projects/cover-tldraw.jpg',
+    bg: '#ffffff',
+    heroImage: '/projects/cover-tldraw.png',
 
     h1: 'An animation tool where the motion is the take',
     subtitleParagraph: 'tldraw flash turns the infinite canvas into a stage. Instead of setting keyframes, you drag a drawing across the screen and that performance becomes the animation, then you layer the scene one thing at a time. An ongoing R&D exploration built on tldraw.',
@@ -71,7 +71,7 @@ export const projects: Project[] = [
     scope: 'Product & Interaction Design\nR&D Exploration',
     role: 'Solo. Concept, interaction model, competitive research, and prototype.',
     liveUrl: { url: 'https://tldrawflash.com', label: 'tldrawflash.com' },
-    showcaseImages: ['/projects/cover-tldraw.jpg'],
+    showcaseImages: ['/projects/cover-tldraw.png'],
 
     problemSpaceHeading: 'Animation software asks you to describe motion. Nobody moves that way.',
     problemSpace: 'Keyframes. Easing curves. Dope sheets.\nEvery serious 2D tool front-loads the hardest idea in the craft.\n\nI studied the whole shelf, After Effects, Procreate Dreams, StickNodes, Pivot, even the motion paths hiding inside Canva and Keynote. All powerful. All slow.\n\nThe pattern was quiet but total: **the tools people find fun hide the timeline. The tools people find capable expose it.**\n\ntldraw is a canvas, and a canvas is for playing. So I stopped trying to make a better timeline, and started designing a performance.',
