@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { projects as realProjects } from '@/lib/projects'
 import { useIsMobile } from '@/lib/useIsMobile'
 import { reveal, staggerContainer, once, stellaEase } from '@/lib/stellaMotion'
-import { FG, MUTED, HAIRLINE, CARD, FONT_BODY } from '@/lib/theme'
+import { FG, MUTED, HAIRLINE, CARD, FONT_BODY, FONT_MONO } from '@/lib/theme'
 
 const displayProjects = realProjects
   .filter(p => p.slug !== 'batik')
@@ -13,8 +13,11 @@ const displayProjects = realProjects
     slug: p.slug,
     title: p.title,
     description: p.subtitle,
+    cardLine: p.cardLine,
+    discipline: p.discipline,
     tags: p.tags,
     year: p.year,
+    yearShort: p.year.split('·')[0].trim(),
     bg: p.bg || CARD,
     image: p.heroImage as string | null,
     video:      p.slug === 'plastic-panic' ? '/imac_composite.mp4'  : undefined as string | undefined,
@@ -108,7 +111,7 @@ function ProjectCard({ project }: { project: DisplayProject }) {
                 boxShadow: 'rgba(0,0,0,0.10) 0px 2px 8px',
               }}
             >
-              see project <span aria-hidden>→</span>
+              read case study <span aria-hidden>→</span>
             </span>
           </div>
 
@@ -129,6 +132,16 @@ function ProjectCard({ project }: { project: DisplayProject }) {
               </span>
             ))}
           </div>
+        </div>
+
+        {/* caption row (eemonroy style): one-liner left, discipline · year right */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 20, marginTop: 15 }}>
+          <span style={{ fontFamily: FONT_BODY, fontSize: 14, color: MUTED, letterSpacing: '-0.01em', lineHeight: 1.4 }}>
+            {project.cardLine}
+          </span>
+          <span style={{ fontFamily: FONT_MONO, fontSize: 12, color: FG, letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap', flexShrink: 0 }}>
+            {project.discipline} · {project.yearShort}
+          </span>
         </div>
       </Link>
     </motion.div>

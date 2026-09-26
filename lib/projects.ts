@@ -14,6 +14,19 @@ export type ReflectionItem = {
   body: string
 }
 
+// ── eemonroy-style case-study blocks (optional; page falls back to legacy layout) ──
+export type Block =
+  | { kind: 'beat'; side: 'visual-left' | 'visual-right'; label: string; heading: string; body: string
+      media: { src: string; isVideo?: boolean }; caption?: string
+      table?: { head: [string, string]; rows: [string, string][] } }
+  | { kind: 'statement'; text: string; sub?: string }
+  | { kind: 'dataviz'; label: string; heading: string; body: string; scaleMax: number; unit?: string
+      legend?: [string, string]; bars: { row: string; a: number; b?: number }[] }
+  | { kind: 'diagram'; label: string; heading: string; body: string; trigger: string
+      branches: { tag: string; title: string; note: string }[] }
+  | { kind: 'carousel'; label: string; category: string; items: { title: string; sub: string }[] }
+  | { kind: 'evolution'; label: string; body: string }
+
 export type Project = {
   // Works grid (cards)
   slug: string
@@ -22,6 +35,8 @@ export type Project = {
   tags: string[]
   bg: string
   heroImage: string
+  cardLine: string        // one-liner shown under the card (what it is)
+  discipline: string      // eemon-style discipline label, e.g. "SOFTWARE DESIGN"
 
   // Case study
   h1: string
@@ -53,6 +68,14 @@ export type Project = {
     finalDesign?: string
     reflection?: string
   }
+
+  // ── eemonroy block layout (optional). When `blocks` is present the case-study
+  // page renders the new scroll structure; otherwise it uses the legacy layout. ──
+  heroKicker?: string
+  hook?: string
+  heroMeta?: { duration: string; role: string; builtOn?: string; status: string; statusLive?: boolean }
+  blocks?: Block[]
+  closingStatement?: string
 }
 
 export const projects: Project[] = [
@@ -64,6 +87,8 @@ export const projects: Project[] = [
     tags: ['Product Design', 'Interaction', 'Ongoing'],
     bg: '#ffffff',
     heroImage: '/projects/cover-tldraw.png',
+    cardLine: 'An animation tool where the motion is the take.',
+    discipline: 'SOFTWARE DESIGN',
 
     h1: 'An animation tool where the motion is the take',
     subtitleParagraph: 'tldraw flash turns the infinite canvas into a stage. Instead of setting keyframes, you drag a drawing across the screen and that performance becomes the animation, then you layer the scene one thing at a time. An ongoing R&D exploration built on tldraw.',
@@ -132,6 +157,90 @@ export const projects: Project[] = [
       finalDesign: 'WHERE IT IS NOW',
       reflection: 'REFLECTION',
     },
+
+    // ── eemonroy block layout ──
+    heroKicker: 'CANVAS-NATIVE ANIMATION',
+    hook: 'How I took the one idea every 2D tool front-loads, the timeline, and buried it, so the drawing you drag becomes the animation.',
+    heroMeta: {
+      duration: 'Ongoing R&D',
+      role: 'Solo, concept to prototype',
+      builtOn: 'tldraw',
+      status: 'LIVE at tldrawflash.com',
+      statusLive: true,
+    },
+    closingStatement: 'You don’t describe the motion. You perform it.',
+    blocks: [
+      {
+        kind: 'beat', side: 'visual-left', label: 'THE PROBLEM',
+        heading: 'Animation software asks you to describe motion. Nobody moves that way.',
+        body: 'Every serious 2D tool front-loads the hardest idea in the craft. Keyframes. Easing curves. Dope sheets.\n\nI studied the whole shelf, After Effects, Procreate Dreams, StickNodes, Pivot, even the motion paths hiding inside Canva and Keynote. All powerful. All slow.\n\ntldraw is a canvas, and a canvas is for playing. So I stopped trying to build a better timeline and started designing a performance.',
+        media: { src: '/projects/tldraw-wireframe.png' },
+        caption: 'Interaction research, the mechanisms pulled from After Effects, StickNodes, Pivot, Canva, Keynote and Procreate Dreams.',
+      },
+      { kind: 'statement', text: 'The tools people find fun hide the timeline. The tools people find capable expose it.' },
+      {
+        kind: 'dataviz', label: 'I MAPPED THE SHELF',
+        heading: 'Two scales, and the gap between them was the product.',
+        body: 'I ranked every tool I could get my hands on two ways, how playful it feels and how much it can actually make. The interesting space was the gap, tools are either fun or capable, almost never both.',
+        scaleMax: 100, legend: ['Playful', 'Capable'],
+        bars: [
+          { row: 'After Effects', a: 12, b: 96 },
+          { row: 'Procreate Dreams', a: 55, b: 74 },
+          { row: 'StickNodes', a: 48, b: 52 },
+          { row: 'Pivot', a: 62, b: 30 },
+          { row: 'Canva / Keynote', a: 40, b: 22 },
+          { row: 'tldraw flash', a: 92, b: 80 },
+        ],
+      },
+      {
+        kind: 'beat', side: 'visual-right', label: 'PERFORM, DON’T DESCRIBE',
+        heading: 'The motion is the take.',
+        body: 'tldraw flash records performance, not parameters. You drag a drawing across the canvas, that drag, its path and its speed, *is* the animation.\n\nGrab the torso and the whole puppet walks. Grab a limb and it swings. You handle a drawing the way you handle a puppet.',
+        media: { src: '/projects/tldraw-sample.mp4', isVideo: true },
+        caption: 'A scene performed and layered on the canvas, no keyframes.',
+      },
+      {
+        kind: 'beat', side: 'visual-left', label: 'ONE THING PER PASS',
+        heading: 'The scene builds the way a scene actually gets built.',
+        body: 'Drag a character on. Press record; a three-second count-in plays. Drag it across the stage, that motion is the take. Press play and it repeats, holding its last pose.\n\nThen you layer, one channel per pass.',
+        media: { src: '/projects/tldraw-flow.png' },
+        caption: 'The V1 loop, record → layer, punch-in edits, filmstrip scenes.',
+        table: {
+          head: ['Pass', 'What you add'],
+          rows: [
+            ['1', 'A character’s walk, dragged across the stage'],
+            ['2', 'A second character, while the first plays back live'],
+            ['3', 'A camera move, drag the frame to pan, a corner to push in'],
+            ['4', 'A voice-over, spoken onto the shared clock'],
+            ['5', 'Expressions & gestures, tap “happy”, tap “wave”'],
+          ],
+        },
+      },
+      { kind: 'statement', text: 'A good animation tool is mostly a good recording loop.' },
+      {
+        kind: 'diagram', label: 'PUNCH-IN',
+        heading: 'One editing model, everywhere.',
+        body: 'No trim. No retiming. No speed curves. Play back, find the frame that’s wrong, punch in, and re-perform just that stretch. Everything before it is untouched, the take you liked is kept. You never adjust a curve. You re-perform.',
+        trigger: 'Play back the take',
+        branches: [
+          { tag: 'FRAME IS RIGHT', title: 'Keep rolling', note: 'nothing to touch' },
+          { tag: 'FRAME IS WRONG', title: 'Punch in', note: 'grab just that limb' },
+          { tag: 'RE-PERFORM', title: 'From the playhead', note: 'same gesture as the take' },
+        ],
+      },
+      {
+        kind: 'evolution', label: 'EIGHT WEEKS OF FLASH',
+        body: 'The interaction is the manual. Eight weeks, ten builds, each one removing a reason to think about the timeline.',
+      },
+      { kind: 'statement', text: 'The discipline was in what I removed.' },
+      {
+        kind: 'beat', side: 'visual-right', label: 'WHAT I CUT',
+        heading: 'Every removal was a decision about when not to show a control.',
+        body: 'No trim handles. No easing graph. No layers panel. When drag means record and grabbing a limb means posing it, there is almost nothing left to teach.\n\nConstraints didn’t limit the tool. They gave it a voice, and the best documentation became a gesture that means the obvious thing.',
+        media: { src: '/projects/tldraw-demo.jpg' },
+        caption: 'The shipped interface, collections tray, camera framing, and the crude scrub timeline. Everything else is gone.',
+      },
+    ],
   },
 
   // ── GOFRESH ───────────────────────────────────────────────────────────────
@@ -142,6 +251,8 @@ export const projects: Project[] = [
     tags: ['Product Design', 'Systems', 'Gartner Winner'],
     bg: '#e9f1ec',
     heroImage: '/projects/cover-gofresh.jpg',
+    cardLine: 'A two-sided system that turns food waste into CO₂ saved.',
+    discipline: 'PRODUCT DESIGN & SYSTEMS',
 
     h1: 'Turning the expiry line into a discount, not a decision',
     subtitleParagraph: 'A third of the food we produce is never eaten. gofresh treats supermarket waste as a supply-chain loop rather than a shopping feature, pairing a consumer rescue app with a retail till that discounts near-expiry stock automatically. Winner, Gartner Case Competition.',
@@ -205,6 +316,8 @@ export const projects: Project[] = [
     tags: ['Web App', 'Visual Design', 'Canva Winner'],
     bg: '#efeaff',
     heroImage: '/projects/cover-folio.jpg',
+    cardLine: 'A portfolio builder that beats the blank page.',
+    discipline: 'WEB DESIGN',
 
     h1: 'From “build your portfolio” to “here’s your portfolio”',
     subtitleParagraph: 'Everyone tells creatives to make a portfolio, then hands them a blank canvas and walks away. folio removes the blank-page tax, a guided web app that turns your work into a laid-out site in the first ten minutes. Built and won in a hackathon sprint. Winner, Canva Hackathon.',

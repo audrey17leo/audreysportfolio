@@ -11,6 +11,7 @@ export default function Reveal({
   as = 'div',
   style,
   id,
+  className,
 }: {
   children: React.ReactNode
   delay?: number
@@ -18,17 +19,19 @@ export default function Reveal({
   as?: 'div' | 'section' | 'figure' | 'li'
   style?: React.CSSProperties
   id?: string
+  className?: string
 }) {
   const reduce = useReducedMotion()
   const MotionTag = motion[as] as typeof motion.div
 
   if (reduce) {
-    return <MotionTag id={id} style={style}>{children}</MotionTag>
+    return <MotionTag id={id} className={className} style={style}>{children}</MotionTag>
   }
 
   return (
     <MotionTag
       id={id}
+      className={className}
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-12% 0px' }}

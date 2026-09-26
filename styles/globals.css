@@ -69,6 +69,19 @@ html {
   .cs-toc { display: none; }
 }
 
+/* ── eemonroy block layout ── */
+.cs-hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(32px, 6vw, 96px); align-items: end; }
+.cs-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px; }
+@media (max-width: 860px) {
+  .cs-hero-grid { grid-template-columns: 1fr; gap: 32px; align-items: start; }
+  .cs-beat-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+  .cs-beat-visual { order: -1; } /* visual always on top on mobile */
+  /* diagram collapses to a simple stack (grid-column/row inline styles are ignored in flex) */
+  .cs-diagram { display: flex !important; flex-direction: column; gap: 14px; }
+  .cs-diagram-trigger { margin-bottom: 6px; }
+  .cs-connector-cell { display: none !important; }
+}
+
 @media (max-width: 767px) {
   .cs-hero-pad {
     padding-top: 100px !important;

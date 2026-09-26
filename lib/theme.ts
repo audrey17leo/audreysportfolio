@@ -30,6 +30,8 @@ export const TAG_GOLD = GRAPHITE
 export const FONT_DISPLAY = 'var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif'
 export const FONT_BODY = 'var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif'
 export const FONT_MONO = 'var(--font-geist-mono), "Geist Mono", ui-monospace, monospace'
+// Editorial serif (Newsreader) for case-study body — Anthropic-like literary serif.
+export const FONT_SERIF = 'var(--font-serif), Newsreader, Georgia, "Times New Roman", serif'
 
 // Radii — pills + generous card radii
 export const R_BUTTON = 9999

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, JetBrains_Mono } from 'next/font/google'
+import { Inter, JetBrains_Mono, Newsreader } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import ClientProviders from '@/components/ClientProviders'
@@ -15,6 +15,16 @@ const geistMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400'],
   variable: '--font-geist-mono',
+  display: 'swap',
+})
+
+// Editorial serif for case-study body copy — closest freely-licensable match to
+// Anthropic's Copernicus/Tiempos literary serif.
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
   display: 'swap',
 })
 
@@ -40,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${inter.variable} ${geistMono.variable} ${newsreader.variable}`}>
       <body
         className="antialiased"
         style={{
