@@ -6,14 +6,14 @@ import Reveal from '@/components/Reveal'
 import EvolutionScroll from '@/components/EvolutionScroll'
 import CaseTOC from '@/components/CaseTOC'
 import CaseTopNav from '@/components/CaseTopNav'
-import Beat from '@/components/case/Beat'
+import Beat, { csSubhead } from '@/components/case/Beat'
 import Statement from '@/components/case/Statement'
 import DataBars from '@/components/case/DataBars'
 import LogicDiagram from '@/components/case/LogicDiagram'
 import Carousel from '@/components/case/Carousel'
 import ScrollRevealText from '@/components/case/ScrollRevealText'
 import { projects, getProject, type ProcessSection, type Project } from '@/lib/projects'
-import { FG, GRAPHITE, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, FONT_DISPLAY, FONT_BODY, FONT_MONO, FONT_SERIF } from '@/lib/theme'
+import { FG, GRAPHITE, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, PASTEL, FONT_DISPLAY, FONT_BODY, FONT_MONO, FONT_SERIF } from '@/lib/theme'
 
 export function generateStaticParams() {
   return projects.map(p => ({ slug: p.slug }))
@@ -40,11 +40,11 @@ export default function CaseStudyPage({ params }: Props) {
 
 /* ══════════════════════════ eemonroy block layout ══════════════════════════ */
 
-function SectionEyebrow({ label }: { label: string }) {
+function SectionEyebrow({ label, accent = ACCENT }: { label: string; accent?: string }) {
   return (
     <Reveal>
-      <p style={{ fontFamily: FONT_MONO, fontSize: 12, color: GRAPHITE, letterSpacing: '0.13em', textTransform: 'uppercase', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: 9 }}>
-        <span style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />{label}
+      <p style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: 9 }}>
+        <span style={{ width: 7, height: 7, borderRadius: '50%', background: accent, display: 'inline-block' }} />{label}
       </p>
     </Reveal>
   )
@@ -53,7 +53,7 @@ function SectionEyebrow({ label }: { label: string }) {
 function SectionHeading({ children }: { children: React.ReactNode }) {
   return (
     <Reveal delay={0.05}>
-      <h2 style={{ fontFamily: FONT_DISPLAY, fontWeight: 600, fontSize: 'clamp(1.4rem, 2.3vw, 1.95rem)', letterSpacing: '-0.03em', lineHeight: 1.14, color: FG, margin: '0 0 22px' }}>{children}</h2>
+      <h2 style={csSubhead}>{children}</h2>
     </Reveal>
   )
 }
@@ -63,7 +63,7 @@ function MetaItem({ label, value, live }: { label: string; value?: string; live?
   const [first, ...rest] = value.split(' ')
   return (
     <div>
-      <p style={{ fontFamily: FONT_MONO, fontSize: 11, color: MUTED_LIGHT, letterSpacing: '0.13em', textTransform: 'uppercase', margin: '0 0 7px' }}>{label}</p>
+      <p style={{ fontFamily: FONT_DISPLAY, fontSize: 11, fontWeight: 600, color: MUTED_LIGHT, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 7px' }}>{label}</p>
       <p style={{ fontFamily: FONT_DISPLAY, fontSize: 15, color: FG, margin: 0, lineHeight: 1.45 }}>
         {live ? <><strong style={{ color: LIVE, fontWeight: 600 }}>{first}</strong> {rest.join(' ')}</> : value}
       </p>
@@ -80,15 +80,15 @@ function EemonCaseStudy({ project, nextProjects }: { project: Project; nextProje
       {/* ── HERO ── */}
       <div className="cs-hero-pad" style={{ maxWidth: 1400, margin: '0 auto', padding: 'clamp(80px, 11vh, 128px) clamp(20px, 4vw, 48px) 0' }}>
         <Reveal>
-          <Link href="/#works" data-cursor="explore" style={{ fontFamily: FONT_MONO, fontSize: 12.5, color: MUTED, textDecoration: 'none', letterSpacing: '0.04em' }}>← back to work</Link>
+          <Link href="/#works" data-cursor="explore" style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: MUTED, textDecoration: 'none', letterSpacing: '0.12em', textTransform: 'uppercase' }}>← back to work</Link>
         </Reveal>
 
         <div className="cs-hero-grid" style={{ marginTop: 'clamp(28px, 5vh, 52px)' }}>
           <div>
             {project.heroKicker && (
               <Reveal>
-                <p style={{ fontFamily: FONT_MONO, fontSize: 12, color: GRAPHITE, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                  {project.heroKicker}<span style={{ width: 9, height: 9, background: ACCENT, display: 'inline-block' }} />
+                <p style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
+                  {project.heroKicker}<span style={{ width: 9, height: 9, background: PASTEL.coral.ink, display: 'inline-block' }} />
                 </p>
               </Reveal>
             )}
@@ -118,7 +118,7 @@ function EemonCaseStudy({ project, nextProjects }: { project: Project; nextProje
 
         <Reveal delay={0.1}>
           <div className="cs-img" style={{ marginTop: 'clamp(40px, 7vh, 84px)' }}>
-            <img src={project.showcaseImages[0]} alt={project.title} />
+            <img src={project.heroVisual ?? project.showcaseImages[0]} alt={project.title} />
           </div>
         </Reveal>
       </div>
@@ -129,32 +129,32 @@ function EemonCaseStudy({ project, nextProjects }: { project: Project; nextProje
       {/* ── BLOCKS ── */}
       <div className="cs-pad" style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(20px, 4vw, 48px)' }}>
         {blocks.map((block, i) => {
-          const top = block.kind === 'statement' ? 0 : 'clamp(72px, 12vh, 150px)'
+          const top = block.kind === 'statement' ? 0 : 'clamp(80px, 12vh, 140px)'
           return (
-            <div key={i} style={{ marginTop: i === 0 ? 'clamp(64px, 10vh, 120px)' : top }}>
+            <div key={i} style={{ marginTop: i === 0 ? 'clamp(56px, 9vh, 104px)' : top }}>
               {block.kind === 'beat' && <Beat block={block} id={sid(block.label)} />}
 
               {block.kind === 'statement' && <Statement text={block.text} sub={block.sub} />}
 
               {block.kind === 'dataviz' && (
-                <section id={sid(block.label)} className="cs-beat-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(32px, 5vw, 80px)', alignItems: 'center' }}>
+                <section id={sid(block.label)} className="cs-beat-grid" style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 'clamp(32px, 5vw, 76px)', alignItems: 'start' }}>
                   <div className="cs-beat-visual"><Reveal><DataBars block={block} /></Reveal></div>
                   <div className="cs-beat-text">
-                    <SectionEyebrow label={block.label} />
+                    <SectionEyebrow label={block.label} accent={PASTEL.coral.ink} />
                     <SectionHeading>{block.heading}</SectionHeading>
-                    <ScrollRevealText text={block.body} />
+                    <ScrollRevealText text={block.body} maxWidth="54ch" />
                   </div>
                 </section>
               )}
 
               {block.kind === 'diagram' && (
                 <section id={sid(block.label)}>
-                  <div className="cs-beat-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px, 5vw, 72px)', alignItems: 'start', marginBottom: 'clamp(36px, 6vh, 64px)' }}>
+                  <div className="cs-beat-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px, 5vw, 72px)', alignItems: 'start', marginBottom: 'clamp(40px, 6vh, 68px)' }}>
                     <div>
-                      <SectionEyebrow label={block.label} />
+                      <SectionEyebrow label={block.label} accent={PASTEL.blue.ink} />
                       <SectionHeading>{block.heading}</SectionHeading>
                     </div>
-                    <div className="cs-beat-text"><ScrollRevealText text={block.body} /></div>
+                    <div className="cs-beat-text"><ScrollRevealText text={block.body} maxWidth="52ch" /></div>
                   </div>
                   <LogicDiagram block={block} />
                 </section>
@@ -166,8 +166,8 @@ function EemonCaseStudy({ project, nextProjects }: { project: Project; nextProje
 
               {block.kind === 'evolution' && (
                 <section id={sid(block.label)}>
-                  <SectionEyebrow label={block.label} />
-                  <div style={{ maxWidth: '58ch', marginBottom: 'clamp(20px, 3vh, 34px)' }}><ScrollRevealText text={block.body} /></div>
+                  <SectionEyebrow label={block.label} accent={PASTEL.amber.ink} />
+                  <div style={{ maxWidth: '56ch', marginBottom: 'clamp(20px, 3vh, 34px)' }}><ScrollRevealText text={block.body} /></div>
                   <EvolutionScroll />
                 </section>
               )}
@@ -190,8 +190,8 @@ function EemonCaseStudy({ project, nextProjects }: { project: Project; nextProje
                   <img src={p.heroImage} alt={p.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: p.heroImage.endsWith('.png') ? 'contain' : 'cover' }} />
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 13, gap: 16 }}>
-                  <span style={{ fontFamily: FONT_BODY, fontSize: 14, color: MUTED }}>{p.cardLine}</span>
-                  <span style={{ fontFamily: FONT_MONO, fontSize: 12, color: FG, letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{p.discipline} · {p.year.split('·')[0].trim()}</span>
+                  <span style={{ fontFamily: FONT_BODY, fontSize: 16, fontWeight: 500, color: FG }}>{p.title}</span>
+                  <span style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{p.discipline} · {p.year.split('·')[0].trim()}</span>
                 </div>
               </Link>
             </Reveal>
@@ -201,8 +201,8 @@ function EemonCaseStudy({ project, nextProjects }: { project: Project; nextProje
 
       {/* ── FOOTER ── */}
       <div className="cs-pad cs-footer-flex" style={{ maxWidth: 1200, margin: `${sectionGap} auto 0`, padding: '30px clamp(20px, 4vw, 48px) 96px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1px solid ${HAIRLINE}` }}>
-        <Link href="/#works" data-cursor="explore" style={{ fontFamily: FONT_MONO, fontSize: 13, color: MUTED, textDecoration: 'none', letterSpacing: '0.04em' }}>← all work</Link>
-        <span style={{ fontFamily: FONT_SERIF, fontSize: 15, color: MUTED_LIGHT }}>Thanks for reading.</span>
+        <Link href="/#works" data-cursor="explore" style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: MUTED, textDecoration: 'none', letterSpacing: '0.12em', textTransform: 'uppercase' }}>← all work</Link>
+        <span style={{ fontFamily: FONT_SERIF, fontSize: 16, color: MUTED_LIGHT }}>Thanks for reading.</span>
       </div>
     </main>
   )

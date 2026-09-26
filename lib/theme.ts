@@ -30,8 +30,17 @@ export const TAG_GOLD = GRAPHITE
 export const FONT_DISPLAY = 'var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif'
 export const FONT_BODY = 'var(--font-inter), Inter, ui-sans-serif, system-ui, sans-serif'
 export const FONT_MONO = 'var(--font-geist-mono), "Geist Mono", ui-monospace, monospace'
-// Editorial serif (Newsreader) for case-study body — Anthropic-like literary serif.
+// Editorial serif (Newsreader) for case-study subheads — Anthropic-like literary serif.
 export const FONT_SERIF = 'var(--font-serif), Newsreader, Georgia, "Times New Roman", serif'
+
+// Soft mascot pastels (tldraw-flash characters: blue heart / amber cloud / coral shape).
+// Low-saturation tints for panels + inks for small accents. Nothing strong.
+export const PASTEL = {
+  blue:  { bg: '#eef3fb', ink: '#6d9fe0' },
+  amber: { bg: '#fdf4e2', ink: '#e0ab55' },
+  coral: { bg: '#fbeae7', ink: '#e08a80' },
+} as const
+export type PastelKey = keyof typeof PASTEL
 
 // Radii — pills + generous card radii
 export const R_BUTTON = 9999

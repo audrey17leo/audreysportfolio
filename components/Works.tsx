@@ -134,10 +134,10 @@ function ProjectCard({ project }: { project: DisplayProject }) {
           </div>
         </div>
 
-        {/* caption row (eemonroy style): one-liner left, discipline · year right */}
+        {/* caption row (eemonroy style): title left, discipline · year right */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 20, marginTop: 15 }}>
-          <span style={{ fontFamily: FONT_BODY, fontSize: 14, color: MUTED, letterSpacing: '-0.01em', lineHeight: 1.4 }}>
-            {project.cardLine}
+          <span style={{ fontFamily: FONT_BODY, fontSize: 16, fontWeight: 500, color: FG, letterSpacing: '-0.01em', lineHeight: 1.4 }}>
+            {project.title}
           </span>
           <span style={{ fontFamily: FONT_MONO, fontSize: 12, color: FG, letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap', flexShrink: 0 }}>
             {project.discipline} · {project.yearShort}

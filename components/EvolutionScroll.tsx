@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { FG, GRAPHITE, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, CARD, FONT_DISPLAY, FONT_MONO } from '@/lib/theme'
-import { sfPro } from '@/lib/fonts'
+import { FG, GRAPHITE, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, CARD, PASTEL, FONT_DISPLAY, FONT_BODY, FONT_SERIF } from '@/lib/theme'
 
 type Step = {
   date: string
@@ -77,19 +76,19 @@ export default function EvolutionScroll() {
   return (
     <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 40px' }} className="cs-pad">
       {/* header */}
-      <p style={{ fontFamily: FONT_MONO, fontSize: 12, color: GRAPHITE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 18px', display: 'flex', alignItems: 'center', gap: 10 }}>
-        <span style={{ width: 6, height: 6, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />
+      <p style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 18px', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <span style={{ width: 7, height: 7, borderRadius: '50%', background: PASTEL.amber.ink, display: 'inline-block' }} />
         The 8-week evolution
       </p>
-      <h2 style={{ fontFamily: FONT_DISPLAY, fontWeight: 300, fontSize: 'clamp(1.5rem, 2.4vw, 2.25rem)', color: FG, letterSpacing: '-0.02em', lineHeight: 1.17, margin: '0 0 18px', maxWidth: 720 }}>
+      <h2 style={{ fontFamily: FONT_SERIF, fontWeight: 500, fontSize: 'clamp(1.5rem, 2.4vw, 2.1rem)', color: FG, letterSpacing: '-0.005em', lineHeight: 1.22, margin: '0 0 18px', maxWidth: 720 }}>
         From bolted-on to built-in, ten builds, one gesture, photographed doing the same thing.
       </h2>
-      <p style={{ fontFamily: sfPro, fontSize: 16, color: MUTED, lineHeight: 1.6, margin: '0 0 10px', maxWidth: 640 }}>
+      <p style={{ fontFamily: FONT_BODY, fontSize: 16.5, color: MUTED, lineHeight: 1.62, margin: '0 0 14px', maxWidth: 620 }}>
         Every build opened and driven identically, draw a stroke, record a take, drag it across the stage, so what moves between them is the design decision, not the demo. Scroll to watch it happen.
       </p>
       <a href="https://tldrawflash.com" target="_blank" rel="noopener noreferrer" data-cursor="explore"
-        style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: FONT_MONO, fontSize: 13, color: FG, textDecoration: 'none', borderBottom: `1px solid ${ACCENT}`, paddingBottom: 3, marginBottom: 8 }}>
-        Where it landed → tldrawflash.com <span style={{ color: ACCENT }}>↗</span>
+        style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: FG, textDecoration: 'none', borderBottom: `1px solid ${ACCENT}`, paddingBottom: 3, marginBottom: 8 }}>
+        Where it landed → tldrawflash.com <span style={{ color: PASTEL.amber.ink }}>↗</span>
       </a>
 
       {/* scrolly */}
@@ -104,8 +103,8 @@ export default function EvolutionScroll() {
               ))}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 14, gap: 12 }}>
-              <span style={{ fontFamily: FONT_MONO, fontSize: 12, color: MUTED_LIGHT, letterSpacing: '0.06em' }}>{current.date} · {current.phase}</span>
-              <span style={{ fontFamily: FONT_MONO, fontSize: 12, color: MUTED_LIGHT }}>{String(active + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}</span>
+              <span style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 500, color: MUTED_LIGHT, letterSpacing: '0.04em' }}>{current.date} · {current.phase}</span>
+              <span style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 500, color: MUTED_LIGHT }}>{String(active + 1).padStart(2, '0')} / {String(STEPS.length).padStart(2, '0')}</span>
             </div>
             {/* phase progress */}
             <div style={{ display: 'flex', gap: 6, marginTop: 16 }}>
@@ -117,7 +116,7 @@ export default function EvolutionScroll() {
               {PHASES.map((p) => {
                 const on = p.name === current.phase
                 return (
-                  <span key={p.name} style={{ fontFamily: FONT_MONO, fontSize: 11, letterSpacing: '0.04em', color: on ? FG : MUTED_LIGHT, textTransform: 'uppercase' }}>
+                  <span key={p.name} style={{ fontFamily: FONT_DISPLAY, fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', color: on ? FG : MUTED_LIGHT, textTransform: 'uppercase' }}>
                     {p.name}
                   </span>
                 )
@@ -142,9 +141,9 @@ export default function EvolutionScroll() {
                 transition: 'opacity 0.4s ease',
               }}
             >
-              <span style={{ fontFamily: FONT_MONO, fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: ACCENT }}>{s.phase}</span>
-              <div style={{ fontFamily: FONT_MONO, fontSize: 12, color: MUTED_LIGHT, margin: '6px 0 14px' }}>{s.date}</div>
-              <h3 style={{ fontFamily: FONT_DISPLAY, fontWeight: 400, fontSize: 'clamp(1.4rem, 2.2vw, 1.9rem)', color: FG, letterSpacing: '-0.02em', lineHeight: 1.18, margin: '0 0 16px' }}>
+              <span style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: PASTEL.amber.ink }}>{s.phase}</span>
+              <div style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 500, color: MUTED_LIGHT, margin: '6px 0 14px' }}>{s.date}</div>
+              <h3 style={{ fontFamily: FONT_SERIF, fontWeight: 500, fontSize: 'clamp(1.35rem, 2vw, 1.75rem)', color: FG, letterSpacing: '-0.005em', lineHeight: 1.24, margin: '0 0 16px' }}>
                 {s.title}
               </h3>
               {isMobile && (
@@ -152,7 +151,7 @@ export default function EvolutionScroll() {
                   <img src={s.img} alt={s.title} style={{ width: '100%', height: 'auto', display: 'block' }} />
                 </div>
               )}
-              <p style={{ fontFamily: sfPro, fontSize: 16.5, color: MUTED, lineHeight: 1.6, margin: 0, maxWidth: '46ch' }}>
+              <p style={{ fontFamily: FONT_BODY, fontSize: 16.5, color: MUTED, lineHeight: 1.62, margin: 0, maxWidth: '46ch' }}>
                 {s.analysis}
               </p>
             </div>

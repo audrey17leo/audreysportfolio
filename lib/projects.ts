@@ -17,7 +17,7 @@ export type ReflectionItem = {
 // ── eemonroy-style case-study blocks (optional; page falls back to legacy layout) ──
 export type Block =
   | { kind: 'beat'; side: 'visual-left' | 'visual-right'; label: string; heading: string; body: string
-      media: { src: string; isVideo?: boolean }; caption?: string
+      media: { src: string; isVideo?: boolean }; caption?: string; tint?: 'blue' | 'amber' | 'coral'
       table?: { head: [string, string]; rows: [string, string][] } }
   | { kind: 'statement'; text: string; sub?: string }
   | { kind: 'dataviz'; label: string; heading: string; body: string; scaleMax: number; unit?: string
@@ -73,6 +73,7 @@ export type Project = {
   // page renders the new scroll structure; otherwise it uses the legacy layout. ──
   heroKicker?: string
   hook?: string
+  heroVisual?: string
   heroMeta?: { duration: string; role: string; builtOn?: string; status: string; statusLive?: boolean }
   blocks?: Block[]
   closingStatement?: string
@@ -161,6 +162,7 @@ export const projects: Project[] = [
     // ── eemonroy block layout ──
     heroKicker: 'CANVAS-NATIVE ANIMATION',
     hook: 'How I took the one idea every 2D tool front-loads, the timeline, and buried it, so the drawing you drag becomes the animation.',
+    heroVisual: '/projects/tldraw-demo.jpg',
     heroMeta: {
       duration: 'Ongoing R&D',
       role: 'Solo, concept to prototype',
@@ -171,11 +173,11 @@ export const projects: Project[] = [
     closingStatement: 'You don’t describe the motion. You perform it.',
     blocks: [
       {
-        kind: 'beat', side: 'visual-left', label: 'THE PROBLEM',
+        kind: 'beat', side: 'visual-left', label: 'THE PROBLEM', tint: 'blue',
         heading: 'Animation software asks you to describe motion. Nobody moves that way.',
-        body: 'Every serious 2D tool front-loads the hardest idea in the craft. Keyframes. Easing curves. Dope sheets.\n\nI studied the whole shelf, After Effects, Procreate Dreams, StickNodes, Pivot, even the motion paths hiding inside Canva and Keynote. All powerful. All slow.\n\ntldraw is a canvas, and a canvas is for playing. So I stopped trying to build a better timeline and started designing a performance.',
+        body: 'Every serious 2D tool front-loads the hardest idea in the craft, keyframes, easing curves, dope sheets.\n\nThe pattern was total: the tools people find fun hide the timeline, the ones that feel capable expose it. A canvas is for playing, so I stopped building a better timeline and designed a performance.',
         media: { src: '/projects/tldraw-wireframe.png' },
-        caption: 'Interaction research, the mechanisms pulled from After Effects, StickNodes, Pivot, Canva, Keynote and Procreate Dreams.',
+        caption: 'Interaction research, mechanisms pulled from After Effects, StickNodes, Pivot, Canva, Keynote and Procreate Dreams.',
       },
       { kind: 'statement', text: 'The tools people find fun hide the timeline. The tools people find capable expose it.' },
       {
@@ -193,16 +195,16 @@ export const projects: Project[] = [
         ],
       },
       {
-        kind: 'beat', side: 'visual-right', label: 'PERFORM, DON’T DESCRIBE',
+        kind: 'beat', side: 'visual-left', label: 'PERFORM, DON’T DESCRIBE', tint: 'coral',
         heading: 'The motion is the take.',
-        body: 'tldraw flash records performance, not parameters. You drag a drawing across the canvas, that drag, its path and its speed, *is* the animation.\n\nGrab the torso and the whole puppet walks. Grab a limb and it swings. You handle a drawing the way you handle a puppet.',
+        body: 'You drag a drawing across the canvas, and that drag, its path and its speed, is the animation.\n\nGrab the torso and the whole puppet walks. Grab a limb and it swings. You handle a drawing the way you handle a puppet.',
         media: { src: '/projects/tldraw-sample.mp4', isVideo: true },
         caption: 'A scene performed and layered on the canvas, no keyframes.',
       },
       {
-        kind: 'beat', side: 'visual-left', label: 'ONE THING PER PASS',
+        kind: 'beat', side: 'visual-left', label: 'ONE THING PER PASS', tint: 'amber',
         heading: 'The scene builds the way a scene actually gets built.',
-        body: 'Drag a character on. Press record; a three-second count-in plays. Drag it across the stage, that motion is the take. Press play and it repeats, holding its last pose.\n\nThen you layer, one channel per pass.',
+        body: 'Drag a character on, hit record, and perform its walk. Press play and it loops. Then you layer, one channel per pass.',
         media: { src: '/projects/tldraw-flow.png' },
         caption: 'The V1 loop, record → layer, punch-in edits, filmstrip scenes.',
         table: {
@@ -234,9 +236,9 @@ export const projects: Project[] = [
       },
       { kind: 'statement', text: 'The discipline was in what I removed.' },
       {
-        kind: 'beat', side: 'visual-right', label: 'WHAT I CUT',
+        kind: 'beat', side: 'visual-left', label: 'WHAT I CUT', tint: 'blue',
         heading: 'Every removal was a decision about when not to show a control.',
-        body: 'No trim handles. No easing graph. No layers panel. When drag means record and grabbing a limb means posing it, there is almost nothing left to teach.\n\nConstraints didn’t limit the tool. They gave it a voice, and the best documentation became a gesture that means the obvious thing.',
+        body: 'No trim handles. No easing graph. No layers panel. When drag means record and grabbing a limb means posing it, there is almost nothing left to teach.\n\nConstraints gave the tool a voice.',
         media: { src: '/projects/tldraw-demo.jpg' },
         caption: 'The shipped interface, collections tray, camera framing, and the crude scrub timeline. Everything else is gone.',
       },

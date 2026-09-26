@@ -2,16 +2,16 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import { stellaEase } from '@/lib/stellaMotion'
 import type { Block } from '@/lib/projects'
-import { FG, MUTED, GRAPHITE, HAIRLINE, CARD, ORANGE, FONT_MONO, FONT_DISPLAY, FONT_SERIF } from '@/lib/theme'
+import { FG, MUTED, GRAPHITE, HAIRLINE, CARD, PASTEL, FONT_DISPLAY } from '@/lib/theme'
 
 type DiagramBlock = Extract<Block, { kind: 'diagram' }>
+const BLUE = PASTEL.blue
 
 function Connector({ delay, reduce }: { delay: number; reduce: boolean | null }) {
   return (
     <svg className="cs-connector" width="46" height="24" viewBox="0 0 46 24" fill="none" aria-hidden>
       <motion.path
-        d="M1 12 H36"
-        stroke={GRAPHITE} strokeWidth="1.5"
+        d="M1 12 H36" stroke={GRAPHITE} strokeWidth="1.5"
         initial={reduce ? undefined : { pathLength: 0 }}
         whileInView={reduce ? undefined : { pathLength: 1 }}
         viewport={{ once: true }}
@@ -22,18 +22,20 @@ function Connector({ delay, reduce }: { delay: number; reduce: boolean | null })
   )
 }
 
-// eemonroy's trigger → branches flow (the "global cap" logic diagram).
+// eemonroy's trigger -> branches flow. Soft-blue trigger circle carries the colour.
 export default function LogicDiagram({ block }: { block: DiagramBlock }) {
   const reduce = useReducedMotion()
   const n = block.branches.length
   return (
-    <div className="cs-diagram" style={{ display: 'grid', gridTemplateColumns: 'minmax(150px, 210px) 46px 1fr', columnGap: 'clamp(10px, 2vw, 22px)', rowGap: 16, alignItems: 'center' }}>
-      <div className="cs-diagram-trigger" style={{ gridColumn: 1, gridRow: `1 / span ${n}`, alignSelf: 'center' }}>
+    <div className="cs-diagram" style={{ display: 'grid', gridTemplateColumns: 'minmax(160px, 220px) 46px 1fr', columnGap: 'clamp(10px, 2vw, 22px)', rowGap: 16, alignItems: 'center' }}>
+      <div className="cs-diagram-trigger" style={{ gridColumn: 1, gridRow: `1 / span ${n}`, alignSelf: 'center', display: 'flex', justifyContent: 'center' }}>
         <div style={{
-          borderRadius: 18, padding: '22px 20px', textAlign: 'center',
-          background: '#fff', border: `1px solid ${HAIRLINE}`, boxShadow: '0 18px 40px -26px rgba(0,0,0,.28)',
+          width: 200, height: 200, borderRadius: '50%', display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 24,
+          background: `radial-gradient(circle at 38% 30%, #ffffff, ${BLUE.bg} 78%)`,
+          border: `1px solid ${BLUE.ink}33`, boxShadow: `0 20px 44px -26px ${BLUE.ink}66`,
         }}>
-          <p style={{ fontFamily: FONT_MONO, fontSize: 10.5, letterSpacing: '0.14em', textTransform: 'uppercase', color: ORANGE, margin: '0 0 8px' }}>TRIGGER</p>
+          <p style={{ fontFamily: FONT_DISPLAY, fontSize: 10.5, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: BLUE.ink, margin: '0 0 8px' }}>TRIGGER</p>
           <p style={{ fontFamily: FONT_DISPLAY, fontSize: 15, fontWeight: 500, color: FG, margin: 0, lineHeight: 1.35 }}>{block.trigger}</p>
         </div>
       </div>
@@ -50,9 +52,9 @@ export default function LogicDiagram({ block }: { block: DiagramBlock }) {
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: stellaEase, delay: 0.2 + i * 0.12 }}
           >
-            <span style={{ fontFamily: FONT_MONO, fontSize: 11, letterSpacing: '0.1em', color: GRAPHITE }}>{b.tag}</span>
+            <span style={{ fontFamily: FONT_DISPLAY, fontSize: 11, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: GRAPHITE }}>{b.tag}</span>
             <span style={{ fontFamily: FONT_DISPLAY, fontSize: 16, fontWeight: 500, color: FG }}>{b.title}</span>
-            <span style={{ fontFamily: FONT_SERIF, fontSize: 15, fontStyle: 'italic', color: MUTED, marginLeft: 'auto' }}>{b.note}</span>
+            <span style={{ fontFamily: FONT_DISPLAY, fontSize: 14, color: MUTED, marginLeft: 'auto' }}>{b.note}</span>
           </motion.div>
         </div>
       ))}
