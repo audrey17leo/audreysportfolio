@@ -5,7 +5,14 @@ import Link from 'next/link'
 import { projects as realProjects } from '@/lib/projects'
 import { useIsMobile } from '@/lib/useIsMobile'
 import { reveal, staggerContainer, once, stellaEase } from '@/lib/stellaMotion'
-import { FG, MUTED, HAIRLINE, CARD, FONT_BODY, FONT_MONO } from '@/lib/theme'
+import { FG, MUTED, HAIRLINE, CARD, FONT_BODY } from '@/lib/theme'
+
+// Per-project accent for the hover label (ruocanpeng: the name pill is coloured).
+const ACCENTS: Record<string, string> = {
+  'tldraw-flash': '#3f7ff0',
+  'gofresh': '#2f9e44',
+  'folio': '#8b6dff',
+}
 
 const displayProjects = realProjects
   .filter(p => p.slug !== 'batik')
@@ -46,6 +53,7 @@ function ProjectCard({ project }: { project: DisplayProject }) {
 
   const isPng = !!project.image && project.image.endsWith('.png')
   const baseScale = 1
+  const accent = ACCENTS[project.slug] ?? FG
 
   return (
     <motion.div variants={reveal} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -85,63 +93,30 @@ function ProjectCard({ project }: { project: DisplayProject }) {
               }} />
           ) : null}
 
-          {/* hover scrim — keeps labels legible over any image */}
-          <div
-            aria-hidden
-            style={{
-              position: 'absolute', inset: 0, pointerEvents: 'none',
-              background: 'linear-gradient(to top, rgba(20,20,20,0.30), transparent 42%), linear-gradient(to bottom, rgba(20,20,20,0.16), transparent 34%)',
-              opacity: hovered ? 1 : 0, transition: 'opacity 0.3s',
-            }}
-          />
-
-          {/* see project — top-left, appears on hover */}
+          {/* see project — centered, appears on hover (ruocanpeng) */}
           <div
             style={{
-              position: 'absolute', top: 'clamp(12px,1.5vw,16px)', left: 'clamp(12px,1.5vw,16px)',
-              opacity: hovered ? 1 : 0, transform: hovered ? 'translateY(0)' : 'translateY(-4px)',
-              transition: 'opacity 0.28s, transform 0.28s', pointerEvents: 'none',
+              position: 'absolute', top: '50%', left: '50%',
+              transform: hovered ? 'translate(-50%, -50%)' : 'translate(-50%, calc(-50% + 5px))',
+              opacity: hovered ? 1 : 0, transition: 'opacity 0.28s ease, transform 0.28s ease', pointerEvents: 'none',
             }}
           >
-            <span
-              style={{
-                fontFamily: FONT_BODY, fontSize: 13.5, fontWeight: 500, color: FG,
-                background: CARD, padding: '8px 15px', borderRadius: 9999,
-                display: 'inline-flex', alignItems: 'center', gap: 7,
-                boxShadow: 'rgba(0,0,0,0.10) 0px 2px 8px',
-              }}
-            >
-              read case study <span aria-hidden>→</span>
+            <span style={{ fontFamily: FONT_BODY, fontSize: 16, fontWeight: 500, color: '#2a2a2a', background: '#fff', padding: '11px 22px', borderRadius: 10, whiteSpace: 'nowrap', boxShadow: '0 8px 24px rgba(20,20,30,0.12)' }}>
+              see project
             </span>
           </div>
 
-          {/* tags — bottom-left, appear on hover */}
-          <div style={{ position: 'absolute', left: 'clamp(12px,1.5vw,16px)', bottom: 'clamp(12px,1.5vw,16px)', display: 'flex', flexWrap: 'wrap', gap: 7, maxWidth: 'calc(100% - 32px)', opacity: hovered ? 1 : 0, transition: 'opacity 0.3s', pointerEvents: 'none' }}>
-            {project.tags.slice(0, 3).map((t) => (
-              <span
-                key={t}
-                style={{
-                  fontFamily: FONT_BODY, fontSize: 13, fontWeight: 500, color: FG,
-                  background: CARD,
-                  padding: '5px 12px', borderRadius: 9999,
-                  textTransform: 'lowercase', lineHeight: '18px',
-                  boxShadow: 'rgba(0,0,0,0.10) 0px 2px 8px',
-                }}
-              >
+          {/* labels — bottom-left on hover: name in the project's accent, then descriptors */}
+          <div style={{ position: 'absolute', left: 'clamp(14px,1.6vw,20px)', bottom: 'clamp(14px,1.6vw,20px)', display: 'flex', flexWrap: 'wrap', gap: 8, maxWidth: 'calc(100% - 40px)', opacity: hovered ? 1 : 0, transform: hovered ? 'translateY(0)' : 'translateY(6px)', transition: 'opacity 0.3s ease, transform 0.3s ease', pointerEvents: 'none' }}>
+            <span style={{ fontFamily: FONT_BODY, fontSize: 15, fontWeight: 500, color: accent, background: '#fff', padding: '8px 16px', borderRadius: 10, whiteSpace: 'nowrap', boxShadow: '0 6px 18px rgba(20,20,30,0.10)' }}>
+              {project.title}
+            </span>
+            {project.tags.slice(0, 2).map((t) => (
+              <span key={t} style={{ fontFamily: FONT_BODY, fontSize: 15, fontWeight: 500, color: '#555', background: '#fff', padding: '8px 16px', borderRadius: 10, whiteSpace: 'nowrap', boxShadow: '0 6px 18px rgba(20,20,30,0.10)' }}>
                 {t.toLowerCase()}
               </span>
             ))}
           </div>
-        </div>
-
-        {/* caption row (eemonroy style): title left, discipline · year right */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 20, marginTop: 15 }}>
-          <span style={{ fontFamily: FONT_BODY, fontSize: 16, fontWeight: 500, color: FG, letterSpacing: '-0.01em', lineHeight: 1.4 }}>
-            {project.title}
-          </span>
-          <span style={{ fontFamily: FONT_MONO, fontSize: 12, color: FG, letterSpacing: '0.06em', textTransform: 'uppercase', whiteSpace: 'nowrap', flexShrink: 0 }}>
-            {project.discipline} · {project.yearShort}
-          </span>
         </div>
       </Link>
     </motion.div>
