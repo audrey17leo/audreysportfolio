@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { FG, GRAPHITE, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, CARD, PASTEL, FONT_DISPLAY, FONT_BODY, FONT_SERIF } from '@/lib/theme'
+import { FG, GRAPHITE, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, CARD, FONT_DISPLAY, FONT_BODY } from '@/lib/theme'
 
 type Step = {
   date: string
@@ -77,10 +77,10 @@ export default function EvolutionScroll() {
     <div style={{ maxWidth: 1180, margin: '0 auto', padding: '0 40px' }} className="cs-pad">
       {/* header */}
       <p style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 18px', display: 'flex', alignItems: 'center', gap: 10 }}>
-        <span style={{ width: 7, height: 7, borderRadius: '50%', background: PASTEL.amber.ink, display: 'inline-block' }} />
+        <span style={{ width: 7, height: 7, borderRadius: '50%', background: ACCENT, display: 'inline-block' }} />
         The 8-week evolution
       </p>
-      <h2 style={{ fontFamily: FONT_SERIF, fontWeight: 500, fontSize: 'clamp(1.5rem, 2.4vw, 2.1rem)', color: FG, letterSpacing: '-0.005em', lineHeight: 1.22, margin: '0 0 18px', maxWidth: 720 }}>
+      <h2 style={{ fontFamily: FONT_DISPLAY, fontWeight: 600, fontSize: 'clamp(1.5rem, 2.4vw, 2rem)', color: FG, letterSpacing: '-0.025em', lineHeight: 1.18, margin: '0 0 18px', maxWidth: 720 }}>
         From bolted-on to built-in, ten builds, one gesture, photographed doing the same thing.
       </h2>
       <p style={{ fontFamily: FONT_BODY, fontSize: 16.5, color: MUTED, lineHeight: 1.62, margin: '0 0 14px', maxWidth: 620 }}>
@@ -88,7 +88,7 @@ export default function EvolutionScroll() {
       </p>
       <a href="https://tldrawflash.com" target="_blank" rel="noopener noreferrer" data-cursor="explore"
         style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: FG, textDecoration: 'none', borderBottom: `1px solid ${ACCENT}`, paddingBottom: 3, marginBottom: 8 }}>
-        Where it landed → tldrawflash.com <span style={{ color: PASTEL.amber.ink }}>↗</span>
+        Where it landed → tldrawflash.com <span style={{ color: ACCENT }}>↗</span>
       </a>
 
       {/* scrolly */}
@@ -141,9 +141,9 @@ export default function EvolutionScroll() {
                 transition: 'opacity 0.4s ease',
               }}
             >
-              <span style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: PASTEL.amber.ink }}>{s.phase}</span>
+              <span style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: GRAPHITE }}>{s.phase}</span>
               <div style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 500, color: MUTED_LIGHT, margin: '6px 0 14px' }}>{s.date}</div>
-              <h3 style={{ fontFamily: FONT_SERIF, fontWeight: 500, fontSize: 'clamp(1.35rem, 2vw, 1.75rem)', color: FG, letterSpacing: '-0.005em', lineHeight: 1.24, margin: '0 0 16px' }}>
+              <h3 style={{ fontFamily: FONT_DISPLAY, fontWeight: 600, fontSize: 'clamp(1.35rem, 2vw, 1.7rem)', color: FG, letterSpacing: '-0.025em', lineHeight: 1.2, margin: '0 0 16px' }}>
                 {s.title}
               </h3>
               {isMobile && (

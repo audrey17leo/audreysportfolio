@@ -5,15 +5,8 @@ import AutoPlayVideo from '@/components/AutoPlayVideo'
 import Reveal from '@/components/Reveal'
 import EvolutionScroll from '@/components/EvolutionScroll'
 import CaseTOC from '@/components/CaseTOC'
-import CaseTopNav from '@/components/CaseTopNav'
-import Beat, { csSubhead } from '@/components/case/Beat'
-import Statement from '@/components/case/Statement'
-import DataBars from '@/components/case/DataBars'
-import LogicDiagram from '@/components/case/LogicDiagram'
-import Carousel from '@/components/case/Carousel'
-import ScrollRevealText from '@/components/case/ScrollRevealText'
 import { projects, getProject, type ProcessSection, type Project } from '@/lib/projects'
-import { FG, GRAPHITE, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, PASTEL, FONT_DISPLAY, FONT_BODY, FONT_MONO, FONT_SERIF } from '@/lib/theme'
+import { FG, GRAPHITE, MUTED, MUTED_LIGHT, HAIRLINE, ACCENT, FONT_DISPLAY, FONT_BODY, FONT_MONO } from '@/lib/theme'
 
 export function generateStaticParams() {
   return projects.map(p => ({ slug: p.slug }))
@@ -21,9 +14,7 @@ export function generateStaticParams() {
 
 type Props = { params: { slug: string } }
 
-const LIVE = '#2f9e44'
 const sectionGap = 'clamp(56px, 9vh, 104px)'
-const sid = (label: string) => label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
 export default function CaseStudyPage({ params }: Props) {
   const project = getProject(params.slug)
@@ -33,178 +24,116 @@ export default function CaseStudyPage({ params }: Props) {
   const nextProjects = [1, 2].map(o => projects[(currentIdx + o) % projects.length])
 
   if (project.blocks && project.blocks.length) {
-    return <EemonCaseStudy project={project} nextProjects={nextProjects} />
+    return <ShowcaseCaseStudy project={project} nextProjects={nextProjects} />
   }
   return <LegacyCaseStudy project={project} nextProjects={nextProjects} />
 }
 
-/* ══════════════════════════ eemonroy block layout ══════════════════════════ */
+/* ══════════════════════════ UI-first showcase layout ══════════════════════════ */
 
-function SectionEyebrow({ label, accent = ACCENT }: { label: string; accent?: string }) {
+function BigMedia({ media, priority }: { media: { src: string; caption?: string; isVideo?: boolean }; priority?: boolean }) {
   return (
     <Reveal>
-      <p style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 16px', display: 'flex', alignItems: 'center', gap: 9 }}>
-        <span style={{ width: 7, height: 7, borderRadius: '50%', background: accent, display: 'inline-block' }} />{label}
-      </p>
-    </Reveal>
-  )
-}
-
-function SectionHeading({ children }: { children: React.ReactNode }) {
-  return (
-    <Reveal delay={0.05}>
-      <h2 style={csSubhead}>{children}</h2>
-    </Reveal>
-  )
-}
-
-function MetaItem({ label, value, live }: { label: string; value?: string; live?: boolean }) {
-  if (!value) return null
-  const [first, ...rest] = value.split(' ')
-  return (
-    <div>
-      <p style={{ fontFamily: FONT_DISPLAY, fontSize: 11, fontWeight: 600, color: MUTED_LIGHT, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 7px' }}>{label}</p>
-      <p style={{ fontFamily: FONT_DISPLAY, fontSize: 15, color: FG, margin: 0, lineHeight: 1.45 }}>
-        {live ? <><strong style={{ color: LIVE, fontWeight: 600 }}>{first}</strong> {rest.join(' ')}</> : value}
-      </p>
-    </div>
-  )
-}
-
-function EemonCaseStudy({ project, nextProjects }: { project: Project; nextProjects: Project[] }) {
-  const blocks = project.blocks ?? []
-  const navSections = blocks.flatMap(b => ('label' in b ? [{ id: sid(b.label), label: b.label }] : []))
-
-  return (
-    <main style={{ background: 'transparent', minHeight: '100vh' }}>
-      {/* ── HERO ── */}
-      <div className="cs-hero-pad" style={{ maxWidth: 1400, margin: '0 auto', padding: 'clamp(80px, 11vh, 128px) clamp(20px, 4vw, 48px) 0' }}>
-        <Reveal>
-          <Link href="/#works" data-cursor="explore" style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: MUTED, textDecoration: 'none', letterSpacing: '0.12em', textTransform: 'uppercase' }}>← back to work</Link>
-        </Reveal>
-
-        <div className="cs-hero-grid" style={{ marginTop: 'clamp(28px, 5vh, 52px)' }}>
-          <div>
-            {project.heroKicker && (
-              <Reveal>
-                <p style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.14em', textTransform: 'uppercase', margin: '0 0 20px', display: 'flex', alignItems: 'center', gap: 10 }}>
-                  {project.heroKicker}<span style={{ width: 9, height: 9, background: PASTEL.coral.ink, display: 'inline-block' }} />
-                </p>
-              </Reveal>
-            )}
-            <Reveal delay={0.05}>
-              <h1 style={{ fontFamily: FONT_DISPLAY, fontWeight: 700, fontSize: 'clamp(2.3rem, 5.4vw, 4.4rem)', lineHeight: 0.98, letterSpacing: '-0.04em', textTransform: 'uppercase', color: FG, margin: 0 }}>{project.h1}</h1>
-            </Reveal>
-          </div>
-
-          <div>
-            {project.hook && (
-              <Reveal delay={0.1}>
-                <p style={{ fontFamily: FONT_SERIF, fontSize: 'clamp(1.08rem, 1.5vw, 1.32rem)', lineHeight: 1.5, color: GRAPHITE, margin: '0 0 30px' }}>{project.hook}</p>
-              </Reveal>
-            )}
-            {project.heroMeta && (
-              <Reveal delay={0.15}>
-                <div className="cs-meta-grid" style={{ borderTop: `1px solid ${HAIRLINE}`, paddingTop: 26 }}>
-                  <MetaItem label="Duration" value={project.heroMeta.duration} />
-                  <MetaItem label="Role" value={project.heroMeta.role} />
-                  <MetaItem label="Built on" value={project.heroMeta.builtOn} />
-                  <MetaItem label="Status" value={project.heroMeta.status} live={project.heroMeta.statusLive} />
-                </div>
-              </Reveal>
-            )}
-          </div>
+      <figure style={{ margin: '0 0 clamp(36px, 5vh, 64px)' }}>
+        <div className="cs-img" style={{ borderRadius: 18 }}>
+          {media.isVideo || media.src.endsWith('.mp4')
+            ? <AutoPlayVideo src={media.src} style={{ width: '100%', display: 'block' }} />
+            : <img src={media.src} alt={media.caption ?? ''} loading={priority ? 'eager' : 'lazy'} />}
         </div>
+        {media.caption && (
+          <figcaption style={{ fontFamily: FONT_BODY, fontSize: 13.5, color: MUTED_LIGHT, lineHeight: 1.5, marginTop: 13, maxWidth: '60ch' }}>{media.caption}</figcaption>
+        )}
+      </figure>
+    </Reveal>
+  )
+}
 
-        <Reveal delay={0.1}>
-          <div className="cs-img" style={{ marginTop: 'clamp(40px, 7vh, 84px)' }}>
-            <img src={project.heroVisual ?? project.showcaseImages[0]} alt={project.title} />
-          </div>
-        </Reveal>
-      </div>
+function ShowcaseCaseStudy({ project, nextProjects }: { project: Project; nextProjects: Project[] }) {
+  const media = project.finalImages
+  const hero = media[0]
+  const screens = media.slice(1)
+  const yearShort = project.year.split('·')[0].trim()
+  const roleShort = project.role.split('.')[0]
 
-      {/* ── STICKY SECTION NAV (sticks once hero scrolls away) ── */}
-      <CaseTopNav sections={navSections} />
-
-      {/* ── BLOCKS ── */}
-      <div className="cs-pad" style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(20px, 4vw, 48px)' }}>
-        {blocks.map((block, i) => {
-          const top = block.kind === 'statement' ? 0 : 'clamp(80px, 12vh, 140px)'
-          return (
-            <div key={i} style={{ marginTop: i === 0 ? 'clamp(56px, 9vh, 104px)' : top }}>
-              {block.kind === 'beat' && <Beat block={block} id={sid(block.label)} />}
-
-              {block.kind === 'statement' && <Statement text={block.text} sub={block.sub} />}
-
-              {block.kind === 'dataviz' && (
-                <section id={sid(block.label)} className="cs-beat-grid" style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 'clamp(32px, 5vw, 76px)', alignItems: 'start' }}>
-                  <div className="cs-beat-visual"><Reveal><DataBars block={block} /></Reveal></div>
-                  <div className="cs-beat-text">
-                    <SectionEyebrow label={block.label} accent={PASTEL.coral.ink} />
-                    <SectionHeading>{block.heading}</SectionHeading>
-                    <ScrollRevealText text={block.body} maxWidth="54ch" />
-                  </div>
-                </section>
-              )}
-
-              {block.kind === 'diagram' && (
-                <section id={sid(block.label)}>
-                  <div className="cs-beat-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(24px, 5vw, 72px)', alignItems: 'start', marginBottom: 'clamp(40px, 6vh, 68px)' }}>
-                    <div>
-                      <SectionEyebrow label={block.label} accent={PASTEL.blue.ink} />
-                      <SectionHeading>{block.heading}</SectionHeading>
-                    </div>
-                    <div className="cs-beat-text"><ScrollRevealText text={block.body} maxWidth="52ch" /></div>
-                  </div>
-                  <LogicDiagram block={block} />
-                </section>
-              )}
-
-              {block.kind === 'carousel' && (
-                <section id={sid(block.label)}><Reveal><Carousel block={block} /></Reveal></section>
-              )}
-
-              {block.kind === 'evolution' && (
-                <section id={sid(block.label)}>
-                  <SectionEyebrow label={block.label} accent={PASTEL.amber.ink} />
-                  <div style={{ maxWidth: '56ch', marginBottom: 'clamp(20px, 3vh, 34px)' }}><ScrollRevealText text={block.body} /></div>
-                  <EvolutionScroll />
-                </section>
+  return (
+    <>
+      <Navbar />
+      <main style={{ minHeight: '100vh' }}>
+        {/* ── HEADER (minimal) ── */}
+        <div className="cs-pad" style={{ maxWidth: 980, margin: '0 auto', padding: 'clamp(100px, 14vh, 156px) clamp(20px, 4vw, 40px) 0' }}>
+          <Reveal>
+            <Link href="/#works" data-cursor="explore" style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: MUTED, textDecoration: 'none', letterSpacing: '0.12em', textTransform: 'uppercase' }}>← back to work</Link>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <p style={{ fontFamily: FONT_DISPLAY, fontSize: 12.5, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '30px 0 16px' }}>{project.discipline} · {yearShort}</p>
+            <h1 style={{ fontFamily: FONT_DISPLAY, fontWeight: 600, fontSize: 'clamp(2.4rem, 6vw, 4rem)', lineHeight: 0.98, letterSpacing: '-0.04em', color: FG, margin: 0 }}>{project.title}</h1>
+            <p style={{ fontFamily: FONT_BODY, fontSize: 'clamp(1.05rem, 1.5vw, 1.3rem)', lineHeight: 1.5, color: MUTED, maxWidth: '56ch', margin: '22px 0 0' }}>{project.subtitle}</p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 30px', alignItems: 'center', marginTop: 30 }}>
+              <span style={{ fontFamily: FONT_BODY, fontSize: 14.5, color: MUTED }}>
+                <strong style={{ color: FG, fontWeight: 600 }}>Role</strong>&nbsp;&nbsp;{roleShort}
+              </span>
+              {project.liveUrl && (
+                <a href={project.liveUrl.url} target="_blank" rel="noopener noreferrer" data-cursor="explore" style={{ fontFamily: FONT_DISPLAY, fontSize: 13.5, fontWeight: 500, color: FG, textDecoration: 'none', borderBottom: `1px solid ${ACCENT}`, paddingBottom: 3 }}>
+                  Live → {project.liveUrl.label} <span aria-hidden>↗</span>
+                </a>
               )}
             </div>
-          )
-        })}
-      </div>
-
-      {/* ── CLOSING STATEMENT ── */}
-      {project.closingStatement && <Statement text={project.closingStatement} />}
-
-      {/* ── NEXT ── */}
-      <div className="cs-pad" style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(20px, 4vw, 48px)' }}>
-        <SectionEyebrow label="NEXT" />
-        <div className="cs-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginTop: 6 }}>
-          {nextProjects.map((p, i) => (
-            <Reveal key={p.slug} delay={i * 0.08}>
-              <Link href={`/works/${p.slug}`} data-cursor="explore" style={{ textDecoration: 'none', display: 'block' }}>
-                <div className="cs-img" style={{ aspectRatio: '16/10', background: p.bg, position: 'relative' }}>
-                  <img src={p.heroImage} alt={p.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: p.heroImage.endsWith('.png') ? 'contain' : 'cover' }} />
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 13, gap: 16 }}>
-                  <span style={{ fontFamily: FONT_BODY, fontSize: 16, fontWeight: 500, color: FG }}>{p.title}</span>
-                  <span style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{p.discipline} · {p.year.split('·')[0].trim()}</span>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
+          </Reveal>
         </div>
-      </div>
 
-      {/* ── FOOTER ── */}
-      <div className="cs-pad cs-footer-flex" style={{ maxWidth: 1200, margin: `${sectionGap} auto 0`, padding: '30px clamp(20px, 4vw, 48px) 96px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1px solid ${HAIRLINE}` }}>
-        <Link href="/#works" data-cursor="explore" style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: MUTED, textDecoration: 'none', letterSpacing: '0.12em', textTransform: 'uppercase' }}>← all work</Link>
-        <span style={{ fontFamily: FONT_SERIF, fontSize: 16, color: MUTED_LIGHT }}>Thanks for reading.</span>
-      </div>
-    </main>
+        {/* ── HERO MEDIA (big) ── */}
+        {hero && (
+          <div className="cs-pad" style={{ maxWidth: 1320, margin: 'clamp(48px, 7vh, 84px) auto 0', padding: '0 clamp(20px, 4vw, 40px)' }}>
+            <BigMedia media={hero} priority />
+          </div>
+        )}
+
+        {/* ── MORE SCREENS (big) ── */}
+        {screens.length > 0 && (
+          <div className="cs-pad" style={{ maxWidth: 1320, margin: 'clamp(24px, 4vh, 48px) auto 0', padding: '0 clamp(20px, 4vw, 40px)' }}>
+            {screens.map((s, i) => <BigMedia key={i} media={s} />)}
+          </div>
+        )}
+
+        {/* ── THE BUILD (interactive) ── */}
+        <div style={{ marginTop: 'clamp(76px, 11vh, 128px)' }}>
+          <div className="cs-pad" style={{ maxWidth: 1180, margin: '0 auto', padding: '0 clamp(20px, 4vw, 40px) clamp(16px, 2.5vh, 28px)' }}>
+            <Reveal>
+              <p style={{ fontFamily: FONT_DISPLAY, fontSize: 12.5, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: 0 }}>The build, week by week</p>
+            </Reveal>
+          </div>
+          <EvolutionScroll />
+        </div>
+
+        {/* ── NEXT ── */}
+        <div className="cs-pad" style={{ maxWidth: 1180, margin: 'clamp(80px, 12vh, 140px) auto 0', padding: '0 clamp(20px, 4vw, 40px)' }}>
+          <p style={{ fontFamily: FONT_DISPLAY, fontSize: 12.5, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0 0 20px' }}>Next</p>
+          <div className="cs-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+            {nextProjects.map((p, i) => (
+              <Reveal key={p.slug} delay={i * 0.08}>
+                <Link href={`/works/${p.slug}`} data-cursor="explore" style={{ textDecoration: 'none', display: 'block' }}>
+                  <div className="cs-img" style={{ aspectRatio: '16/10', background: p.bg, position: 'relative' }}>
+                    <img src={p.heroImage} alt={p.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: p.heroImage.endsWith('.png') ? 'contain' : 'cover' }} />
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 13, gap: 16 }}>
+                    <span style={{ fontFamily: FONT_BODY, fontSize: 16, fontWeight: 500, color: FG }}>{p.title}</span>
+                    <span style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: GRAPHITE, letterSpacing: '0.08em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{p.discipline} · {p.year.split('·')[0].trim()}</span>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+
+        {/* ── FOOTER ── */}
+        <div className="cs-pad cs-footer-flex" style={{ maxWidth: 1180, margin: `${sectionGap} auto 0`, padding: '30px clamp(20px, 4vw, 40px) 96px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: `1px solid ${HAIRLINE}` }}>
+          <Link href="/#works" data-cursor="explore" style={{ fontFamily: FONT_DISPLAY, fontSize: 12, fontWeight: 600, color: MUTED, textDecoration: 'none', letterSpacing: '0.12em', textTransform: 'uppercase' }}>← all work</Link>
+          <span style={{ fontFamily: FONT_BODY, fontSize: 14, color: MUTED_LIGHT }}>Thanks for reading.</span>
+        </div>
+      </main>
+    </>
   )
 }
 
